@@ -1,7 +1,7 @@
 {
-    "name": "masexperto/me",
+    "name": "masexperto/phpme",
     "type": "library",
-    "description": "Kit para aplicaciones y servicios REST / WEB",
+    "description": "Kit para aplicaciones y servicios REST / WEB en PHP",
     "require": {
       "google/apiclient": "2.0",
       "mpdf/mpdf": "8.0",
@@ -13,7 +13,11 @@
       "ext-simplexml": "*",
       "ext-dom": "*",
       "ext-mbstring": "*",
-      "ext-xsl": "*"
+      "ext-xsl": "*",
+      "ext-gd": "*",
+      "ext-zip": "*",
+      "ext-libxml": "*",
+      "ext-mysqli": "*"
     },
     "autoload": {
         "psr-4": {
