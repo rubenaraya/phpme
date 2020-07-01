@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instructor id="EvaCreaCompetencias">
+	<titulo>Evaluación de Competencias Conductuales</titulo>
+
+	<seccion id="primera" titulo="Primera sección">
+		<contenido tipo="html"><![CDATA[<p>Contenido de la primera sección.</p>]]></contenido>
+		<grupo id="grupo-1-1" titulo="Grupo N° 1.1" 
+			conjunto="" recuento="">
+			<contenido tipo="html"><![CDATA[<p>Contenido del primer grupo de la primera sección.</p>]]></contenido>
+			<item id="campo1" enunciado="Enunciado 1.1.1" forma="" ancho="" requerido="1"
+				exportacion="" recuento="">
+				<validacion tipo="texto" minimo="" maximo="" regla="" />
+				<opcion cod="SI" etiqueta="SI" />
+				<opcion cod="NO" etiqueta="NO" />
+			</item>
+		</grupo>
+		<salto seccion="?" icono="fa-step-forward" etiqueta="Siguiente" fondo="success">
+			<condicion item="campo1" valor="SI" seccion="segunda" />
+			<condicion item="campo1" valor="NO" seccion="tercera" />
+		</salto>
+	</seccion>
+
+	<seccion id="segunda" titulo="Segunda sección">
+		<contenido tipo="html"><![CDATA[<p>Contenido de la segunda sección.</p>]]></contenido>
+		<grupo id="grupo-2-1" titulo="Grupo N° 2.1" 
+			conjunto="" recuento="">
+			<contenido tipo="html"><![CDATA[<p>Contenido del primer grupo de la segunda sección.</p>]]></contenido>
+			<item id="campo2" enunciado="Enunciado 2.1.1" forma="" ancho="" requerido="1" 
+				exportacion="" recuento="">
+				<validacion tipo="texto" minimo="" maximo="" regla="" />
+				<opcion cod="SI" etiqueta="SI" />
+				<opcion cod="NO" etiqueta="NO" />
+			</item>
+		</grupo>
+		<salto seccion="primera" icono="fa-step-backward" etiqueta="Anterior" fondo="default" />
+		<salto seccion="tercera" icono="fa-step-forward" etiqueta="Siguiente" fondo="success" />
+	</seccion>
+
+	<seccion id="tercera" titulo="Tercera sección">
+		<contenido tipo="html"><![CDATA[<p>Contenido de la tercera sección.</p>]]></contenido>
+		<grupo id="grupo-3-1" titulo="Grupo N° 3.1" 
+			conjunto="" recuento="">
+			<contenido tipo="html"><![CDATA[<p>Contenido del primer grupo de la tercera sección.</p>]]></contenido>
+			<item id="campo3" enunciado="Enunciado 3.1.1" forma="" ancho="" requerido="1" 
+				exportacion="" recuento="">
+				<validacion tipo="texto" minimo="" maximo="" regla="" />
+				<opcion cod="SI" etiqueta="SI" />
+				<opcion cod="NO" etiqueta="NO" />
+			</item>
+		</grupo>
+		<salto seccion="segunda" icono="fa-step-backward" etiqueta="Anterior" fondo="default" />
+		<salto seccion="primera" icono="fa-fast-backward" etiqueta="Inicio" fondo="success" />
+	</seccion>
+
+</instructor>

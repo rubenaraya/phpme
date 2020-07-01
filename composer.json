@@ -1,0 +1,30 @@
+{
+    "name": "masexperto/me",
+    "type": "library",
+    "description": "Kit para aplicaciones y servicios REST / WEB",
+    "require": {
+      "google/apiclient": "2.0",
+      "mpdf/mpdf": "8.0",
+      "phpmailer/phpmailer": "6.0",
+      "codeplex/phpexcel": "^1.7",
+      "jpgraph/jpgraph": "^4.0",
+      "ext-json": "*",
+      "ext-gettext": "*",
+      "ext-simplexml": "*",
+      "ext-dom": "*",
+      "ext-mbstring": "*",
+      "ext-xsl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+        "MasExperto\\ME\\": "src"
+        }
+    },
+    "license": "Apache 2.0",
+    "authors": [
+        {
+            "name": "Ruben Araya Tagle",
+            "email": "rubenarayatagle@gmail.com"
+        }
+    ]
+}
