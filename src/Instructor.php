@@ -1,6 +1,8 @@
 <?php 
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IInstructor;
+use MasExperto\ME\Clases\PresentadorXml;
 
 abstract class Instructor extends Adaptador implements IInstructor
 {
@@ -351,13 +353,13 @@ abstract class Instructor extends Adaptador implements IInstructor
 				$nivel = (string) $pagina['nivel'];
 				$grafico = (string) $pagina['grafico'];
 				if ( strlen($grafico)>0 ) {
-					//$this->crearGrafico( $grafico );
+					$this->crearGrafico( $grafico );
 				}
 				$texto = $presentador->Transformar( $this->clase.'.xsl', $this->ruta, $cfg );
 				$contenido[] = array( 'titulo'=>$titulo, 'contenido'=>$texto, 'nivel'=>$nivel );
 			}
 			$cfg['carpeta'] = $this->carpeta;
-			//$cfg['formato'] = \Almacen::F_PDF;
+			$cfg['formato'] = Almacen::F_PDF;
 			$cfg['nombre'] = $this->uid;
 			$cfg['papel'] = 'LETTER';
 			$cfg['fuente'] = 'Arial';
@@ -395,5 +397,657 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$valor = (string) $nodo[0];
 		}
 		return $valor;
+	}
+
+	protected function crearGrafico( $gid ) {
+		//TODO: Revisar y depurar
+		$graficos = $this->documento->xpath( "//cuestionario/grafico[@id='" . $gid . "']" );
+		foreach ( $graficos as $grafico ) {
+			$datos = array();
+			$cfg = array();
+			$columnas = array();
+			$cfg['seleccion'] = array();
+			if ( isset($grafico['seleccion']) ) {
+				$seleccion = (string) $grafico['seleccion'];
+				if ( strlen($seleccion)>0 ) {
+					$cfg['seleccion'] = explode(',', $seleccion);
+				}
+			}
+			$cfg['ruta'] = M::E('ALMACEN/PUBLICO') . '/temp';
+			$cfg['imagen'] = strval($this->uid).'-'.$gid.'.jpg';
+			$cfg['ancho'] = (string) $grafico['ancho'];
+			$cfg['alto'] = (string) $grafico['alto'];
+			$cfg['margenes'] = (string) $grafico['margenes'];
+			$cfg['textox'] = (string) $grafico['textox'];
+			$cfg['textoy'] = (string) $grafico['textoy'];
+			$cfg['marcasx'] = (string) $grafico['marcasx'];
+			$cfg['marcasy'] = (string) $grafico['marcasy'];
+			$cfg['escalay'] = (string) $grafico['escalay'];
+			$cfg['leyenda'] = (string) $grafico['leyenda'];
+			$cfg['guiasx'] = (string) $grafico['guiasx'];
+			$cfg['guiasy'] = (string) $grafico['guiasy'];
+			$cfg['angulox'] = (string) $grafico['angulox'];
+			$cfg['distanciax'] = (string) $grafico['distanciax'];
+			$cfg['distanciay'] = (string) $grafico['distanciay'];
+			$cfg['tipo'] = (string) $grafico['tipo'];
+			$cfg['variable'] = (string) $grafico['variable'];
+			$cfg['media'] = (string) $grafico['media'];
+			$config = (string) $grafico['config'];
+			$cruce = (string) $grafico['cruce'];
+			$indicador = $this->documento->xpath( "//cuestionario/indicador[@id='".$cfg['variable']."']" );
+			if ( strlen($cruce)>0 && substr_count($cfg['tipo'], 'SECCIONES')==0 ) {
+				$columnas = $this->documento->xpath( "//cuestionario/categoria[@id='".$cruce."']/segmento" );
+			}
+			if ( $config == 'categoria' ) {
+				$segmentos = $this->documento->xpath( "//cuestionario/categoria[@id='".$cfg['variable']."']/segmento" );
+				$this->recuentoItem( $datos, $cfg, $segmentos, $columnas );
+			} elseif ( $config == 'item' ) {
+				$segmentos = $this->documento->xpath( "//cuestionario//seccion/grupo/item[@id='".$cfg['variable']."']/opcion" );
+				$this->recuentoItem( $datos, $cfg, $segmentos, $columnas );
+			} elseif ( $config == 'conjunto' ) {
+				$segmentos = $this->documento->xpath( "//cuestionario//seccion/grupo[@id='".$cfg['variable']."']/item" );
+				$this->recuentoConjunto( $datos, $cfg, $segmentos, $columnas );
+			} elseif ( $config == 'combinacion' ) {
+				$segmentos = $this->documento->xpath( "//cuestionario//seccion/grupo[@id='".$cfg['variable']."']/item" );
+				$columnas = $this->documento->xpath( "//cuestionario/escala[@id='".$cruce."']/opcion" );
+				$this->recuentoCombinacion( $datos, $cfg, $segmentos, $columnas );
+			} elseif ( $config == 'analisis' ) {
+				$this->recalculoAnalisis( $datos, $cfg, $indicador, $columnas );
+			} elseif ( $config == 'resumen' ) {
+				$this->recalculoResumen( $datos, $cfg, $indicador, $columnas );
+			} elseif ( $config == 'sintesis' ) {
+				$this->recalculoSintesis( $datos, $cfg, $indicador, $columnas );
+			}
+			$this->graficarDatos( $datos, $cfg );
+		}
+	}
+	protected function recuentoCombinacion( &$datos, &$cfg, $segmentos, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$leyendas = array();
+		$etiquetas = array();
+		$this->indice = 0;
+		if ( is_array($columnas) && count($columnas)>0 && is_array($segmentos) && count($segmentos)>0 ) {
+			foreach ( $columnas as $columna ) {
+				$cod = (string) $columna['cod'];
+				$color = (string) $columna['color'];
+				if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+				if ( strlen($color)==0 ) { $color = 'black'; }
+				if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($cod, $cfg['seleccion']))) {
+					$serie = array();
+					$colores[] = $color;
+					$leyendas[] = (string) $columna['etiqueta'];
+					foreach ( $segmentos as $segmento ) {
+						$variable = (string) $segmento['id'];
+						$buscar = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $variable . "'][opcion='" . $cod . "']" );
+						if ( count($buscar)>0 ) {
+							$cuenta = $buscar[0]->xpath('total');
+							$serie[] = (int) $cuenta[0];
+						} else {
+							$serie[] = 0;
+						}
+					}
+					$datos[] = $serie;
+				}
+			}
+			foreach ( $segmentos as $segmento ) {
+				$etiquetas[] = (string) $segmento['enunciado'];
+			}
+			$cfg['etiquetasx'] = $etiquetas;
+			$datos = array_reverse($datos);
+			$cfg['colores'] = array_reverse($colores);
+			$cfg['leyendas'] = array_reverse($leyendas);
+		}
+	}
+	protected function recuentoConjunto( &$datos, &$cfg, $segmentos, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$leyendas = array();
+		$etiquetas = array();
+		$marcador = array();
+		$this->indice = 0;
+		if ( is_array($columnas) && count($columnas)>0 ) {
+			foreach ( $columnas as $columna ) {
+				$campo = 'c' . (string) $columna['id'];
+				$valor = (string) $columna['valor'];
+				if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($valor, $cfg['seleccion']))) {
+					$serie = array();
+					$marca = false;
+					foreach ( $segmentos as $segmento ) {
+						$variable = (string) $segmento['id'];
+						$buscar = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $variable . "'][opcion='1']" );
+						if ( count($buscar)>0 ) {
+							$cuenta = $buscar[0]->xpath($campo);
+							$serie[] = (int) $cuenta[0];
+							$marca = true;
+							$marcador[$variable] = true;
+						}
+					}
+					if ( $marca ) {
+						$datos[] = $serie;
+						$color = (string) $columna['color'];
+						if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+						if ( strlen($color)==0 ) { $color = 'black'; }
+						$colores[] = $color;
+						$leyendas[] = (string) $columna['etiqueta'];
+					}
+				}
+			}
+			foreach ( $segmentos as $segmento ) {
+				$variable = (string) $segmento['id'];
+				if ( isset($marcador[$variable]) && $marcador[$variable]==true ) {
+					$etiqueta = (string) $segmento['recuento'];
+					if ( strlen($etiqueta)==0 ) {
+						$etiqueta = (string) $segmento['enunciado'];
+					}
+					$etiquetas[] = $etiqueta;
+				}
+			}
+			$datos = array_reverse($datos);
+			$cfg['colores'] = array_reverse($colores);
+			$cfg['leyendas'] = array_reverse($leyendas);
+			$cfg['etiquetasx'] = $etiquetas;
+		} else {
+			$serie = array();
+			foreach ( $segmentos as $segmento ) {
+				$variable = (string) $segmento['id'];
+				$buscar = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $variable . "'][opcion='1']" );
+				if ( count($buscar)>0 ) {
+					$cuenta = $buscar[0]->xpath('total');
+					$serie[] = (int) $cuenta[0];
+					$etiqueta = (string) $segmento['recuento'];
+					if ( strlen($etiqueta)==0 ) {
+						$etiqueta = (string) $segmento['enunciado'];
+					}
+					$leyendas[] = $etiqueta;
+					$etiquetas[] = $etiqueta;
+					$color = (string) $segmento['color'];
+					if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+					if ( strlen($color)==0 ) { $color = 'black'; }
+					$colores[] = $color;
+				}
+			}
+			$datos[] = $serie;
+			$cfg['colores'] = $colores;
+			$cfg['leyendas'] = $leyendas;
+			$cfg['etiquetasx'] = $etiquetas;
+		}
+	}
+	protected function recuentoItem( &$datos, &$cfg, $segmentos, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$leyendas = array();
+		$etiquetas = array();
+		$marcador = array();
+		$this->indice = 0;
+		if ( !is_array($segmentos) || count($segmentos)==0 ) {
+			if ( $cfg['variable']=='idgrupo' ) {
+				$segmentos = $this->documento->xpath( "//cuestionario/participante" );
+			} else {
+				$elemento = $this->documento->xpath( "//cuestionario//seccion/grupo/item[@id='".$cfg['variable']."']" );
+				if ( count($elemento)>0 ) {
+					$forma = $elemento[0]['forma'];
+					$segmentos = $this->documento->xpath( "//cuestionario/escala[@id='".$forma."']/opcion" );
+					if ( !is_array($segmentos) || count($segmentos)==0 ) {
+						$elemento = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $cfg['variable'] . "']" );
+						foreach ( $elemento as $caso ) {
+							$cod = $caso->opcion;
+							$xml = simplexml_load_string( '<recuento item="' . $cfg['variable'] . '" cod="'. $cod . '" etiqueta="' . $cod .'" corta="' . $cod .'" color="" />' );
+							$origen = dom_import_simplexml( $xml );
+							$destino = dom_import_simplexml( $this->documento );
+							$destino->appendChild( $destino->ownerDocument->importNode( $origen, true ) );
+						}
+						$segmentos = $this->documento->xpath( "//cuestionario/recuento[@item='" . $cfg['variable'] . "']" );
+					}
+				}
+			}
+		}
+		if ( is_array($columnas) && count($columnas)>0 ) {
+			foreach ( $columnas as $columna ) {
+				$campo = 'c' . (string) $columna['id'];
+				$valor = (string) $columna['valor'];
+				if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($valor, $cfg['seleccion']))) {
+					$serie = array();
+					$marca = false;
+					foreach ( $segmentos as $segmento ) {
+						$valor = (string) $segmento['cod'];
+						if ( strlen($valor)==0 ) { $valor = (string) $segmento['valor']; }
+						$buscar = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $cfg['variable'] . "'][opcion='" . $valor . "']" );
+						if ( count($buscar)>0 ) {
+							$cuenta = $buscar[0]->xpath($campo);
+							$serie[] = (int) $cuenta[0];
+							$marca = true;
+							$marcador[$valor] = true;
+						}
+					}
+					if ( $marca ) {
+						$datos[] = $serie;
+						$color = (string) $columna['color'];
+						if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+						if ( strlen($color)==0 ) { $color = 'black'; }
+						$colores[] = $color;
+						$leyendas[] = (string) $columna['etiqueta'];
+					}
+				}
+			}
+			foreach ( $segmentos as $segmento ) {
+				$valor = (string) $segmento['cod'];
+				if ( strlen($valor)==0 ) { $valor = (string) $segmento['valor']; }
+				if ( isset($marcador[$valor]) && $marcador[$valor]==true ) {
+					$etiqueta = (string) $segmento['corta'];
+					if ( strlen($etiqueta)==0 ) {
+						$etiqueta = (string) $segmento['etiqueta'];
+					}
+					$etiquetas[] = $etiqueta;
+				}
+			}
+			$datos = array_reverse($datos);
+			$cfg['colores'] = array_reverse($colores);
+			$cfg['leyendas'] = array_reverse($leyendas);
+			$cfg['etiquetasx'] = $etiquetas;
+		} else {
+			$serie = array();
+			foreach ( $segmentos as $segmento ) {
+				$valor = (string) $segmento['cod'];
+				if ( strlen($valor)==0 ) { $valor = (string) $segmento['valor']; }
+				$buscar = $this->documento->xpath( "//resultados[@grupo='recuentos']/elemento[item='" . $cfg['variable'] . "'][opcion='" . $valor . "']" );
+				if ( count($buscar)>0 ) {
+					$cuenta = $buscar[0]->xpath('total');
+					$serie[] = (int) $cuenta[0];
+					$etiqueta = (string) $segmento['corta'];
+					if ( strlen($etiqueta)==0 ) {
+						$etiqueta = (string) $segmento['etiqueta'];
+					}
+					$leyendas[] = $etiqueta;
+					$etiquetas[] = $etiqueta;
+					$color = (string) $segmento['color'];
+					if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+					if ( strlen($color)==0 ) { $color = 'black'; }
+					$colores[] = $color;
+				}
+			}
+			$datos[] = $serie;
+			$cfg['colores'] = $colores;
+			$cfg['leyendas'] = $leyendas;
+			$cfg['etiquetasx'] = $etiquetas;
+		}
+	}
+	protected function recalculoAnalisis( &$datos, &$cfg, $indicador, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$leyendas = array();
+		$etiquetasx = array();
+		$etiquetasy = array();
+		$marcador = array();
+		$this->indice = 0;
+		$id = (string) $indicador[0]['id'];
+		$componentes = (string) $indicador[0]['componentes'];
+		$escala = (string) $indicador[0]['escala'];
+		$cfg['puntos'] = (string) $indicador[0]['puntos'];
+		if ( strlen($componentes)>0 ) {
+			$segmentos = explode(',', $componentes);
+			if ( is_array($columnas) && count($columnas)>0 ) {
+				foreach ( $columnas as $columna ) {
+					$campo = 'r' . (string) $columna['id'];
+					$valor = (string) $columna['valor'];
+					if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($valor, $cfg['seleccion']))) {
+						$serie = array();
+						$marca = false;
+						foreach ($segmentos as $segmento) {
+							$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $segmento . "']" );
+							if ( count($buscar)>0 ) {
+								$promedio = $buscar[0]->xpath($campo);
+								$serie[] = (float) $promedio[0];
+								$marca = true;
+								$marcador[$segmento] = true;
+							}
+						}
+						if ( $marca ) {
+							$datos[] = $serie;
+							$color = '';
+							if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+							if ( strlen($color)==0 ) { $color = 'black'; }
+							$colores[] = $color;
+							$leyendas[] = (string) $columna['etiqueta'];
+						}
+					}
+				}
+				foreach ($segmentos as $segmento) {
+					if ( isset($marcador[$segmento]) && $marcador[$segmento]==true ) {
+						$leer = $this->documento->xpath( "//seccion/grupo/item[@id='" . $segmento . "']" );
+						if ( count($leer)>0 ) {
+							$etiqueta = (string) $leer[0]['calculo'];
+						} else {
+							$etiqueta = $segmento;
+						}
+						$etiquetasx[] = $etiqueta;
+					}
+				}
+			} else {
+				$serie = array();
+				foreach ($segmentos as $segmento) {
+					$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $segmento . "']" );
+					if ( count($buscar)>0 ) {
+						$promedio = $buscar[0]->xpath('promedio');
+						$serie[] = (float) $promedio[0];
+						$leer = $this->documento->xpath( "//seccion/grupo/item[@id='" . $segmento . "']" );
+						if ( count($leer)>0 ) {
+							$etiqueta = (string) $leer[0]['calculo'];
+						} else {
+							$etiqueta = $segmento;
+						}
+						$color = '';
+						if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+						if ( strlen($color)==0 ) { $color = 'black'; }
+						$leyendas[] = $etiqueta;
+						$etiquetasx[] = $etiqueta;
+						$colores[] = $color;
+					}
+				}
+			}
+			$buscar = $this->documento->xpath( "//cuestionario/escala[@id='".$escala."']/opcion" );
+			if ( count($buscar)>0 ) {
+				foreach ( $buscar as $elemento ) {
+					if ( isset($elemento['corto']) ) {
+						$etiquetasy[] = (string) $elemento['corto'];
+					} else {
+						$etiquetasy[] = (string) $elemento['etiqueta'];
+					}
+				}
+			}
+			$buscar = $this->documento->xpath( "//cuestionario/indicador[@id='".$id."']/semaforo" );
+			if ( count($buscar)>0 ) {
+				foreach ( $buscar as $elemento ) {
+					$cid = (string) $elemento['id'];
+					$cfg[$cid]['color'] = (string) $elemento['color'];
+					$cfg[$cid]['desde'] = (string) $elemento['desde'];
+					$cfg[$cid]['hasta'] = (string) $elemento['hasta'];
+				}
+			}
+			if ( !is_array($columnas) || count($columnas)==0 ) {
+				$datos[] = $serie;
+			}
+			$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $id . "']/promedio" );
+			if ( count($buscar)>0 ) {
+				$cfg['promedio'] = (float) $buscar[0];
+			}
+			$cfg['colores'] = $colores;
+			$cfg['leyendas'] = $leyendas;
+			$cfg['etiquetasx'] = $etiquetasx;
+			$cfg['etiquetasy'] = array_reverse($etiquetasy);
+		}
+	}
+	protected function recalculoResumen( &$datos, &$cfg, $indicador, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$etiquetasx = array();
+		$etiquetasy = array();
+		$this->indice = 0;
+		$id = (string) $indicador[0]['id'];
+		$escala = (string) $indicador[0]['escala'];
+		$cfg['puntos'] = (string) $indicador[0]['puntos'];
+		if ( is_array($columnas) && count($columnas)>0 ) {
+			$serie = array();
+			foreach ( $columnas as $columna ) {
+				$campo = 'r' . (string) $columna['id'];
+				$valor = (string) $columna['valor'];
+				if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($valor, $cfg['seleccion']))) {
+					$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $id . "']" );
+					if ( count($buscar)>0 ) {
+						$promedio = $buscar[0]->xpath($campo);
+						$serie[] = (float) $promedio[0];
+						$color = (string) $columna['color'];
+						if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+						if ( strlen($color)==0 ) { $color = 'black'; }
+						$colores[] = $color;
+						$etiquetasx[] = (string) $columna['etiqueta'];
+					}
+				}
+			}
+			$buscar = $this->documento->xpath( "//cuestionario/escala[@id='".$escala."']/opcion" );
+			if ( count($buscar)>0 ) {
+				foreach ( $buscar as $elemento ) {
+					if ( isset($elemento['corto']) ) {
+						$etiquetasy[] = (string) $elemento['corto'];
+					} else {
+						$etiquetasy[] = (string) $elemento['etiqueta'];
+					}
+				}
+			}
+			$buscar = $this->documento->xpath( "//cuestionario/indicador[@id='".$id."']/semaforo" );
+			if ( count($buscar)>0 ) {
+				foreach ( $buscar as $elemento ) {
+					$cid = (string) $elemento['id'];
+					$cfg[$cid]['color'] = (string) $elemento['color'];
+					$cfg[$cid]['desde'] = (string) $elemento['desde'];
+					$cfg[$cid]['hasta'] = (string) $elemento['hasta'];
+				}
+			}
+			$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $id . "']/promedio" );
+			if ( count($buscar)>0 ) {
+				$cfg['promedio'] = (float) $buscar[0];
+			}
+			$datos[] = $serie;
+			$cfg['colores'] = $colores;
+			$cfg['etiquetasx'] = $etiquetasx;
+			$cfg['etiquetasy'] = array_reverse($etiquetasy);
+		}
+	}
+	protected function recalculoSintesis( &$datos, &$cfg, $indicador, $columnas ) {
+		//TODO: Revisar y depurar
+		$colores = array();
+		$leyendas = array();
+		$etiquetasx = array();
+		$etiquetasy = array();
+		$marcador = array();
+		$this->indice = 0;
+		$id = (string) $indicador[0]['id'];
+		$escala = (string) $indicador[0]['escala'];
+		$cfg['puntos'] = (string) $indicador[0]['puntos'];
+		$segmentos = $this->documento->xpath( "//cuestionario/indicador[@antes='".$id."']" );
+		if ( is_array($columnas) && count($columnas)>0 ) {
+			foreach ( $columnas as $columna ) {
+				$campo = 'r' . (string) $columna['id'];
+				$valor = (string) $columna['valor'];
+				if ( count($cfg['seleccion'])==0 || (count($cfg['seleccion'])>0 && in_array($valor, $cfg['seleccion']))) {
+					$serie = array();
+					$marca = false;
+					foreach ($segmentos as $segmento) {
+						$sid = (string) $segmento['id'];
+						$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $sid . "']" );
+						if ( count($buscar)>0 ) {
+							$promedio = $buscar[0]->xpath($campo);
+							$serie[] = (float) $promedio[0];
+							$marca = true;
+							$marcador[$sid] = true;
+						}
+					}
+					if ( $marca ) {
+						$datos[] = $serie;
+						$color = (string) $segmento['color'];
+						if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+						if ( strlen($color)==0 ) { $color = 'black'; }
+						$colores[] = $color;
+						$leyendas[] = (string) $columna['etiqueta'];
+					}
+				}
+			}
+			foreach ($segmentos as $segmento) {
+				$sid = (string) $segmento['id'];
+				if ( isset($marcador[$sid]) && $marcador[$sid]==true ) {
+					$etiquetasx[] = (string) $segmento['nombre'];
+				}
+			}
+		} else {
+			$serie = array();
+			foreach ($segmentos as $segmento) {
+				$sid = (string) $segmento['id'];
+				$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $sid . "']" );
+				if ( count($buscar)>0 ) {
+					$promedio = $buscar[0]->xpath('promedio');
+					$serie[] = (float) $promedio[0];
+					$color = (string) $segmento['color'];
+					if ( strlen($color)==0 ) { $color = $this->colores[$this->indice]; $this->indice++; }
+					if ( strlen($color)==0 ) { $color = 'black'; }
+					$colores[] = $color;
+					$etiquetasx[] = (string) $segmento['nombre'];
+					$leyendas[] = (string) $segmento['nombre'];
+				}
+			}
+		}
+		$buscar = $this->documento->xpath( "//cuestionario/escala[@id='".$escala."']/opcion" );
+		if ( count($buscar)>0 ) {
+			foreach ( $buscar as $elemento ) {
+				if ( isset($elemento['corto']) ) {
+					$etiquetasy[] = (string) $elemento['corto'];
+				} else {
+					$etiquetasy[] = (string) $elemento['etiqueta'];
+				}
+			}
+		}
+		$buscar = $this->documento->xpath( "//cuestionario/indicador[@id='".$id."']/semaforo" );
+		if ( count($buscar)>0 ) {
+			foreach ( $buscar as $elemento ) {
+				$cid = (string) $elemento['id'];
+				$cfg[$cid]['color'] = (string) $elemento['color'];
+				$cfg[$cid]['desde'] = (string) $elemento['desde'];
+				$cfg[$cid]['hasta'] = (string) $elemento['hasta'];
+			}
+		}
+		$buscar = $this->documento->xpath( "//resultados[@grupo='recalculos']/elemento[elemento='" . $id . "']/promedio" );
+		if ( count($buscar)>0 ) {
+			$cfg['promedio'] = (float) $buscar[0];
+		}
+		if ( !is_array($columnas) || count($columnas)==0 ) {
+			$datos[] = $serie;
+		}
+		$cfg['colores'] = $colores;
+		$cfg['leyendas'] = $leyendas;
+		$cfg['etiquetasx'] = $etiquetasx;
+		$cfg['etiquetasy'] = array_reverse($etiquetasy);
+	}
+	protected function graficarDatos( &$datos, $cfg ) {
+		//TODO: Revisar y depurar
+		$ruta = ( isset($cfg['ruta']) ? $cfg['ruta'] : '' );
+		$imagen = ( isset($cfg['imagen']) ? $cfg['imagen'] : '' );
+		$leyendas = ( isset($cfg['leyendas']) ? $cfg['leyendas'] : array() );
+		$colores = ( isset($cfg['colores']) ? $cfg['colores'] : array() );
+		$etiquetasx = ( isset($cfg['etiquetasx']) ? $cfg['etiquetasx'] : array() );
+		$etiquetasy = ( isset($cfg['etiquetasy']) ? $cfg['etiquetasy'] : array() );
+		$ancho = ( isset($cfg['ancho']) ? $cfg['ancho'] : 640 );
+		$alto = ( isset($cfg['alto']) ? $cfg['alto'] : 480 );
+		$textox = ( isset($cfg['textox']) ? $cfg['textox'] : '' );
+		$textoy = ( isset($cfg['textoy']) ? $cfg['textoy'] : '' );
+		$marcasx = ( isset($cfg['marcasx']) ? $cfg['marcasx'] : '' );
+		$marcasy = ( isset($cfg['marcasy']) ? $cfg['marcasy'] : '' );
+		$escalay = ( isset($cfg['escalay']) ? $cfg['escalay'] : '' );
+		$leyenda = ( isset($cfg['leyenda']) ? $cfg['leyenda'] : '' );
+		$guiasx = ( isset($cfg['guiasx']) ? $cfg['guiasx'] : '' );
+		$guiasy = ( isset($cfg['guiasy']) ? $cfg['guiasy'] : '' );
+		$angulox = ( isset($cfg['angulox']) ? $cfg['angulox'] : 0 );
+		$distanciax = ( isset($cfg['distanciax']) ? $cfg['distanciax'] : 20 );
+		$distanciay = ( isset($cfg['distanciay']) ? $cfg['distanciay'] : 30 );
+		$margenes = ( isset($cfg['margenes']) ? $cfg['margenes'] : '10,10,10,10' );
+		$puntos = ( isset($cfg['puntos']) ? $cfg['puntos'] : '' );
+		$media = ( isset($cfg['media']) ? $cfg['media'] : '' );
+		$promedio = ( isset($cfg['promedio']) ? $cfg['promedio'] : 0 );
+		$valores = array();
+		$ejex = true;
+		$ejey = true;
+		if ( $marcasx == '-' ) {
+			$marcasx = '';
+			$ejex = false;
+		}
+		if ( $marcasy == '-' ) {
+			$marcasy = '';
+			$ejey = false;
+		}
+		if ( strlen($escalay)>0 ) {
+			$valores = explode(',', strval($escalay));
+		}
+		$conector = M::E('CONECTOR/GRAFICOS');
+		$graficador = new $conector;
+		$graficador->cambiarFuente('arial');
+		$matriz = explode(',', strval($margenes));
+		if ( count($matriz)==4 ) {
+			$graficador->grafico['margenes']['izq'] = intval($matriz[0]);
+			$graficador->grafico['margenes']['sup'] = intval($matriz[1]);
+			$graficador->grafico['margenes']['der'] = intval($matriz[2]);
+			$graficador->grafico['margenes']['inf'] = intval($matriz[3]);
+		}
+		$graficador->grafico['ancho'] = intval($ancho);
+		$graficador->grafico['alto'] = intval($alto);
+		$graficador->series['colores'] = $colores;
+		$graficador->series['leyendas'] = $leyendas;
+		$graficador->ejeX['etiquetas'] = $etiquetasx;
+		$graficador->ejeY['etiquetas'] = $etiquetasy;
+		$graficador->grafico['ruta'] = $ruta;
+		$graficador->grafico['imagen'] = $imagen;
+		$graficador->ejeX['titulo']['texto'] = $textox;
+		$graficador->ejeY['titulo']['texto'] = $textoy;
+		$graficador->ejeX['marcas'] = $marcasx;
+		$graficador->ejeY['marcas'] = $marcasy;
+		$graficador->ejeX['cuadricula'] = $guiasx;
+		$graficador->ejeY['cuadricula'] = $guiasy;
+		$graficador->ejeX['angulox'] = $angulox;
+		$graficador->leyenda['posicion'] = $leyenda;
+		$graficador->ejeX['titulo']['margen'] = intval($distanciax);
+		$graficador->ejeY['titulo']['margen'] = intval($distanciay);
+		$graficador->ejeY['linea'] = $ejey;
+		$graficador->ejeX['linea'] = $ejex;
+		$this->temp[] = $graficador->grafico['ruta'] . '/' . $imagen;
+		if ( is_array($valores) && count($valores) >0 ) {
+			$graficador->ejeY['valores'] = $valores;
+			$graficador->ejeY['max'] = max($valores);
+		} else {
+			$graficador->ejeY['min'] = 0;
+			$graficador->ejeY['max'] = 0;
+		}
+		switch ( $cfg['tipo'] ) {
+			case 'SECCIONES': 
+			case 'SECCIONES-3D': 
+				$graficador->grafico['suavizado'] = true;
+				$graficador->grafico['guias'] = true;
+				$graficador->grafico['sombra'] = true;
+				$graficador->grafico['separar'] = 'todos';
+				$graficador->series['puntos']['formato'] = '%s: %.0f%%';
+				if ( $cfg['tipo']=='SECCIONES-3D' ) { $graficador->grafico['3D'] = true; }
+				$graficador->graficarSecciones( $datos );
+				break;
+			case 'BARRAS': 
+			case 'BARRAS-EV': 
+			case 'BARRAS-AC': 
+				$graficador->leyenda['linea'] = 1;
+				if ( strlen($puntos)>0 ) {
+					$graficador->series['puntos']['visible'] = true;
+					$graficador->series['puntos']['formato'] = $puntos;
+					$graficador->series['puntos']['margen'] = 20;
+					$graficador->series['puntos']['tamaño'] = 11;
+				}
+				if ( $cfg['tipo']=='BARRAS-AC' ) { $graficador->grafico['AC'] = true; }
+				if ( $cfg['tipo']=='BARRAS-EV' ) {
+					if ( isset($cfg['R']) && isset($cfg['A']) && isset($cfg['V']) ) {
+						$graficador->series['semaforo'] = array( 
+							$cfg['R']['color'] => array( floatval($cfg['R']['desde']), floatval($cfg['R']['hasta'].'9999'), $cfg['R']['desde'] . ' - ' . $cfg['R']['hasta'] ), 
+							$cfg['A']['color'] => array( floatval($cfg['A']['desde']), floatval($cfg['A']['hasta'].'9999'), $cfg['A']['desde'] . ' - ' . $cfg['A']['hasta'] ), 
+							$cfg['V']['color'] => array( floatval($cfg['V']['desde']), floatval($cfg['V']['hasta'].'9999'), $cfg['V']['desde'] . ' - ' . $cfg['V']['hasta'] ) 
+						);
+					}
+				}
+				if ( strlen($media)>0 ) {
+					$matriz = explode(',', $media);
+					if ( count($matriz)==2 ) {
+						$graficador->series['linea']['color'] = $matriz[1];
+						$graficador->series['linea']['leyenda'] = $matriz[0];
+						$graficador->agregarValores( array(floatval($promedio)), $graficador->series['linea']['valores'] );
+					}
+				}
+				$graficador->graficarBarras( $datos );
+				break;
+			case 'LINEAS':
+				$graficador->graficarLineas( $datos );
+				break;
+		}
+		unset( $graficador );
 	}
 }

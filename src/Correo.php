@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\ICorreo;
 
 abstract class Correo implements ICorreo

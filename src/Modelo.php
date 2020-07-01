@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IModelo;
 
 abstract class Modelo implements IModelo

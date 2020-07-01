@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IAlmacen;
 
 abstract class Almacen implements IAlmacen

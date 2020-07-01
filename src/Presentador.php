@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IPresentador;
 
 abstract class Presentador implements IPresentador

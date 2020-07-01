@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IGraficador;
 
 abstract class Graficador implements IGraficador

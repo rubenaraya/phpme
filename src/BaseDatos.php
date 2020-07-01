@@ -1,5 +1,6 @@
 <?php
 namespace MasExperto\ME;
+
 use MasExperto\ME\Interfaces\IBaseDatos;
 
 abstract class BaseDatos implements IBaseDatos
