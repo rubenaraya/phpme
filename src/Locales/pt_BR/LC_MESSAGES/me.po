@@ -1,0 +1,178 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: masexperto\n"
+"POT-Creation-Date: 2020-07-01 11:15-0400\n"
+"PO-Revision-Date: 2020-07-01 11:15-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: Emisores\n"
+"X-Poedit-SearchPathExcluded-0: Extensiones\n"
+
+#: AlmacenLocal.php:61
+#, php-format
+msgid "El-archivo-'%s'-supera-%s"
+msgstr "O arquivo '%s' excede %s"
+
+#: AlmacenLocal.php:66
+#, php-format
+msgid "No-se-permiten-archivos-%s"
+msgstr "Arquivos não são permitidos %s"
+
+#: AlmacenLocal.php:116 AlmacenLocal.php:192
+msgid "No-hay-imagenes"
+msgstr "Sem imagens"
+
+#: AlmacenLocal.php:189
+#, php-format
+msgid "'%s'-no-es-una-imagen-valida"
+msgstr "'%s' não é uma imagem válida"
+
+#: AlmacenLocal.php:207
+msgid "No-hay-archivos-para-descomprimir"
+msgstr "Não há arquivos para descompactar"
+
+#: AlmacenLocal.php:258
+msgid "No-existe-la-ruta-de-origen"
+msgstr "O caminho de origem não existe"
+
+#: AlmacenLocal.php:268
+msgid "No-se-puede-abrir-la-ruta-de-destino"
+msgstr "Não foi possível abrir o caminho de destino"
+
+#: AlmacenLocal.php:283
+msgid "No-se-puede-abrir-la-ruta-de-origen"
+msgstr "Não é possível abrir o caminho da fonte"
+
+#: AlmacenLocal.php:333 AlmacenLocal.php:440 AlmacenLocal.php:452
+#: AlmacenLocal.php:468 AlmacenLocal.php:484 AlmacenLocal.php:496
+#: AlmacenLocal.php:510
+#, php-format
+msgid "No-se-guardo-'%s'"
+msgstr "Não guardado '%s'"
+
+#: AlmacenLocal.php:344
+#, php-format
+msgid "La-hoja-'%s'-no existe"
+msgstr "A folha '%s' não existe"
+
+#: AlmacenLocal.php:348
+#, php-format
+msgid "No-se-encontro-'%s'"
+msgstr "Não encontrado '%s'"
+
+#: AlmacenLocal.php:372 AlmacenLocal.php:394
+msgid "El-formato-del-archivo-no-es-valido"
+msgstr "Formato de arquivo inválido"
+
+#: AlmacenLocal.php:399
+msgid "El-archivo-no-tiene-contenido"
+msgstr "O arquivo não tem conteúdo"
+
+#: AlmacenLocal.php:403
+#, php-format
+msgid "El-tipo-'%s'-no-esta-permitido"
+msgstr "O tipo '%s' não é permitido"
+
+#: AlmacenLocal.php:406
+msgid "El-archivo-no-existe"
+msgstr "O arquivo não existe"
+
+#: AlmacenLocal.php:420
+msgid "No-hay-contenido-para-guardar"
+msgstr "Não há conteúdo para salvar"
+
+#: AlmacenLocal.php:515
+msgid "No-hay-datos-para-guardar"
+msgstr "Não há dados para salvar"
+
+#: AlmacenLocal.php:534 AlmacenLocal.php:541
+#, php-format
+msgid "El-archivo-'%s'-no-existe"
+msgstr "O arquivo '%s' não existe"
+
+#: AlmacenLocal.php:617
+#, php-format
+msgid "La-carpeta-'%s'-no-existe"
+msgstr "A pasta '%s' não existe"
+
+#: GraficadorJp.php:48 GraficadorJp.php:157 GraficadorJp.php:227
+#: GraficadorJp.php:274
+msgid "No-hay-datos-para-graficar"
+msgstr "Não há dados para plotar"
+
+#: GraficadorJp.php:141 GraficadorJp.php:211 GraficadorJp.php:259
+#: GraficadorJp.php:321
+msgid "Los-parametros-del-grafico-no-son-correctos"
+msgstr "Os parâmetros do gráfico não estão corretos"
+
+#: PresentadorXml.php:28
+#, php-format
+msgid "El-documento-'%s'-no-se-pudo-cargar"
+msgstr "Não foi possível carregar o documento '%s'"
+
+#: PresentadorXml.php:32 PresentadorXml.php:84
+#, php-format
+msgid "El-documento-'%s'-no-se-encontro-en-'%s'"
+msgstr "O documento '%s' não foi encontrado em '%s'"
+
+#: PresentadorXml.php:187
+#, php-format
+msgid "La-plantilla-'%s'-no-se-encontro-en-'%s'"
+msgstr "O modelo '%s' não foi encontrado em '%s'"
+
+#: Ruteador.php:25 Ruteador.php:116
+msgid "Peticion-no-valida"
+msgstr "A solicitação feita não é válida"
+
+#: Ruteador.php:26
+msgid "Acceso-denegado"
+msgstr "Você não tem acesso ao recurso solicitado"
+
+#: Ruteador.php:27
+msgid "Acceso-prohibido"
+msgstr "Acesso proibido"
+
+#: Ruteador.php:28
+msgid "Recurso-no-encontrado"
+msgstr "O recurso solicitado não foi encontrado"
+
+#: Ruteador.php:29
+msgid "Accion-no-permitida"
+msgstr "Esta ação não é permitida"
+
+#: Ruteador.php:30
+msgid "No-soportado"
+msgstr "A operação necessária não é suportada"
+
+#: Ruteador.php:31
+msgid "No-procesable"
+msgstr "A solicitação não é acionável"
+
+#: Ruteador.php:32
+msgid "Error-interno"
+msgstr "Erro de execução interna no servidor"
+
+#: Ruteador.php:199
+msgid "Formato-de-salida-no-admitido"
+msgstr "O formato de saída solicitado não é suportado"
+
+#: Ruteador.php:291
+msgid "Acceso-denegado-llave-no-valida"
+msgstr "Acesso negado. Suas credenciais não são válidas"
+
+#: Ruteador.php:294
+msgid "Acceso-denegado-llave-expirada"
+msgstr "Acesso negado. Suas credenciais expiraram"
+
+#: Ruteador.php:298
+msgid "Acceso-denegado-no-tiene-llave"
+msgstr "O acesso foi negado porque você não tem credenciais para inserir"
