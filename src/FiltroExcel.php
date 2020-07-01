@@ -23,4 +23,3 @@ class FiltroExcel implements PHPExcel_Reader_IReadFilter
 		return false;
 	}
 }
-?>

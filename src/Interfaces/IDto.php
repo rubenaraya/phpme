@@ -9,4 +9,3 @@ interface IDto {
 	public function traspasarPeticion( $opcion );
 	public function Vaciar( $todo );
 }
-?>

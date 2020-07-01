@@ -15,7 +15,6 @@ final class EmisorXls extends Emisor {
 	//METODOS PUBLICOS
 
 	public function Imprimir( $contenido, $opciones = array() ) {
-		$archivo = '';
 		$opciones['nombre'] = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.xls' );
 		header( 'Content-Type: application/vnd.ms-excel; charset=utf-8' );
 		header( 'Content-Disposition: attachment;filename="' . $opciones['nombre'] . '";' );
@@ -27,7 +26,7 @@ final class EmisorXls extends Emisor {
 				$contenido = '';
 			}
 		}
-		$this->_exportarExcel( $contenido, $opciones );
+		$this->_exportarExcel($contenido);
 		flush();
 		exit;
 	}
@@ -45,7 +44,7 @@ final class EmisorXls extends Emisor {
 
 	//FUNCIONES PRIVADAS
 
-	private function _exportarExcel( $contenido, $opciones ) {
+	private function _exportarExcel($contenido) {
 		$libro = new PHPExcel();
 		$libro->removeSheetByIndex(0);
 		$libro->getDefaultStyle()->getFont()->setName( 'Arial' );
@@ -118,4 +117,3 @@ final class EmisorXls extends Emisor {
 		unset($guardar); unset($libro); unset($hoja);
 	}
 }
-?>

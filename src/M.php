@@ -56,8 +56,7 @@ final class M
 		$llave = ( $tipo == 'sesion' ? M::E('LLAVE/TOKEN') : M::E('LLAVE/ACCESO') );
 		$signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $llave, true);
 		$base64UrlSignature = str_replace(array('+', '/', '='), array('-', '_', ''), base64_encode($signature));
-		$jwt = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
-		return $jwt;
+		return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
 	}
 
 	/** 
@@ -84,7 +83,7 @@ final class M
 		} else {
 			$contenido = '';
 		}
-		$html = '<table border="1">';
+		$html = '<table>';
 		if ( $encabezado == 'S' ) {
 			$html .= '<tr>';
 			if ( isset($contenido[0]) ) {
@@ -450,4 +449,3 @@ final class M
 		return $r;
 	}
 }
-?>

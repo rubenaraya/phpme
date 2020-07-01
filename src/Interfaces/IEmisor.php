@@ -5,4 +5,3 @@ interface IEmisor {
 	public function Imprimir( $contenido, $opciones );
 	public function mostrarErrores( $errores );
 }
-?>

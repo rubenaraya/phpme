@@ -69,4 +69,3 @@ abstract class Adaptador implements IAdaptador
 	public function cambiarValores() {
 	}
 }
-?>

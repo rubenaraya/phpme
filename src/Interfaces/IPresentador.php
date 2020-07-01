@@ -11,4 +11,3 @@ interface IPresentador {
 	public function abrirPlantilla( $archivo, $ruta, $reemplazar );
 	public function filtrarVisibles( $roles, $entidad );
 }
-?>

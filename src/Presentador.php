@@ -50,4 +50,3 @@ abstract class Presentador implements IPresentador
 		return $txt;
 	}
 }
-?>

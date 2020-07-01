@@ -35,4 +35,3 @@ abstract class BaseDatos implements IBaseDatos
 		unset($this->DTO);
 	}
 }
-?>

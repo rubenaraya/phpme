@@ -32,7 +32,6 @@ final class GraficadorJp extends Graficador {
 				return $this->graficarLineas( $datos );
 				break;
 		}
-		return;
 	}
 
 	/** 
@@ -49,8 +48,8 @@ final class GraficadorJp extends Graficador {
 			$resultado['error'] = dgettext('me', 'No-hay-datos-para-graficar');
 			return $resultado; 
 		}
-		$semaforo = ( is_array($this->series['semaforo']) && count($this->series['semaforo'])>0 ? true : false );
-		$leyenda = ( strlen($this->leyenda['posicion'])>0 ? true : false );
+		$semaforo = is_array($this->series['semaforo']) && count($this->series['semaforo'])>0;
+		$leyenda = strlen($this->leyenda['posicion'])>0;
 		$imagen = $this->_establecerImagen();
 		$grafico = new Graph( $this->grafico['ancho'], $this->grafico['alto'] );
 		$this->_configurarGrafico( $grafico, Graficador::G_BARRAS );
@@ -158,7 +157,7 @@ final class GraficadorJp extends Graficador {
 			$resultado['error'] = dgettext('me', 'No-hay-datos-para-graficar');
 			return $resultado; 
 		}
-		$leyenda = ( strlen($this->leyenda['posicion'])>0 ? true : false );
+		$leyenda = strlen($this->leyenda['posicion'])>0;
 		$imagen = $this->_establecerImagen();
 		$grafico = new Graph( $this->grafico['ancho'], $this->grafico['alto'] );
 		$this->_configurarGrafico( $grafico, Graficador::G_LINEAS );
@@ -275,7 +274,7 @@ final class GraficadorJp extends Graficador {
 			$resultado['error'] = dgettext('me', 'No-hay-datos-para-graficar');
 			return $resultado; 
 		}
-		$leyenda = ( strlen($this->leyenda['posicion'])>0 ? true : false );
+		//$leyenda = strlen($this->leyenda['posicion'])>0;
 		$imagen = $this->_establecerImagen();
 		$grafico = new PieGraph( $this->grafico['ancho'], $this->grafico['alto'] );
 		$this->_configurarGrafico( $grafico, Graficador::G_SECCIONES );
@@ -552,7 +551,7 @@ final class GraficadorJp extends Graficador {
 			$etiq_ancho = ( strlen($texto) * $tamano / 1.3 ) + 6;
 			$etiq_alto = $tamano + 8;
 		}
-		$marca = ( substr($texto, 0, 1)=='*' ? true: false);
+		$marca = substr($texto, 0, 1)=='*';
 		if ( $marca ) {
 			$tamano = $tamano + 6;
 			$etiq_alto = $etiq_alto + 4;
@@ -815,4 +814,3 @@ final class GraficadorJp extends Graficador {
 		}
 	}
 }
-?>

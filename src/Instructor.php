@@ -49,7 +49,6 @@ abstract class Instructor extends Adaptador implements IInstructor
 	}
 	public function guardarRespuestas( $seccion = '' ) {
 		/* Consumido por: ModeloActividades->Guardar */
-		$estado = 0;
 		$mensaje = '';
 		$filtro = '';
 		$this->dto->traspasarPeticion(0);
@@ -156,7 +155,6 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$filtro = '';
 		$filtrar = '';
 		$procedimiento = array();
-		$aux = array();
 		$catalogar = false;
 		$calcular = false;
 		$this->documento = simplexml_load_file( $this->ruta . '/' . $this->clase . '.xml' );
@@ -369,7 +367,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$cfg['margen_inf'] = 20;
 			$cfg['portada'] = true;
 			$cfg['estilos'] = M::E('PUNTOFINAL/RUTA').'/pdf.css';
-			$guardar = $this->modelo->almacen->guardarArchivo( \Almacen::PRIVADO, $contenido, $cfg );
+			$guardar = $this->modelo->almacen->guardarArchivo( Almacen::PRIVADO, $contenido, $cfg );
 			$estado = $guardar['estado'];
 			if ( M::E('M_MODO')=='PRUEBA' ) {
 				$this->documento->asXML( M::E('ALMACEN/PUBLICO').'/temp/prueba-'.$this->uid . '.xml' );
@@ -399,4 +397,3 @@ abstract class Instructor extends Adaptador implements IInstructor
 		return $valor;
 	}
 }
-?>

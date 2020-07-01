@@ -11,4 +11,3 @@ interface IGraficador {
 	public function cambiarFuente( $fuente );
 	public function borrarTemporales();
 }
-?>

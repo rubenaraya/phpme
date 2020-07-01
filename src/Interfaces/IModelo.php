@@ -20,4 +20,3 @@ interface IModelo {
 	public function Exportar( &$dto );
 	public function Validar( $nombre, $valor );
 }
-?>

@@ -11,4 +11,3 @@ interface IInstructor extends IAdaptador {
 	public function aplicarCalculos( $opciones );
 	public function generarInforme( $opciones );
 }
-?>

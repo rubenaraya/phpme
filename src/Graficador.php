@@ -58,4 +58,3 @@ abstract class Graficador implements IGraficador
 	}
 	function __destruct() {}
 }
-?>

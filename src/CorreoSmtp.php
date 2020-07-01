@@ -68,4 +68,3 @@ final class CorreoSmtp extends Correo {
 		return $resultado;
 	}
 }
-?>

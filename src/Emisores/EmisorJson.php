@@ -59,4 +59,3 @@ final class EmisorJson extends Emisor {
 		return false;
 	}
 }
-?>

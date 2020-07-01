@@ -13,4 +13,3 @@ interface IRuteador {
 	public function Salir( $enviar );
 	public function Info();
 }
-?>

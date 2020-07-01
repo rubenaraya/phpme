@@ -7,4 +7,3 @@ interface IAdaptador {
 	public function cambiarValores();
 	public function validarPeticion( $info );
 }
-?>

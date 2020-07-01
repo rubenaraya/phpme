@@ -16,4 +16,3 @@ interface IAlmacen {
 	public function explorarCarpeta( $origen, $carpeta, $opciones );
 	public function validarNombre( $nombre, $patron );
 }
-?>

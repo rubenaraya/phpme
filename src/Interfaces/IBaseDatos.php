@@ -14,4 +14,3 @@ interface IBaseDatos {
 	public function aplicarFiltro( $filtro, $claves, $instruccion, $tabla );
 	public function Cerrar();
 }
-?>

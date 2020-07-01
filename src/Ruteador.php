@@ -1,6 +1,8 @@
 <?php 
 namespace MasExperto\ME;
+use DateTime;
 use MasExperto\ME\Interfaces\IRuteador;
+use function dgettext;
 
 final class Ruteador implements IRuteador 
 {
@@ -20,14 +22,14 @@ final class Ruteador implements IRuteador
 		$this->estados['201_CREATED']		= array(201, '');
 		$this->estados['204_NOCONTENT']		= array(204, '');
 		$this->estados['304_NOMODIFIED']	= array(304, '');
-		$this->estados['400_BADREQUEST']	= array(400, \dgettext('me', 'Peticion-no-valida') );
-		$this->estados['401_UNAUTHORIZED']	= array(401, \dgettext('me', 'Acceso-denegado') );
-		$this->estados['403_FORBIDDEN']		= array(403, \dgettext('me', 'Acceso-prohibido') );
-		$this->estados['404_NOTFOUND']		= array(404, \dgettext('me', 'Recurso-no-encontrado') );
-		$this->estados['405_NOTALLOWED']	= array(405, \dgettext('me', 'Accion-no-permitida') );
-		$this->estados['415_UNSUPPORTED']	= array(415, \dgettext('me', 'No-soportado') );
-		$this->estados['422_UNPROCESSABLE']	= array(422, \dgettext('me', 'No-procesable') );
-		$this->estados['500_INTERNALERROR']	= array(500, \dgettext('me', 'Error-interno') );
+		$this->estados['400_BADREQUEST']	= array(400, dgettext('me', 'Peticion-no-valida') );
+		$this->estados['401_UNAUTHORIZED']	= array(401, dgettext('me', 'Acceso-denegado') );
+		$this->estados['403_FORBIDDEN']		= array(403, dgettext('me', 'Acceso-prohibido') );
+		$this->estados['404_NOTFOUND']		= array(404, dgettext('me', 'Recurso-no-encontrado') );
+		$this->estados['405_NOTALLOWED']	= array(405, dgettext('me', 'Accion-no-permitida') );
+		$this->estados['415_UNSUPPORTED']	= array(415, dgettext('me', 'No-soportado') );
+		$this->estados['422_UNPROCESSABLE']	= array(422, dgettext('me', 'No-procesable') );
+		$this->estados['500_INTERNALERROR']	= array(500, dgettext('me', 'Error-interno') );
 	  }
 	function __destruct() {
 		$this->campos = null;
@@ -71,11 +73,13 @@ final class Ruteador implements IRuteador
 		} else {
 			setlocale( LC_ALL, $idioma );
 		}
+		if ( !isset(M::$entorno['M_APP']) ) { M::$entorno['M_APP'] = M::$entorno['M_SERVICIO']; }
 		if ( M::$entorno['M_SERVICIO'] == M::$entorno['M_APP'] ) {
 			M::$entorno['M_SERVICIO'] = 'app';
 		}
+		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = __DIR__ . '/Locales';}
 		$dominio = M::$entorno['M_SERVICIO'];
-		bindtextdomain( 'me', __DIR__ );
+		bindtextdomain( 'me', __DIR__ . '/Locales' );
 		bind_textdomain_codeset( 'me', 'UTF-8' );
 		bindtextdomain( $dominio, M::$entorno['RUTA']['LOCALES'] );
 		bind_textdomain_codeset( $dominio, 'UTF-8' );
@@ -110,7 +114,7 @@ final class Ruteador implements IRuteador
 			M::$entorno['SOLICITUD']['OPERACION'] = $atributos['SOLICITUD']['OPERACION'];
 			$salida = $atributos['M_SALIDA'];
 		} else {
-			$this->cambiarEstado( $this->estados['400_BADREQUEST'], \dgettext('me', 'Peticion-no-valida') );
+			$this->cambiarEstado( $this->estados['400_BADREQUEST'], dgettext('me', 'Peticion-no-valida') );
 			$this->Salir( true );
 		}
 		if ( $salida!='' ) { M::$entorno['M_SALIDA'] = strtoupper($salida); }
@@ -119,8 +123,8 @@ final class Ruteador implements IRuteador
 			M::$entorno['CALLBACK'] = $callback;
 			M::$entorno['M_SALIDA'] = 'JSON';
 		}
-		try { $fecha = new \DateTime( $this->_V($this->parametros, 'M_FECHA') ); }
-		catch ( \Exception $e ) { $fecha = new \DateTime(); }
+		try { $fecha = new DateTime( $this->_V($this->parametros, 'M_FECHA') ); }
+		catch ( \Exception $e ) { $fecha = new DateTime(); }
 		M::$entorno['M_FECHA'] = $fecha->format('Y-m-d');
 		M::$entorno['M_PERIODO'] = $fecha->format('Ym');
 		M::$entorno['M_AHORA'] = $fecha->format('YmdHi');
@@ -193,7 +197,7 @@ final class Ruteador implements IRuteador
 					}
 					unset($emisor);
 				} else {
-					$this->cambiarEstado( $this->estados['415_UNSUPPORTED'], \dgettext('me', 'Formato-de-salida-no-admitido') );
+					$this->cambiarEstado( $this->estados['415_UNSUPPORTED'], dgettext('me', 'Formato-de-salida-no-admitido') );
 					$contenido = '';
 					if ( isset(M::$entorno['ERRORES']) ) {
 						foreach ( M::$entorno['ERRORES'] as $error ) {
@@ -247,7 +251,7 @@ final class Ruteador implements IRuteador
 		$destino = str_replace( array('\r\n','\r','\n'), '', $destino);
 		$destino = str_replace( ' ', '+', $destino);
 		header( 'Location: ' . $destino );
-		exit(); exit;
+		exit();
 	}
 
 	/** 
@@ -285,14 +289,14 @@ final class Ruteador implements IRuteador
 					M::$entorno['M'] = $token;
 				}
 				if ($autorizado == '') {
-					$this->cambiarEstado( $this->estados['400_BADREQUEST'], \dgettext('me', 'Acceso-denegado-llave-no-valida') );
+					$this->cambiarEstado( $this->estados['400_BADREQUEST'], dgettext('me', 'Acceso-denegado-llave-no-valida') );
 				} else if ( date('YmdHi') > $valor['expira'] ) {
 					$autorizado = '';
-					$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], \dgettext('me', 'Acceso-denegado-llave-expirada') );
+					$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-llave-expirada') );
 				}
 			}
 		} else {
-			$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], \dgettext('me', 'Acceso-denegado-no-tiene-llave') );
+			$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-no-tiene-llave') );
 		}
 		if ( strlen($autorizado) == 0 ) {
 			$this->campos = null;
@@ -305,7 +309,7 @@ final class Ruteador implements IRuteador
 			} else {
 				$this->enviarRespuesta();
 			}
-			exit(); exit;
+			exit();
 		}
 	}
 
@@ -335,7 +339,7 @@ final class Ruteador implements IRuteador
 		if ( $enviar ) {
 			$this->enviarRespuesta();
 		}
-		exit(); exit;
+		exit();
 	}
 
 	/** 
@@ -367,7 +371,7 @@ final class Ruteador implements IRuteador
 		}
 		$this->cambiarEstado( $datos, $mensaje );
 		$this->enviarRespuesta();
-		exit(); exit;
+		exit();
 	}
 
 	//FUNCIONES PRIVADAS
@@ -521,4 +525,3 @@ final class Ruteador implements IRuteador
 		return M::$entorno['M_ENTRADA'];
 	}
 }
-?>

@@ -8,4 +8,3 @@ abstract class Emisor implements IEmisor
 		function __construct() {}
 		function __destruct() {}
 }
-?>

@@ -32,4 +32,3 @@ final class EmisorWebm extends Emisor {
 		exit;
 	}
 }
-?>

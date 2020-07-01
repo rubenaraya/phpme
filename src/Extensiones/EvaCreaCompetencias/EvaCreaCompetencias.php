@@ -93,4 +93,3 @@ class EvaCreaCompetencias extends Instructor
 		//Consumido por: ModeloActividades (?)
 	}
 }
-?>

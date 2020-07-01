@@ -28,9 +28,6 @@ class PresentadorXml extends Presentador
 					$msg = sprintf(dgettext('me', "El-documento-'%s'-no-se-pudo-cargar"), $documento);
 					trigger_error( 'PresentadorXml.crearVista: ' . $msg, E_USER_ERROR );
 				}
-			} else {
-				$msg = sprintf(dgettext('me', "El-documento-'%s'-no-se-encontro-en-'%s'"), $documento, $ruta);
-				//trigger_error( 'PresentadorXml.crearVista: ' . $msg, E_USER_WARNING );
 			}
 		}
 		if ( !is_object($this->documento) ) {
@@ -80,9 +77,6 @@ class PresentadorXml extends Presentador
 				$origen = dom_import_simplexml( simplexml_load_file( $doc ) );
 				$destino = dom_import_simplexml( $this->documento );
 				$destino->appendChild( $destino->ownerDocument->importNode( $origen, true ) );
-			} else {
-				$msg = sprintf(dgettext('me', "El-documento-'%s'-no-se-encontro-en-'%s'"), $documento, $ruta);
-				//trigger_error( 'PresentadorXml.anexarDocumento: ' . $msg, E_USER_WARNING );
 			}
 		}
 	}
@@ -319,4 +313,3 @@ class PresentadorXml extends Presentador
 		}
 	}
 }
-?>

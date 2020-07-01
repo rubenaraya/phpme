@@ -61,8 +61,8 @@ final class AlmacenLocal extends Almacen {
 					$resultado['errores'][] = sprintf(dgettext('me', "El-archivo-'%s'-supera-%s"), $nombre_original, $peso);
 					$valido = false;
 				}
-				if ( !in_array( $tipo, $opciones['tipos'] ) ) {
-					if ( strlen($tipo)>0 || $opciones['tipos'][0]!='*' ) {
+				if ( !in_array( $tipo, $tipos ) ) {
+					if ( strlen($tipo)>0 || $tipos[0]!='*' ) {
 						$resultado['errores'][] = sprintf(dgettext('me', "No-se-permiten-archivos-%s"), $tipo);
 						$valido = false;
 					}
@@ -97,8 +97,6 @@ final class AlmacenLocal extends Almacen {
 								'original' => $valor['name']
 							);
 						}
-					} else {
-						//No se cargó
 					}
 				}				
 			}
@@ -459,10 +457,9 @@ final class AlmacenLocal extends Almacen {
 			case Almacen::F_XML:
 				foreach ( $contenido as $nombre => $valor ) {
 					$xml = new DomDocument( '1.0','UTF-8' );
-					$xml->ignoreWhite = true;
 					$xml->preserveWhiteSpace = false;
 					$xml->formatOutput = true;
-					$xml->appendChild( $this->_convertirXml( $nombre, $valor, $xml ) );
+					$xml->appendChild( $this->_convertirXml( $nombre, $xml, $valor ) );
 					$ubicacion = "$ruta$carpeta/$nombre_final.xml";
 					if ( $xml->save( $ubicacion ) ) {
 						$resultado['ubicacion'] = $ubicacion;
@@ -759,7 +756,7 @@ final class AlmacenLocal extends Almacen {
 			foreach( $contenido as $pos => $hoja ) {
 				if ( is_string($pos) && is_array($hoja) ) {
 					$nombre_hoja = $this->validarNombre( $pos );
-					$aux = M::adquirirDatosMatriz( $contenido, $pos );
+					M::adquirirDatosMatriz( $contenido, $pos );
 					if ( is_array($hoja) && count($hoja)>0 ) {
 						$existe = -1;
 						$col = 0; 
@@ -876,7 +873,7 @@ final class AlmacenLocal extends Almacen {
 		closedir( $dir );
 	}
 
-	private function _convertirXml( $nombre, $contenido = array(), &$xml ) {
+	private function _convertirXml( $nombre, &$xml, $contenido = array() ) {
 		if ( is_numeric($nombre) ) {
 			$elemento = $xml->createElement( 'item' );
 			$elemento->setAttribute( 'id', $nombre );
@@ -915,7 +912,7 @@ final class AlmacenLocal extends Almacen {
 
     private function _revisarCarpeta( $ruta, $carpeta, $tipos, $subcarpetas, &$lista ) {
         $resultado = array();
-		$filtrar = ( count($tipos)>0 ? true : false );
+		$filtrar = count($tipos)>0;
         $raiz = scandir( "$ruta$carpeta" );
         foreach( $raiz as $value ) {
             if ( $value === '.' || $value === '..' ) { continue; }
@@ -934,4 +931,3 @@ final class AlmacenLocal extends Almacen {
         return $resultado;
     }
 }
-?>

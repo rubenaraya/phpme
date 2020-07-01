@@ -11,4 +11,3 @@ abstract class Correo implements ICorreo
 		function __construct() {}
 		function __destruct() {}
 }
-?>

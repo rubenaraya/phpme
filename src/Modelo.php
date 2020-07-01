@@ -123,8 +123,7 @@ abstract class Modelo implements IModelo
 	}
 	public function Atributos( $nombre = '' ) {
 		if ( strlen($nombre)>0 ) { $nombre = $nombre . '.'; }
-		$contenido = 'M.' . $nombre . 'A = ' . json_encode($this->A) . '; M.' . $nombre . 'I = ' . json_encode($this->I);
-		return $contenido;
+		return 'M.' . $nombre . 'A = ' . json_encode($this->A) . '; M.' . $nombre . 'I = ' . json_encode($this->I);
 	}
 	public function Consultar( &$dto ) {}
 	public function Nuevo( &$dto ) {}
@@ -142,4 +141,3 @@ abstract class Modelo implements IModelo
 	public function Exportar( &$dto ) {}
 	public function Descargar( &$dto ) {}
 }
-?>

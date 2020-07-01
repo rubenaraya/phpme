@@ -23,4 +23,3 @@ abstract class Almacen implements IAlmacen
 		function __construct() {}
 		function __destruct() {}
 }
-?>

@@ -173,4 +173,3 @@ abstract class Control implements IControl
 		return $roles;
 	}
 }
-?>

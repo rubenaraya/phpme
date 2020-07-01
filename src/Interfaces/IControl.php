@@ -9,4 +9,3 @@ interface IControl {
 	public function comprobarPermisos( $roles, $esquema, $operacion );
 	public function prepararPeticion( $caso, &$modelo );
 }
-?>
