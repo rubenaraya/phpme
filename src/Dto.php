@@ -5,16 +5,12 @@ use MasExperto\ME\Interfaces\IDto;
 
 final class Dto implements IDto
 {
-	//PROPIEDADES
-		public $parametros = array();
-		public $campos = array();
-		public $peticion = array();
-		public $resultados = array();
-		public $valores = array();
+	public $parametros = array();
+	public $campos = array();
+	public $peticion = array();
+	public $resultados = array();
+	public $valores = array();
 
-	/** CONSTRUCTOR
-		* @param			
-		* @return		*/
 	function __destruct() {
 		unset($this->parametros);
 		unset($this->campos);
@@ -23,11 +19,6 @@ final class Dto implements IDto
 		unset($this->peticion);
 	}
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function get( $nombre, $objeto = 'campo', $predeterminado = '' ) {
 		$valor = '';
 		switch( $objeto ) {
@@ -54,9 +45,6 @@ final class Dto implements IDto
 		return $valor;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function set( $nombre, $valor, $objeto = 'peticion' ) {
 		switch( $objeto ) {
 			case 'peticion': 
@@ -78,9 +66,6 @@ final class Dto implements IDto
 		return $valor;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function getset( $nombre ) {
 		$valor = '';
 		if ( isset( $this->campos[$nombre] ) ) { 
@@ -93,9 +78,6 @@ final class Dto implements IDto
 		return $valor;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function extraerResultado( $etiqueta = '' ) {
 		if ( strlen($etiqueta)==0 ) {
 			return $this->resultados;
@@ -106,9 +88,6 @@ final class Dto implements IDto
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function traspasarPeticion( $opcion = 0 ) {
 		if ( $opcion == 1 ) {
 			$this->peticion = $this->parametros;
@@ -120,9 +99,6 @@ final class Dto implements IDto
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Vaciar( $todo = false ) {
 		$this->peticion = array();
 		$this->resultados = array();

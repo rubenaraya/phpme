@@ -7,18 +7,15 @@ use function dgettext;
 
 final class Ruteador implements IRuteador 
 {
-	//PROPIEDADES
-		public $campos = array();
-		public $parametros = array();
-		public $estados = array();
+	public $campos = array();
+	public $parametros = array();
+	public $estados = array();
 
-	/** CONSTRUCTOR
-		* @param			
-		* @return		*/
 	function __construct( $dir ) {
 		$this->campos = &$_POST;
 		M::$entorno['M_SERVICIO'] = basename( $dir );
 		M::$entorno['RUTA']['SERVICIO'] = str_replace( '\\', '/', $dir );
+		M::$entorno['RUTA']['APP'] = str_replace( '\\', '/', dirname( $dir ) );
 		$this->estados['200_OK']			= array(200, '');
 		$this->estados['201_CREATED']		= array(201, '');
 		$this->estados['204_NOCONTENT']		= array(204, '');
@@ -39,11 +36,6 @@ final class Ruteador implements IRuteador
 		unset($this->parametros);
 	}
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
 		M::$entorno['PUNTOFINAL']['URL'] = M::$entorno['M_SERVIDOR'] . dirname( $_SERVER['SCRIPT_NAME'] );
@@ -139,9 +131,6 @@ final class Ruteador implements IRuteador
 		ob_start();
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function enviarRespuesta( $contenido = '', $opciones = array() ) {
 		$eliminar = ( isset($opciones['eliminar']) ? $opciones['eliminar'] : false );
 		if ( function_exists('http_response_code') ) {
@@ -154,6 +143,22 @@ final class Ruteador implements IRuteador
 				header( 'Content-Type: text/plain; charset=utf-8' );
 				if ( M::E('M_ESTADO') < 400 ) {
 					if ( is_array($contenido) ) { $contenido = print_r( $contenido, true); }
+				} else {
+					$contenido = '';
+					if ( isset(M::$entorno['ERRORES']) ) {
+						foreach ( M::$entorno['ERRORES'] as $error ) {
+							$contenido = $contenido . htmlspecialchars( $error['mensaje'] ) . chr(10);
+						}
+					}
+				}
+				echo $contenido;
+				break;
+			case 'HTM': 
+				header( 'Content-Type: text/html; charset=utf-8' );
+				if ( M::E('M_ESTADO') < 400 ) {
+					if ( is_array($contenido) ) {
+						$contenido = M::convertirMatrizHtml( $contenido, $opciones ); 
+					}
 				} else {
 					$contenido = '';
 					if ( isset(M::$entorno['ERRORES']) ) {
@@ -189,8 +194,9 @@ final class Ruteador implements IRuteador
 				}
 				break;
 			default: 
-				if ( isset( M::$entorno['EMISOR'][M::E('M_SALIDA')] ) ) {
-					$emisor = new M::$entorno['EMISOR'][M::$entorno['M_SALIDA']];
+				$componente = '\MasExperto\ME\Emisores\Emisor' . ucfirst(strtolower(M::E('M_SALIDA')));
+				if ( class_exists( $componente, true ) ) {
+					$emisor = new $componente;
 					if ( M::E('M_ESTADO') < 400 ) {
 						$emisor->Imprimir( $contenido, $opciones );
 					} else {
@@ -213,9 +219,6 @@ final class Ruteador implements IRuteador
 		ob_end_flush();
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function cambiarEstado( $datos, $mensaje = '' ) {
 		$estado = 0;
 		if ( is_array($datos) ) {
@@ -229,9 +232,6 @@ final class Ruteador implements IRuteador
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function controlarCache( $minutos = 0 ) {
 		if ( M::E('M_ESTADO') < 400 ) {
 			if ( $minutos > 0 ) {
@@ -245,9 +245,6 @@ final class Ruteador implements IRuteador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Redirigir( $destino ) {
 		$destino = str_replace( array('\r\n','\r','\n'), '', $destino);
 		$destino = str_replace( ' ', '+', $destino);
@@ -255,9 +252,6 @@ final class Ruteador implements IRuteador
 		exit();
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function autorizarAcceso( $tipo = 'sesion', $canal = '*' ) {
 		$autorizado = '';
 		$token = '';
@@ -314,9 +308,6 @@ final class Ruteador implements IRuteador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function verificarRequisitos( $metodos = array(), $entradas = array() ) {
 		$verificado = true;
 		if ( is_array($metodos) && count($metodos)>0 ) {
@@ -331,9 +322,6 @@ final class Ruteador implements IRuteador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Salir( $enviar = false ) {
 		$this->campos = null;
 		$this->parametros = null;
@@ -343,9 +331,6 @@ final class Ruteador implements IRuteador
 		exit();
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Info() {
 		$entorno = array();
 		$entorno['SOLICITUD'] = M::$entorno['SOLICITUD'];
@@ -361,9 +346,6 @@ final class Ruteador implements IRuteador
 		return 'ENTORNO: '. print_r( $entorno, true ) . 'PARAMETROS: ' . print_r( $this->parametros, true ) . 'CAMPOS: ' .  print_r( $this->campos, true );
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function enviarError( $tipo = '', $mensaje = '' ) {
 		if ( isset($this->estados[$tipo]) ) {
 			$datos = $this->estados[$tipo];
@@ -374,8 +356,6 @@ final class Ruteador implements IRuteador
 		$this->enviarRespuesta();
 		exit();
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _V( &$objeto, $clave ) {
 		$valor = '';

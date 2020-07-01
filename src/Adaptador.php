@@ -5,21 +5,20 @@ use MasExperto\ME\Interfaces\IAdaptador;
 
 abstract class Adaptador implements IAdaptador
 {
-	//PROPIEDADES
-		protected $modelo = null;
-		protected $dto = null;
-		protected $uid;
-		public $objeto;
-		public $clase;
-		public $vista = '';
-		public $esquema = '';
-		public $ruta = array();
-		public $sql = array();
-		public $T = array();
-		public $I = array();
-		public $D = array();
-		public $A = array();
-		public $R = array();
+	protected $modelo = null;
+	protected $dto = null;
+	protected $uid;
+	public $objeto;
+	public $clase;
+	public $vista = '';
+	public $esquema = '';
+	public $ruta = array();
+	public $sql = array();
+	public $T = array();
+	public $I = array();
+	public $D = array();
+	public $A = array();
+	public $R = array();
 
 	function __construct() {}
 	function __destruct() {

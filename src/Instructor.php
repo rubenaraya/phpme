@@ -6,14 +6,14 @@ use MasExperto\ME\Clases\PresentadorXml;
 
 abstract class Instructor extends Adaptador implements IInstructor
 {
-	//PROPIEDADES
-		public $colores = array();
-		public $indice = 0;
-		protected $documento = null;
-		protected $temp = array();
-		protected $carpeta;
+	public $colores = array();
+	public $indice = 0;
+	protected $documento = null;
+	protected $temp = array();
+	protected $carpeta;
 
 	function __construct() {
+        parent::__construct();
 		$this->clase = str_replace( array('SER\\', 'EXT\\'), '', static::class );
 	}
 	function __destruct() {
@@ -29,7 +29,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$estado = 0;
 		$mensaje = '';
 		$opc['info'] = 'realizar';
-		$opc['incluir'] = RUTA_ME . '/Instructor.xsl';
+		$opc['incluir'] = __DIR__ . '/Instructor.xsl';
 		$presentador = new PresentadorXml();
 		$presentador->crearVista( $this->esquema, $this->ruta['xml'] );
 		$presentador->anexarDatos( $this->dto );
@@ -174,7 +174,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 					$valor = (string) $subnodo['valor'];
 					$sid = (string) $subnodo['id'];
 					$cuenta = 'c'. $sid;
-					$porcentaje = 'p'. $sid;;
+					$porcentaje = 'p'. $sid;
 					$etiqueta = (string) $subnodo['etiqueta'];
 					$desde = (string) $subnodo['desde'];
 					$hasta = (string) $subnodo['hasta'];
@@ -255,7 +255,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 					$valor = (string) $subnodo['valor'];
 					$sid = (string) $subnodo['id'];
 					$cuenta = 'c'. $sid;
-					$promedio = 'r'. $sid;;
+					$promedio = 'r'. $sid;
 					$recalculos = $recalculos . "SUM(IF(" . $categoria . "='" . $valor . "',1,0)) AS '" . $cuenta . "', ROUND(AVG(IF(" . $categoria . "='" . $valor . "', {{item}}, NULL)), 2) AS '" . $promedio . "', ";
 					$campos = $campos . $cuenta . ', ' . $promedio . ', ';
 				}
@@ -398,7 +398,6 @@ abstract class Instructor extends Adaptador implements IInstructor
 		}
 		return $valor;
 	}
-
 	protected function crearGrafico( $gid ) {
 		//TODO: Revisar y depurar
 		$graficos = $this->documento->xpath( "//cuestionario/grafico[@id='" . $gid . "']" );
@@ -965,7 +964,8 @@ abstract class Instructor extends Adaptador implements IInstructor
 		if ( strlen($escalay)>0 ) {
 			$valores = explode(',', strval($escalay));
 		}
-		$conector = M::E('CONECTOR/GRAFICOS');
+		$gra = M::E('CONECTOR/GRAFICOS');
+		$conector = ( strlen($gra)>0 ? $gra : '\MasExperto\ME\Clases\GraficadorJp');
 		$graficador = new $conector;
 		$graficador->cambiarFuente('arial');
 		$matriz = explode(',', strval($margenes));

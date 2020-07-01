@@ -5,25 +5,25 @@ use MasExperto\ME\Interfaces\IModelo;
 
 abstract class Modelo implements IModelo
 {
-	//PROPIEDADES
-		protected $temp = array();
-		protected $entidad = '';
-		protected $tabla = '';
-		public $bd = null;
-		public $almacen = null;
-		public $T = array();
-		public $A = array();
-		public $D = array();
-		public $I = array();
-		public $F = array();
-		public $R = array();
-		public $sql = array();
+	protected $temp = array();
+	protected $entidad = '';
+	protected $tabla = '';
+	public $bd = null;
+	public $almacen = null;
+	public $T = array();
+	public $A = array();
+	public $D = array();
+	public $I = array();
+	public $F = array();
+	public $R = array();
+	public $sql = array();
 
-	//CONSTRUCTOR
 	function __construct() {
-		$conector = M::E('CONECTOR/BD');
+		$bd = M::E('CONECTOR/BD');
+		$alm = M::E('CONECTOR/ALMACEN');
+		$conector = ( strlen($bd)>0 ? $bd : '\MasExperto\ME\Clases\BaseDatosMysql');
 		$this->bd = new $conector;
-		$conector = M::E('CONECTOR/ALMACEN');
+		$conector = ( strlen($alm)>0 ? $alm : '\MasExperto\ME\Clases\AlmacenLocal');
 		$this->almacen = new $conector;
 		$this->almacen->Conectar( M::E('ALMACEN') );
 	}
@@ -40,11 +40,6 @@ abstract class Modelo implements IModelo
 		unset($this->R);
 	}
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function Validar( $nombre, $valor ) {
 		$mensaje = '';
 		$estado = 0;

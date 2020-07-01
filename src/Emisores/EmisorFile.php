@@ -5,8 +5,6 @@ use MasExperto\ME\Emisor;
 
 final class EmisorFile extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		if ( file_exists( $contenido ) && !is_dir( $contenido ) ) {
 			$nombre = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . substr( $contenido, strrpos( $contenido, '.') ) );

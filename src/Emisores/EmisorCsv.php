@@ -6,8 +6,6 @@ use MasExperto\ME\M;
 
 final class EmisorCsv extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		$charset = ( isset($opciones['charset']) ? $opciones['charset'] : 'ISO-8859-1' );
 		$nombre = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.csv' );
@@ -41,8 +39,6 @@ final class EmisorCsv extends Emisor {
 		flush();
 		exit;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _exportarCsv( $contenido, $opciones ) {
 		if ( !isset($contenido) ) {

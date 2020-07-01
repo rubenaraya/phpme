@@ -13,8 +13,6 @@ use PHPExcel_Writer_Excel5;
 
 final class EmisorXls extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		$opciones['nombre'] = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.xls' );
 		header( 'Content-Type: application/vnd.ms-excel; charset=utf-8' );
@@ -42,8 +40,6 @@ final class EmisorXls extends Emisor {
 		flush();
 		exit;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _exportarExcel($contenido) {
 		$libro = new PHPExcel();

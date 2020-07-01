@@ -21,19 +21,11 @@ use ZipArchive;
 
 final class AlmacenLocal extends Almacen {
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function Conectar( $rutas ) {
 		$this->rutas = $rutas;
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function cargarArchivos( $destino = 1, $opciones = array() ) {
 		$resultado = array();
 		$resultado['contenidos'] = null;
@@ -107,9 +99,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function adaptarImagenes( $destino, $archivos, $opciones = array() ) {
 		$resultado = array();
 		$resultado['contenidos'] = null;
@@ -198,9 +187,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function extraerZip( $destino, $archivos, $opciones = array() ) {
 		$resultado = array();
 		$resultado['contenidos'] = null;
@@ -242,9 +228,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function empaquetarZip( $origen, $destino, $opciones = array() ) {
 		$resultado = array();
 		$resultado['contenidos'] = null;
@@ -292,9 +275,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function extraerDatosExcel( $ubicacion, $opciones = array() ) {
 		$resultado['contenidos'] = null;
 		$resultado['errores'] = array();
@@ -353,9 +333,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function abrirArchivo( $ubicacion ) {
 		$resultado = array();
 		$resultado['contenido'] = '';
@@ -411,9 +388,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function guardarArchivo( $destino, $contenido, $opciones = array() ) {
 		$resultado = array();
 		$resultado['ubicacion'] = '';
@@ -522,9 +496,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function borrarArchivos( $lista ) {
 		$resultado = array();
 		$resultado['errores'] = array();
@@ -547,9 +518,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function copiarCarpetas( $origen, $destino ) {
 		$resultado = false;
 		if ( is_dir($origen) ) {
@@ -573,9 +541,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function borrarCarpetas( $origen, $quitar = false ) {
 		$resultado = false;
 		if ( substr($origen, -1) == '/' ) {
@@ -601,9 +566,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function explorarCarpeta( $origen, $carpeta = '', $opciones = array() ) {
 		$resultado = array();
 		$resultado['contenidos'] = null;
@@ -622,9 +584,6 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function validarNombre( $nombre, $patron = '' ) {
 		if ( strlen($nombre)==0 ) { return ''; }
 		if ( strlen($patron)>0 ) {
@@ -646,8 +605,6 @@ final class AlmacenLocal extends Almacen {
 		$nombre = substr($nombre, 0, 100);
 		return $nombre;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _crearDocumentoPdf( $contenido, $ubicacion, $opciones = array() ) {
 		$estado = false;

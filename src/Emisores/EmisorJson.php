@@ -6,8 +6,6 @@ use MasExperto\ME\M;
 
 final class EmisorJson extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Access-Control-Allow-Credentials: true' );
@@ -49,8 +47,6 @@ final class EmisorJson extends Emisor {
 		flush();
 		exit;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _validarJson( $json ) {
 		if ( is_string($json) ) {

@@ -5,20 +5,13 @@ use MasExperto\ME\Interfaces\IPresentador;
 
 abstract class Presentador implements IPresentador
 {
-	//PROPIEDADES
-		public $documento = null;
+	public $documento = null;
 
-	//CONSTRUCTOR
 	function __construct() {}
 	function __destruct() {
 		unset($this->documento);
 	}
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function abrirPlantilla( $archivo, $ruta = '', $reemplazar = true ) {
 		$txt = '';
 		if ( strlen($ruta)==0 ) { $ruta = M::E('PUNTOFINAL/RUTA'); }

@@ -6,8 +6,6 @@ use MasExperto\ME\M;
 
 final class EmisorHtml extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		$charset = ( isset($opciones['charset']) ? $opciones['charset'] : 'UTF-8' );
 		header( 'Content-Type: text/html; charset=' . $charset );

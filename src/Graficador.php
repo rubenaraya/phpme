@@ -5,25 +5,22 @@ use MasExperto\ME\Interfaces\IGraficador;
 
 abstract class Graficador implements IGraficador
 {
-	//CONSTANTES
-		const G_BARRAS		= 101;
-		const G_LINEAS		= 102;
-		const G_SECCIONES	= 103;
-		const G_UBICACIONES	= 104;
-		const G_AREAS		= 105;
-		const G_COLUMNAS	= 106;
-		const G_RADAR		= 107;
-		const G_DISPERSION	= 108;
+	const G_BARRAS		= 101;
+	const G_LINEAS		= 102;
+	const G_SECCIONES	= 103;
+	const G_UBICACIONES	= 104;
+	const G_AREAS		= 105;
+	const G_COLUMNAS	= 106;
+	const G_RADAR		= 107;
+	const G_DISPERSION	= 108;
 
-	//PROPIEDADES
-		protected $temporales = array();
-		public $ejeX = array();
-		public $ejeY = array();
-		public $leyenda = array();
-		public $grafico = array();
-		public $series = array();
+	protected $temporales = array();
+	public $ejeX = array();
+	public $ejeY = array();
+	public $leyenda = array();
+	public $grafico = array();
+	public $series = array();
 
-	//CONSTRUCTOR
 	function __construct() {
 		$this->grafico = array( 
 			'ancho'=>640, 'alto'=>480, 'marco'=>false, 'suavizado'=>false, 'fondo'=>'', 'ruta'=>'', 'imagen'=>'', 

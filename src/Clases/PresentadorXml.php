@@ -10,16 +10,12 @@ use XSLTProcessor;
 
 class PresentadorXml extends Presentador
 {
-	//METODOS PUBLICOS
 
-	/** 
-		* @param			
-		* @return		*/
 	public function crearVista( $documento = '', $ruta = '' ) {
 		$this->documento = null;
 		if ( strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = RUTA_APP . '/' . M::E('M_INSTANCIA');
+				$ruta = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/SERVICIO');
 				}
@@ -64,13 +60,10 @@ class PresentadorXml extends Presentador
 		return $this->documento->asXML();
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function anexarDocumento( $documento = '', $ruta = '' ) {
 		if ( is_object($this->documento) && strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = RUTA_APP . '/' . M::E('M_INSTANCIA');
+				$ruta = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/SERVICIO');
 				}
@@ -84,9 +77,6 @@ class PresentadorXml extends Presentador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Transformar( $plantilla, $ruta = '', $opciones = array() ) {
 		$txt = '';
 		$doctype = ( isset($opciones['doctype']) ? $opciones['doctype'] : false );
@@ -188,9 +178,6 @@ class PresentadorXml extends Presentador
 		return $txt;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function anexarResultado( $datos, $etiqueta = '*' ) {
 		if ( is_object($this->documento) ) {
 			if ( is_array($datos) ) {
@@ -213,9 +200,6 @@ class PresentadorXml extends Presentador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function anexarDatos( $dto ) {
 		if ( is_object($this->documento) ) {
 			if ( is_object($dto) ) {
@@ -232,9 +216,6 @@ class PresentadorXml extends Presentador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function anexarMatriz( $datos, $etiqueta = 'd' ) {
 		if ( is_object($this->documento) ) {
 			if ( is_array($datos) ) {
@@ -249,9 +230,6 @@ class PresentadorXml extends Presentador
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function filtrarVisibles( $roles, $entidad = '' ) {
 		if ( strlen($roles)==0 ) { return; }
 		$credenciales = explode( ',', trim($roles, ',') );
@@ -275,8 +253,6 @@ class PresentadorXml extends Presentador
 		}
 		unset( $xpath, $xml );
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _exportarXml( $data, &$xml ) {
 		if ( is_array($data) ) {

@@ -6,8 +6,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 final class CorreoSmtp extends Correo {
-
-	//METODOS PUBLICOS
 	
 	public function Conectar( $credenciales ) {
 		$this->credenciales = $credenciales;

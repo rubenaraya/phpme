@@ -5,8 +5,6 @@ use MasExperto\ME\Emisor;
 
 final class EmisorXml extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		header( 'Content-Type: text/xml; charset=utf-8' );
 		if ( is_array($contenido) ) { 
@@ -35,8 +33,6 @@ final class EmisorXml extends Emisor {
 		flush();
 		exit;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _exportarXml( $data, &$xml ) {
 		if ( is_array($data) ) {

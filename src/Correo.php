@@ -5,10 +5,8 @@ use MasExperto\ME\Interfaces\ICorreo;
 
 abstract class Correo implements ICorreo
 {
-	//PROPIEDADES
-		protected $credenciales = null;
+	protected $credenciales = null;
 
-	//CONSTRUCTOR
-		function __construct() {}
-		function __destruct() {}
+	function __construct() {}
+	function __destruct() {}
 }

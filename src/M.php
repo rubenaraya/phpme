@@ -6,14 +6,8 @@ use DateTime;
 
 final class M
 {
-	//PROPIEDADES PUBLICAS
 	public static $entorno = array();
 
-	//FUNCIONES PUBLICAS
-
-	/** 
-		* @param			
-		* @return		*/
 	public static function E( $nombre ) {
 		$valor = '';
 		if ( substr_count($nombre, '/' )>0 ) {
@@ -29,9 +23,6 @@ final class M
 		return $valor;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function generarToken( $tipo, $uid, $expira = '' ) {
 		//Adaptado de: https://rbrt.wllr.info/2018/01/29/how-create-json-web-token-php.html
 		if ( $tipo == 'sesion' ) {
@@ -60,9 +51,6 @@ final class M
 		return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function adquirirDatosMatriz( $matriz, $clave ) { 
 		$resultado = array(); 
 		if ( is_array($matriz) ) { 
@@ -72,9 +60,6 @@ final class M
 		return $resultado; 
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function convertirMatrizHtml( $contenido, $opciones = array() ) {
 		if ( !is_array($contenido) || count($contenido)==0 ) { return ''; }
 		$encabezado = ( isset($opciones['encabezado']) ? $opciones['encabezado'] : 'S' );
@@ -109,9 +94,6 @@ final class M
 		return $html;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function quitarAcentosTexto( $texto ) {
 		$reemp = array('a','e','i','o','u','A','E','I','O','U','a','e','i','o','u','A','E','I','O','U');
 		$busca = array('á','é','í','ó','ú','Á','É','Í','Ó','Ú','à','è','ì','ò','ù','À','È','Ì','Ò','Ù');
@@ -124,9 +106,6 @@ final class M
 		return $texto;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function reemplazarEtiquetas( $texto ) {
 		$fecha = new DateTime();
 		$texto = str_replace('{{hoy_dma}}', $fecha->format('d-m-Y'), $texto );
@@ -165,9 +144,6 @@ final class M
 		return $texto;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function aplicarGenero( $texto, $genero = 'I' ) {
 		if ( strlen( $genero )==0 ) { $genero = 'I'; }
 		$reglas['M'] = array(
@@ -255,9 +231,6 @@ final class M
 		return $texto;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function numeroPalabras( $n, $m = '' ) {
 		$p = '';
 		$v = '';
@@ -331,16 +304,10 @@ final class M
 		return $r;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
-	public static function Trazar( $texto, $archivo = '' ) {
+	public static function Trazar( $texto, $archivo = '', $ubicacion = '' ) {
 		if ( strlen($archivo)==0 ) { $archivo = 'trazado'; }
-		if ( is_dir(M::E('RUTA/ERRORES')) ) {
-			$ruta = M::E('RUTA/ERRORES') . '/' . $archivo . '.txt';
-		} else {
-			$ruta = __DIR__ . '/' . $archivo . '.txt';
-		}
+		if ( strlen($ubicacion)==0 ) { $ubicacion = dirname(__DIR__); }
+		$ruta = $ubicacion . '/' . $archivo . '.txt';
 		if ( $f = fopen( $ruta, 'a' ) ) {
 			if ( is_array($texto) ) { $texto = print_r( $texto, true ); }
 			fwrite( $f, $texto . chr(10) );
@@ -349,9 +316,6 @@ final class M
 		unset($f);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function cargarClase( $clase ) {
 		$archivo = $clase . '.php';
 		$namespace = explode( '\\' , $clase );
@@ -364,14 +328,14 @@ final class M
 						$archivo = M::E('RUTA/SERVICIO') . '/' .  $nombre . '.php';
 						break;
 					case 'Adaptador':
-						$archivo = M::E('RUTA/SERVICIO') . '/ada/' . $nombre . '.php';
+						$archivo = M::E('RUTA/SERVICIO') . '/adap/' . $nombre . '.php';
 						break;
-					case 'Extension':
-						$archivo = __DIR__ . '/Extensiones/' . $nombre . '/' . $nombre . '.php';
-						break;
-					case 'ME':
-						$archivo = __DIR__ . '/' . $nombre . '.php';
-						break;
+                    case 'Componente':
+                        $archivo = M::E('RUTA/SERVICIO') . '/comp/' . $nombre . '/' . $nombre . '.php';
+                        break;
+                    case 'Extension':
+                        $archivo = __DIR__ . '/Extensiones/' . $nombre . '/' . $nombre . '.php';
+                        break;
 				}
 			}
 		}
@@ -383,16 +347,13 @@ final class M
 		}
 	}
 
-	/**
-		* @param			
-		* @return		*/
 	private static function digitoPalabra( $n, $q, $z, $p ) {
 		$r = '';
 		switch( $p ) {
 			case 'c':
 				switch( $n ) {
 					case '0': $r = ''; break;
-					case '1': if ( $q=='0' && $z=='0' ) { $r = 'cien '; } else { $r = 'ciento '; }; break;
+					case '1': if ( $q=='0' && $z=='0' ) { $r = 'cien '; } else { $r = 'ciento '; } break;
 					case '2': $r = 'doscientos '; break;
 					case '3': $r = 'trescientos '; break;
 					case '4': $r = 'cuatrocientos '; break;
@@ -401,7 +362,7 @@ final class M
 					case '7': $r = 'setecientos '; break;
 					case '8': $r = 'ochocientos '; break;
 					case '9': $r = 'novecientos '; break;
-				}; 
+				}
 				break;
 			case 'd':
 				switch( $n ) {
@@ -418,17 +379,17 @@ final class M
 							case '7': $r = 'diecisiete '; break;
 							case '8': $r = 'dieciocho '; break;
 							case '9': $r = 'diecinueve '; break;
-						}; 
+						}
 						break;
-					case '2': if ( $q=='0' ) { $r = 'veinte '; } else { $r = 'veinti'; }; break;
-					case '3': if ( $q=='0' ) { $r = 'treinta '; } else { $r = 'treinta y '; }; break;
-					case '4': if ( $q=='0' ) { $r = 'cuarenta '; } else { $r = 'cuarenta y '; }; break;
-					case '5': if ( $q=='0' ) { $r = 'cincuenta '; } else { $r = 'cincuenta y '; }; break;
-					case '6': if ( $q=='0' ) { $r = 'sesenta '; } else { $r = 'sesenta y '; }; break;
-					case '7': if ( $q=='0' ) { $r = 'setenta '; } else { $r = 'setenta y '; }; break;
-					case '8': if ( $q=='0' ) { $r = 'ochenta '; } else { $r = 'ochenta y '; }; break;
-					case '9': if ( $q=='0' ) { $r = 'noventa '; } else { $r = 'noventa y '; }; break;
-				}; 
+					case '2': if ( $q=='0' ) { $r = 'veinte '; } else { $r = 'veinti'; } break;
+					case '3': if ( $q=='0' ) { $r = 'treinta '; } else { $r = 'treinta y '; } break;
+					case '4': if ( $q=='0' ) { $r = 'cuarenta '; } else { $r = 'cuarenta y '; } break;
+					case '5': if ( $q=='0' ) { $r = 'cincuenta '; } else { $r = 'cincuenta y '; } break;
+					case '6': if ( $q=='0' ) { $r = 'sesenta '; } else { $r = 'sesenta y '; } break;
+					case '7': if ( $q=='0' ) { $r = 'setenta '; } else { $r = 'setenta y '; } break;
+					case '8': if ( $q=='0' ) { $r = 'ochenta '; } else { $r = 'ochenta y '; } break;
+					case '9': if ( $q=='0' ) { $r = 'noventa '; } else { $r = 'noventa y '; } break;
+				}
 				break;
 			case 'u':
 				if ( $q != '1' ) {
@@ -444,7 +405,7 @@ final class M
 						case '8': $r = 'ocho '; break;
 						case '9': $r = 'nueve '; break;
 					}
-				}; 
+				}
 				break;
 		}
 		return $r;

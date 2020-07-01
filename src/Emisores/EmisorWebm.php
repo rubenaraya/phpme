@@ -5,8 +5,6 @@ use MasExperto\ME\Emisor;
 
 final class EmisorWebm extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		if ( file_exists( $contenido ) && !is_dir( $contenido ) ) {
 			$eliminar = ( isset($opciones['eliminar']) ? $opciones['eliminar'] : false );

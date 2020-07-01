@@ -15,11 +15,6 @@ use ScatterPlot;
 
 final class GraficadorJp extends Graficador {
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function Graficar( $tipo, &$datos ) {
 		switch ( $tipo ) {
 			case Graficador::G_BARRAS:
@@ -37,9 +32,6 @@ final class GraficadorJp extends Graficador {
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function graficarBarras( &$datos ) {
 		$resultado = array();
 		$resultado['imagen'] = null;
@@ -147,9 +139,6 @@ final class GraficadorJp extends Graficador {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function graficarLineas( &$datos ) {
 		$resultado = array();
 		$resultado['imagen'] = null;
@@ -217,9 +206,6 @@ final class GraficadorJp extends Graficador {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function graficarUbicaciones( &$datos ) {
 		$resultado = array();
 		$resultado['imagen'] = null;
@@ -265,9 +251,6 @@ final class GraficadorJp extends Graficador {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function graficarSecciones( &$datos ) {
 		$resultado = array();
 		$resultado['imagen'] = null;
@@ -327,9 +310,6 @@ final class GraficadorJp extends Graficador {
 		return $resultado;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function cambiarFuente( $fuente ) {
 		if ( !in_array( $fuente, array('arial','verdana','times') ) ) { return false; }
 		$this->ejeY['fuente'] = $fuente;
@@ -341,9 +321,6 @@ final class GraficadorJp extends Graficador {
 		return true;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function agregarValores( $valores, &$matriz ) {
 		if ( !is_array($valores) || !is_array($matriz) ) { return false; }
 		foreach ( $valores as $valor ) {
@@ -352,9 +329,6 @@ final class GraficadorJp extends Graficador {
 		return true;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function borrarTemporales() {
 		foreach ( $this->temporales as $archivo ) {
 			if ( file_exists($archivo) && !is_dir($archivo) ) {
@@ -364,16 +338,11 @@ final class GraficadorJp extends Graficador {
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public static function mostrarEtiqueta( $y, $x ) {
 		$imagen = M::E('ALMACEN/TEMP') . '/im_' . M::E('M_USUARIO') . '_' . strval($x) . '_' . strval($y) . '.png';
 		if ( file_exists( $imagen ) ) { return array( false, false, false, $imagen, 1 ); }
 		return false;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _configurarGrafico( &$grafico, $tipo ) {
 		if ( file_exists( $this->grafico['fondo'] ) && !is_dir( $this->grafico['fondo'] ) ) { 

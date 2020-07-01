@@ -8,11 +8,6 @@ use DateTime;
 
 final class BaseDatosMysql extends BaseDatos {
 
-	//METODOS PUBLICOS
-
-	/** 
-		* @param			
-		* @return		*/
 	public function Conectar( $credenciales, &$dto ) {
 		$this->DTO = &$dto;
 		$this->credenciales = $credenciales;
@@ -47,9 +42,6 @@ final class BaseDatosMysql extends BaseDatos {
 		else { return false; }
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function Cerrar() {
 		if ( !$this->conexion ) { return; }
 		mysqli_close( $this->conexion );
@@ -57,9 +49,6 @@ final class BaseDatosMysql extends BaseDatos {
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function consultarColeccion( $instruccion, $etiqueta, $envolver = true, $nivel = null ) {
 		$total = 0;
 		$paginas = 0;
@@ -187,9 +176,6 @@ final class BaseDatosMysql extends BaseDatos {
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function consultarElemento( $instruccion, $etiqueta, $envolver = true, $nivel = null ) {
 		$total = 0;
 		$estado = false;
@@ -248,9 +234,6 @@ final class BaseDatosMysql extends BaseDatos {
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function consultarValores( $instruccion, $etiqueta = 'valores' ) {
 		$total = 0;
 		$lista = array();
@@ -277,9 +260,6 @@ final class BaseDatosMysql extends BaseDatos {
 		return $lista;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function editarElementos( $instruccion, $etiqueta ) {
 		$estado = false;
 		$total = 0;
@@ -299,9 +279,6 @@ final class BaseDatosMysql extends BaseDatos {
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function borrarElementos( $instruccion, $etiqueta ) {
 		$estado = false;
 		$total = 0;
@@ -321,9 +298,6 @@ final class BaseDatosMysql extends BaseDatos {
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function agregarElemento( $instruccion, $etiqueta ) {
 		$estado = false;
 		$total = 0;
@@ -347,9 +321,6 @@ final class BaseDatosMysql extends BaseDatos {
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function aplicarFiltro( $filtro, $claves, $sql = '', $tabla = '' ) {
 		$exp = '';
 		if ( is_array($claves) ) {
@@ -430,9 +401,6 @@ final class BaseDatosMysql extends BaseDatos {
 		return $exp;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function generarExpresion( $tipo, $datos, $tabla, $uid = 'id' ) {
 		$exp = '';
 		switch ($tipo) {
@@ -484,9 +452,6 @@ final class BaseDatosMysql extends BaseDatos {
 		return $exp;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function reemplazarValores( $expresion, $lista = array() ) {
 		$exp = trim($expresion);
 		if ( strlen($exp)>0 ) {
@@ -506,8 +471,6 @@ final class BaseDatosMysql extends BaseDatos {
 		$exp = mb_eregi_replace( "'{{(.|\n)+?}}'", 'NULL', $exp );
 		return $exp;
 	}
-
-	//FUNCIONES PRIVADAS
 
 	private function _filtroContiene( $campo, $valor ) {
 		if ( strlen($valor) < 2 ) { return ''; }

@@ -5,13 +5,11 @@ use MasExperto\ME\Interfaces\IControl;
 
 abstract class Control implements IControl
 {
-	//PROPIEDADES
-		protected $CONTEXTO = null;
-		protected $DTO = null;
-		protected $operacion = '';
-		protected $esquema = null;
+	protected $CONTEXTO = null;
+	protected $DTO = null;
+	protected $operacion = '';
+	protected $esquema = null;
 
-	//CONSTRUCTOR
 	function __construct() {}
 	function __destruct() {
 		$this->DTO = null;
@@ -21,13 +19,8 @@ abstract class Control implements IControl
 		unset($this->esquema);
 	}
 
-	//METODOS PUBLICOS
-
 	public function ejecutarOperacion() {}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function inyectarContexto( &$ruteador ) {
 		$this->CONTEXTO = &$ruteador;
 		$this->DTO = new Dto();
@@ -37,9 +30,6 @@ abstract class Control implements IControl
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function comprobarPermisos( $roles, $esquema = '', $operacion = '' ) {
 		$comprobacion = true;
 		$autorizados = '';
@@ -52,7 +42,7 @@ abstract class Control implements IControl
 			else {
 				$comprobacion = false;
 				if ( !is_object( $this->esquema ) ) {
-					$doc = RUTA_APP . '/' . M::E('M_INSTANCIA') . '/' . $esquema;
+					$doc = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA') . '/' . $esquema;
 					if ( !file_exists( $doc ) || is_dir( $doc ) ) {
 						$doc = M::E('RUTA/SERVICIO') . '/' . $esquema;
 					}
@@ -92,9 +82,6 @@ abstract class Control implements IControl
 		return;
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function prepararPeticion( $caso = '', &$modelo = null ) {
 		$estado = 1;
 		$mensaje = '';
@@ -120,9 +107,6 @@ abstract class Control implements IControl
 		);
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function guardarPerfil( $id, $datos, $etiqueta = '' ) {
 		if ( is_numeric($id) && is_array($datos) ) {
 			$ruta = M::E('ALMACEN/PRIVADO') . '/usuarios';
@@ -154,9 +138,6 @@ abstract class Control implements IControl
 		}
 	}
 
-	/** 
-		* @param			
-		* @return		*/
 	public function cargarPerfil( $id = '' ) {
 		$roles = '';
 		if ( strlen($id)==0 ) { $id = M::E('M_USUARIO'); }

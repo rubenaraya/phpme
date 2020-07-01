@@ -7,8 +7,6 @@ use Mpdf\Mpdf;
 
 final class EmisorPdf extends Emisor {
 
-	//METODOS PUBLICOS
-
 	public function Imprimir( $contenido, $opciones = array() ) {
 		$nombre			= ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.pdf' );
 		$destino		= ( isset($opciones['destino']) ? $opciones['destino'] : 'I' );
