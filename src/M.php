@@ -121,11 +121,11 @@ final class M
 		$texto = str_replace('{{rec_elemento}}', M::E('RECURSO/ELEMENTO'), $texto );
 		$texto = str_replace('{{ant_coleccion}}', M::E('ANTECESOR/COLECCION'), $texto );
 		$texto = str_replace('{{ant_elemento}}', M::E('ANTECESOR/ELEMENTO'), $texto );
-		$texto = str_replace('{{app_servicio}}', M::E('M_SERVICIO'), $texto );
-		$texto = str_replace('{{app_comando}}', M::E('SOLICITUD/COMANDO'), $texto );
-		$texto = str_replace('{{app_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
-		$texto = str_replace('{{app_idioma}}', M::E('M_IDIOMA'), $texto );
-		$texto = str_replace('{{app_usuario}}', M::E('M_USUARIO'), $texto );
+		$texto = str_replace('{{m_servicio}}', M::E('M_SERVICIO'), $texto );
+		$texto = str_replace('{{sol_comando}}', M::E('SOLICITUD/COMANDO'), $texto );
+		$texto = str_replace('{{sol_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
+		$texto = str_replace('{{m_idioma}}', M::E('M_IDIOMA'), $texto );
+		$texto = str_replace('{{m_usuario}}', M::E('M_USUARIO'), $texto );
 		$texto = str_replace('{{dir_almacen}}', M::E('DIR/ALMACEN'), $texto );
 		$texto = str_replace('{{dir_admin}}', M::E('DIR/ADMIN'), $texto );
 		$texto = str_replace('{{app_titulo}}', M::E('APP_TITULO'), $texto );

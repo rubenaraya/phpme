@@ -39,6 +39,8 @@ final class Ruteador implements IRuteador
 
 	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
+        M::$entorno['PUNTOFINAL']['URL'] = M::$entorno['M_SERVIDOR'] . str_replace( '\\', '/', dirname( $_SERVER['SCRIPT_NAME']) );
+        M::$entorno['PUNTOFINAL']['RUTA'] = str_replace( '\\', '/', getcwd() );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
@@ -247,7 +249,9 @@ final class Ruteador implements IRuteador
 	public function Redirigir( $destino ) {
 		$destino = str_replace( array('\r\n','\r','\n'), '', $destino);
 		$destino = str_replace( ' ', '+', $destino);
-		header( 'Location: ' . $destino );
+		if ( strlen($destino)>0 ) {
+            header( 'Location: ' . $destino );
+        }
 		exit();
 	}
 
@@ -339,6 +343,7 @@ final class Ruteador implements IRuteador
 		$entorno['SOLICITUD'] = M::$entorno['SOLICITUD'];
 		$entorno['RECURSO'] = M::$entorno['RECURSO'];
 		$entorno['ANTECESOR'] = M::$entorno['ANTECESOR'];
+        $entorno['PUNTOFINAL'] = \M::$entorno['PUNTOFINAL'];
 		$entorno['DIR'] = M::$entorno['DIR'];
 		if ( isset(M::$entorno['ARCHIVOS']) ) { $entorno['ARCHIVOS'] = M::$entorno['ARCHIVOS']; }
 		if ( isset(M::$entorno['USUARIO']) ) { $entorno['USUARIO'] = M::$entorno['USUARIO']; }

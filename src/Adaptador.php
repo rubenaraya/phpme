@@ -48,7 +48,7 @@ abstract class Adaptador implements IAdaptador
 		$this->modelo->sql = array_replace($this->modelo->sql, $this->sql);
 		$this->cambiarValores();
 	}
-	public function validarPeticion( $info = '' ) {
+	public function cotejarPeticion($info = '' ) {
 		$estado = 1;
 		$mensaje = '';
 		foreach ( $this->modelo->A as $nombre => $valor ) {

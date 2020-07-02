@@ -5,5 +5,5 @@ interface IAdaptador {
 	public function reemplazarMetadatos( $uid, &$dto, &$modelo );
 	public function combinarMetadatos( $uid, &$dto, &$modelo );
 	public function cambiarValores();
-	public function validarPeticion( $info );
+	public function cotejarPeticion($info );
 }

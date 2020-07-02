@@ -106,12 +106,12 @@ class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'rec_elemento', M::E('RECURSO/ELEMENTO') );
 			$xslt->setParameter( '', 'ant_coleccion', M::E('ANTECESOR/COLECCION') );
 			$xslt->setParameter( '', 'ant_elemento', M::E('ANTECESOR/ELEMENTO') );
-			$xslt->setParameter( '', 'app_servicio', M::E('M_SERVICIO') );
-			$xslt->setParameter( '', 'app_servidor', M::E('M_SERVIDOR') );
-			$xslt->setParameter( '', 'app_comando', M::E('SOLICITUD/COMANDO') );
-			$xslt->setParameter( '', 'app_operacion', M::E('SOLICITUD/OPERACION') );
-			$xslt->setParameter( '', 'app_idioma', M::E('M_IDIOMA') );
-			$xslt->setParameter( '', 'app_usuario', M::E('M_USUARIO') );
+			$xslt->setParameter( '', 'm_servicio', M::E('M_SERVICIO') );
+			$xslt->setParameter( '', 'm_servidor', M::E('M_SERVIDOR') );
+			$xslt->setParameter( '', 'sol_comando', M::E('SOLICITUD/COMANDO') );
+			$xslt->setParameter( '', 'sol_operacion', M::E('SOLICITUD/OPERACION') );
+			$xslt->setParameter( '', 'm_idioma', M::E('M_IDIOMA') );
+			$xslt->setParameter( '', 'm_usuario', M::E('M_USUARIO') );
 			$xslt->setParameter( '', 'dir_almacen', M::E('DIR/ALMACEN') );
 			$xslt->setParameter( '', 'dir_admin', M::E('DIR/ADMIN') );
 			$xslt->setParameter( '', 'app_titulo', M::E('APP_TITULO') );
