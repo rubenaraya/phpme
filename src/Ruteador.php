@@ -16,6 +16,7 @@ final class Ruteador implements IRuteador
 		M::$entorno['M_SERVICIO'] = basename( $dir );
 		M::$entorno['RUTA']['SERVICIO'] = str_replace( '\\', '/', $dir );
 		M::$entorno['RUTA']['APP'] = str_replace( '\\', '/', dirname( $dir ) );
+		M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', __DIR__ );
 		$this->estados['200_OK']			= array(200, '');
 		$this->estados['201_CREATED']		= array(201, '');
 		$this->estados['204_NOCONTENT']		= array(204, '');

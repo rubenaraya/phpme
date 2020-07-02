@@ -59,7 +59,7 @@ class EvaCreaCompetencias extends Instructor
 			$base = $this->modelo->almacen->validarNombre( $this->docXpath("//instructor/titulo") );
 			$nombre = $base . '_' . strval($this->uid);
 			$opc['info'] = $info;
-			$opc['incluir'] = RUTA_ME . '/Instructor.xsl';
+			$opc['incluir'] = M::E('RUTA/ME') . '/Recursos/Instructor.xsl';
 			$estilos = M::E('RUTA/SERVICIO') .'/pdf.css';
 			$presentador = new PresentadorXml();
 			$presentador->documento = $this->documento;

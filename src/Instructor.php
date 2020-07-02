@@ -29,7 +29,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$estado = 0;
 		$mensaje = '';
 		$opc['info'] = 'realizar';
-		$opc['incluir'] = __DIR__ . '/Instructor.xsl';
+		$opc['incluir'] = __DIR__ . '/Recursos/Instructor.xsl';
 		$presentador = new PresentadorXml();
 		$presentador->crearVista( $this->esquema, $this->ruta['xml'] );
 		$presentador->anexarDatos( $this->dto );
