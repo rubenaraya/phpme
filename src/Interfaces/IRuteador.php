@@ -11,5 +11,4 @@ interface IRuteador {
 	public function enviarError( $tipo, $mensaje );
 	public function Redirigir( $destino );
 	public function Salir( $enviar );
-	public function Info();
 }

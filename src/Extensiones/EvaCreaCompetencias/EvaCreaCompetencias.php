@@ -1,5 +1,5 @@
 <?php 
-namespace MasExperto\ME\Extensiones\EvaCreaCompetencias;
+namespace MasExperto\Extension;
 
 use MasExperto\ME\Clases\PresentadorXml;
 use MasExperto\ME\Instructor;
@@ -9,7 +9,7 @@ class EvaCreaCompetencias extends Instructor
 {
 	function __construct() {
 		parent::__construct();
-			$this->clase = str_replace( array('SER\\', 'EXT\\'), '', static::class );
+			$this->clase = str_replace( array('MasExperto\\', 'Extension\\'), '', static::class );
 			$this->esquema = $this->clase . '.xml';
 			$this->vista = $this->clase . '.xsl';
 			$this->ruta['xml'] = __DIR__;

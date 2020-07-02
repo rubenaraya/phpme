@@ -8,7 +8,7 @@ use DOMDocument;
 use DOMXPath;
 use XSLTProcessor;
 
-class PresentadorXml extends Presentador
+final class PresentadorXml extends Presentador
 {
 
 	public function crearVista( $documento = '', $ruta = '' ) {
@@ -89,14 +89,15 @@ class PresentadorXml extends Presentador
 		$clase = ( isset($opciones['clase']) ? $opciones['clase'] : '' );
 		$mensaje = ( isset($opciones['mensaje']) ? $opciones['mensaje'] : '' );
 		$incluir = ( isset($opciones['incluir']) ? $opciones['incluir'] : '' );
-		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/SERVICIO'); }
+		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/PUNTOFINAL'); }
 		$archivo = $ruta . '/' . $plantilla;
 		if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
 			$doc = new DOMDocument( '1.0', 'utf-8' );
 			$doc->load( $archivo );
+			$incluir = str_replace( '\\', '/', $incluir );
 			if ( file_exists( $incluir ) && !is_dir( $incluir ) ) {
 				$nodo = $doc->createElementNS( 'http://www.w3.org/1999/XSL/Transform', 'include' );
-				$nodo->setAttribute( 'href', 'file://' . $incluir );
+				$nodo->setAttribute( 'href', $incluir );
 				$doc->documentElement->appendChild( $nodo );
 			}
 			$fecha = new DateTime();

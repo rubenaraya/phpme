@@ -1,7 +1,8 @@
 <?php 
-namespace MasExperto\ME;
+namespace MasExperto\ME\Clases;
 
 use MasExperto\ME\Interfaces\IRuteador;
+use MasExperto\ME\M;
 use DateTime;
 use function dgettext;
 
@@ -39,8 +40,8 @@ final class Ruteador implements IRuteador
 
 	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-        M::$entorno['PUNTOFINAL']['URL'] = M::$entorno['M_SERVIDOR'] . str_replace( '\\', '/', dirname( $_SERVER['SCRIPT_NAME']) );
-        M::$entorno['PUNTOFINAL']['RUTA'] = str_replace( '\\', '/', getcwd() );
+        M::$entorno['URL']['PUNTOFINAL'] = M::$entorno['M_SERVIDOR'] . str_replace( '\\', '/', dirname( $_SERVER['SCRIPT_NAME']) );
+        M::$entorno['RUTA']['PUNTOFINAL'] = str_replace( '\\', '/', getcwd() );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
@@ -73,7 +74,7 @@ final class Ruteador implements IRuteador
 		}
 		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', __DIR__) . '/Locales';}
 		$dominio = M::$entorno['M_SERVICIO'];
-		bindtextdomain( 'me', __DIR__ . '/Locales' );
+		bindtextdomain( 'me', __DIR__ . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
 		bindtextdomain( $dominio, M::$entorno['RUTA']['LOCALES'] );
 		bind_textdomain_codeset( $dominio, 'UTF-8' );
@@ -336,21 +337,6 @@ final class Ruteador implements IRuteador
 			$this->enviarRespuesta();
 		}
 		exit();
-	}
-
-	public function Info() {
-		$entorno = array();
-		$entorno['SOLICITUD'] = M::$entorno['SOLICITUD'];
-		$entorno['RECURSO'] = M::$entorno['RECURSO'];
-		$entorno['ANTECESOR'] = M::$entorno['ANTECESOR'];
-        $entorno['PUNTOFINAL'] = \M::$entorno['PUNTOFINAL'];
-		$entorno['DIR'] = M::$entorno['DIR'];
-		if ( isset(M::$entorno['ARCHIVOS']) ) { $entorno['ARCHIVOS'] = M::$entorno['ARCHIVOS']; }
-		if ( isset(M::$entorno['USUARIO']) ) { $entorno['USUARIO'] = M::$entorno['USUARIO']; }
-		foreach ( M::$entorno as $nombre => $valor ) {
-			if ( !is_array($valor) ) { $entorno[$nombre] = $valor; }
-		}
-		return 'ENTORNO: '. print_r( $entorno, true ) . 'PARAMETROS: ' . print_r( $this->parametros, true ) . 'CAMPOS: ' .  print_r( $this->campos, true );
 	}
 
 	public function enviarError( $tipo = '', $mensaje = '' ) {

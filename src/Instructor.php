@@ -14,7 +14,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 
 	function __construct() {
         parent::__construct();
-		$this->clase = str_replace( array('SER\\', 'EXT\\'), '', static::class );
+		$this->clase = str_replace( array('MasExperto\\', 'Extension\\'), '', static::class );
 	}
 	function __destruct() {
 		$this->documento = null;
