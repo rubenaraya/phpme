@@ -7,7 +7,6 @@ interface IAlmacen {
 	public function adaptarImagenes( $destino, $archivos, $opciones );
 	public function extraerZip( $destino, $archivos, $opciones );
 	public function empaquetarZip( $origen, $destino, $opciones );
-	public function extraerDatosExcel( $archivo, $opciones );
 	public function abrirArchivo( $ubicacion );
 	public function guardarArchivo( $destino, $contenido, $opciones );
 	public function borrarArchivos( $lista );

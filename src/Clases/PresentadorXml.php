@@ -177,28 +177,6 @@ class PresentadorXml extends Presentador
 		return $txt;
 	}
 
-	public function anexarResultado( $datos, $etiqueta = '*' ) {
-		if ( is_object($this->documento) ) {
-			if ( is_array($datos) ) {
-				if ( $etiqueta=='*' ) { 
-					$resultado = simplexml_load_string( '<resultados />' );
-					$this->_exportarXml( $datos, $resultado ); 
-				} else if ( isset($datos[$etiqueta]) ) {
-					$resultado = simplexml_load_string( '<resultados grupo="'. $etiqueta .'" />' );
-					$this->_exportarXml( $datos[$etiqueta], $resultado );
-				} else {
-					$resultado = simplexml_load_string( '<resultados grupo="'. $etiqueta .'" />' );
-					$this->_exportarXml( $datos, $resultado );
-				}
-				$origen = dom_import_simplexml( $resultado );
-				$destino = dom_import_simplexml( $this->documento );
-				$destino->appendChild( $destino->ownerDocument->importNode( $origen, true ) );
-				unset($origen); unset($destino); 
-			}
-			return $this->documento->asXML();
-		}
-	}
-
 	public function anexarDatos( $dto ) {
 		if ( is_object($this->documento) ) {
 			if ( is_object($dto) ) {

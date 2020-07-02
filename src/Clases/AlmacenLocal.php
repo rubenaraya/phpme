@@ -7,12 +7,9 @@ use DateTime;
 use DOMDocument;
 use Mpdf\Mpdf;
 use PHPExcel;
-use PHPExcel_CachedObjectStorageFactory;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
-use PHPExcel_IOFactory;
 use PHPExcel_Reader_Excel5;
-use PHPExcel_Settings;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_Border;
 use PHPExcel_Writer_Excel2007;
@@ -272,64 +269,6 @@ final class AlmacenLocal extends Almacen {
 			$this->_agregarEnZip( $ruta_origen, $pos, $zip );
 		}
 		$zip->close();
-		return $resultado;
-	}
-
-	public function extraerDatosExcel( $ubicacion, $opciones = array() ) {
-		$resultado['contenidos'] = null;
-		$resultado['errores'] = array();
-		$resultado['estado'] = false;
-		$existe = false;
-		$hoja = ( isset($opciones['hoja']) ? $opciones['hoja'] : 'Hoja1' );
-		$filas = ( isset($opciones['filas']) ? $opciones['filas'] : 5000 );
-		$columnas = ( isset($opciones['columnas']) ? $opciones['columnas'] : array() );
-		$borrar = ( isset($opciones['borrar']) ? $opciones['borrar'] : false );
-		$destino = ( isset($opciones['destino']) ? $opciones['destino'] : 0 );
-		$ruta = $this->_seleccionarAlmacen( $destino );
-		$carpeta = ( isset($opciones['carpeta']) ? '/' . $opciones['carpeta'] : '' );
-		$nombre_final = $this->validarNombre( $hoja, '' ) . '_' . date('Ymd_His');
-		if ( file_exists( $ubicacion ) ) {
-			if ( strlen( $carpeta ) >0 && !is_dir( "$ruta$carpeta" ) ) {
-				@mkdir( "$ruta$carpeta" );
-				chmod( "$ruta$carpeta", 0755 );
-			}
-			$cache = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
-			PHPExcel_Settings::setCacheStorageMethod( $cache );
-			$filtro = new FiltroExcel( $filas, $columnas );
-			$tipo = PHPExcel_IOFactory::identify( $ubicacion );
-			$lector = PHPExcel_IOFactory::createReader( $tipo );
-			$lector->setReadFilter( $filtro ); 
-			$excel = $lector->load( $ubicacion );
-			if ( $borrar ) { unlink( $ubicacion ); }
-			foreach ( $excel->getWorksheetIterator() as $planilla ) {
-				if ( $planilla->getTitle() == $hoja ) {
-					$existe = true;
-					if ( $destino > 0 ) {
-						$ubicacion2 = "$ruta$carpeta/$nombre_final.json";
-						if ( file_put_contents($ubicacion2, json_encode($planilla->toArray( '', true, true, true )))>0 ) {
-							$resultado['estado'] = true;
-							$resultado['contenidos'][] = array(
-								'nombre' => "$nombre_final.json",
-								'ubicacion' => $ubicacion2 
-							);
-						} else {
-							$msg = sprintf(dgettext('me', "No-se-guardo-'%s'"), $ubicacion2);
-							$resultado['errores'][] = $msg;
-							trigger_error( 'AlmacenLocal.extraerDatosExcel: ' . $msg, E_USER_ERROR );
-						}
-					} else {
-						$resultado['estado'] = true;
-						$resultado['contenidos'] = $planilla->toArray( '', true, true, true );
-					}
-				}
-			}
-			if ( !$existe ) {
-				$resultado['errores'][] = sprintf(dgettext('me', "La-hoja-'%s'-no existe"), $hoja);
-			}
-			unset($excel); unset($lector); unset($filtro);
-		} else {
-			$resultado['errores'][] = sprintf(dgettext('me', "No-se-encontro-'%s'"), $ubicacion);
-		}
 		return $resultado;
 	}
 
