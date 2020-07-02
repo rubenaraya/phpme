@@ -121,7 +121,6 @@ final class M
 		$texto = str_replace('{{rec_elemento}}', M::E('RECURSO/ELEMENTO'), $texto );
 		$texto = str_replace('{{ant_coleccion}}', M::E('ANTECESOR/COLECCION'), $texto );
 		$texto = str_replace('{{ant_elemento}}', M::E('ANTECESOR/ELEMENTO'), $texto );
-		$texto = str_replace('{{app_puntofinal}}', M::E('PUNTOFINAL/URL'), $texto );
 		$texto = str_replace('{{app_servicio}}', M::E('M_SERVICIO'), $texto );
 		$texto = str_replace('{{app_comando}}', M::E('SOLICITUD/COMANDO'), $texto );
 		$texto = str_replace('{{app_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );

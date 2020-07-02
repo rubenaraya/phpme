@@ -89,7 +89,7 @@ class PresentadorXml extends Presentador
 		$clase = ( isset($opciones['clase']) ? $opciones['clase'] : '' );
 		$mensaje = ( isset($opciones['mensaje']) ? $opciones['mensaje'] : '' );
 		$incluir = ( isset($opciones['incluir']) ? $opciones['incluir'] : '' );
-		if ( strlen($ruta)==0 ) { $ruta = M::E('PUNTOFINAL/RUTA'); }
+		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/SERVICIO'); }
 		$archivo = $ruta . '/' . $plantilla;
 		if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
 			$doc = new DOMDocument( '1.0', 'utf-8' );
@@ -106,7 +106,6 @@ class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'rec_elemento', M::E('RECURSO/ELEMENTO') );
 			$xslt->setParameter( '', 'ant_coleccion', M::E('ANTECESOR/COLECCION') );
 			$xslt->setParameter( '', 'ant_elemento', M::E('ANTECESOR/ELEMENTO') );
-			$xslt->setParameter( '', 'app_puntofinal', M::E('PUNTOFINAL/URL') );
 			$xslt->setParameter( '', 'app_servicio', M::E('M_SERVICIO') );
 			$xslt->setParameter( '', 'app_servidor', M::E('M_SERVIDOR') );
 			$xslt->setParameter( '', 'app_comando', M::E('SOLICITUD/COMANDO') );

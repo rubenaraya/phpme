@@ -39,8 +39,6 @@ final class Ruteador implements IRuteador
 
 	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-		M::$entorno['PUNTOFINAL']['URL'] = M::$entorno['M_SERVIDOR'] . dirname( $_SERVER['SCRIPT_NAME'] );
-		M::$entorno['PUNTOFINAL']['RUTA'] = str_replace( '\\', '/', getcwd() );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
@@ -71,7 +69,7 @@ final class Ruteador implements IRuteador
 		if ( M::$entorno['M_SERVICIO'] == M::$entorno['M_APP'] ) {
 			M::$entorno['M_SERVICIO'] = 'app';
 		}
-		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = __DIR__ . '/Locales';}
+		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', __DIR__) . '/Locales';}
 		$dominio = M::$entorno['M_SERVICIO'];
 		bindtextdomain( 'me', __DIR__ . '/Locales' );
 		bind_textdomain_codeset( 'me', 'UTF-8' );
@@ -301,7 +299,11 @@ final class Ruteador implements IRuteador
 				$url = M::E('SOLICITUD/URL');
 				if ( $url == dirname( M::E('URL/LOGIN') ) . '/' ) { $url = ''; }
 				$parametros = ( strlen($url)>0 ? '?M_URL=' . $url : '' );
-				$this->Redirigir( M::E('URL/LOGIN') . $parametros );
+				if ( strlen(M::E('URL/LOGIN'))>0 ) {
+					$this->Redirigir( M::E('URL/LOGIN') . $parametros );
+				} else {
+					$this->enviarRespuesta();
+				}
 			} else {
 				$this->enviarRespuesta();
 			}
@@ -337,7 +339,6 @@ final class Ruteador implements IRuteador
 		$entorno['SOLICITUD'] = M::$entorno['SOLICITUD'];
 		$entorno['RECURSO'] = M::$entorno['RECURSO'];
 		$entorno['ANTECESOR'] = M::$entorno['ANTECESOR'];
-		$entorno['PUNTOFINAL'] = M::$entorno['PUNTOFINAL'];
 		$entorno['DIR'] = M::$entorno['DIR'];
 		if ( isset(M::$entorno['ARCHIVOS']) ) { $entorno['ARCHIVOS'] = M::$entorno['ARCHIVOS']; }
 		if ( isset(M::$entorno['USUARIO']) ) { $entorno['USUARIO'] = M::$entorno['USUARIO']; }
