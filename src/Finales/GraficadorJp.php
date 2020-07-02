@@ -1,7 +1,7 @@
 <?php 
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
-use MasExperto\ME\Graficador;
+use MasExperto\ME\Bases\Graficador;
 use MasExperto\ME\M;
 use AccBarPlot;
 use BarPlot;

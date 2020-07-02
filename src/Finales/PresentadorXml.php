@@ -1,8 +1,8 @@
 <?php 
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
 use MasExperto\ME\M;
-use MasExperto\ME\Presentador;
+use MasExperto\ME\Bases\Presentador;
 use DateTime;
 use DOMDocument;
 use DOMXPath;

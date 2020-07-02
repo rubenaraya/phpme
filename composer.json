@@ -1,7 +1,7 @@
 {
     "name": "masexperto/phpme",
     "type": "library",
-    "description": "Kit para aplicaciones y servicios REST / WEB en PHP",
+    "description": "Kit de desarrollo para aplicaciones y servicios REST / WEB en PHP",
     "require": {
       "google/apiclient": "2.0",
       "mpdf/mpdf": "8.0",

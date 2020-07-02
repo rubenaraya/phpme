@@ -1,5 +1,5 @@
 <?php
-namespace MasExperto\ME;
+namespace MasExperto\ME\Bases;
 
 use MasExperto\ME\Interfaces\IAlmacen;
 

@@ -1,7 +1,7 @@
 <?php
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
-use MasExperto\ME\Correo;
+use MasExperto\ME\Bases\Correo;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

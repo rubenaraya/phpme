@@ -1,8 +1,8 @@
 <?php 
-namespace MasExperto\Extension;
+namespace MasExperto\ME\Extensiones\EvaCreaCompetencias;
 
-use MasExperto\ME\Clases\PresentadorXml;
-use MasExperto\ME\Instructor;
+use MasExperto\ME\Finales\PresentadorXml;
+use MasExperto\ME\Bases\Instructor;
 use MasExperto\ME\M;
 
 class EvaCreaCompetencias extends Instructor

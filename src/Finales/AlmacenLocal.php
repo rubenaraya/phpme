@@ -1,7 +1,7 @@
 <?php
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
-use MasExperto\ME\Almacen;
+use MasExperto\ME\Bases\Almacen;
 use MasExperto\ME\M;
 use DateTime;
 use DOMDocument;

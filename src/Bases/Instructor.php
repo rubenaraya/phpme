@@ -1,8 +1,9 @@
 <?php 
-namespace MasExperto\ME;
+namespace MasExperto\ME\Bases;
 
 use MasExperto\ME\Interfaces\IInstructor;
-use MasExperto\ME\Clases\PresentadorXml;
+use MasExperto\ME\Finales\PresentadorXml;
+use MasExperto\ME\M;
 
 abstract class Instructor extends Adaptador implements IInstructor
 {
@@ -14,7 +15,6 @@ abstract class Instructor extends Adaptador implements IInstructor
 
 	function __construct() {
         parent::__construct();
-		$this->clase = str_replace( array('MasExperto\\', 'Extension\\'), '', static::class );
 	}
 	function __destruct() {
 		$this->documento = null;

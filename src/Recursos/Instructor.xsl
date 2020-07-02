@@ -425,7 +425,7 @@
 			</thead>
 			<tbody>
 				<xsl:for-each select="//resultados[@grupo='recuentos']/elemento[item=$campo_grupo]">
-					<xsl:sort select="opcion" data-type="number" order="ascending" />
+					<xsl:sort select="opcion" data-type="number"/>
 					<xsl:variable name="valor" select="opcion" />
 					<xsl:variable name="cuenta" select="total" />
 					<xsl:variable name="porcen" select="porcentaje" />
@@ -566,7 +566,7 @@
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:for-each select="//resultados[@grupo='recuentos']/elemento[item=$campo]">
-											<xsl:sort select="opcion" data-type="number" order="ascending" />
+											<xsl:sort select="opcion" data-type="number"/>
 											<xsl:variable name="texto" select="opcion" />
 											<xsl:variable name="codigo" select="opcion" />
 											<xsl:variable name="cuenta" select="total" />

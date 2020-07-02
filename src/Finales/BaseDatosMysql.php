@@ -1,7 +1,7 @@
 <?php
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
-use MasExperto\ME\BaseDatos;
+use MasExperto\ME\Bases\BaseDatos;
 use MasExperto\ME\M;
 use DateInterval;
 use DateTime;

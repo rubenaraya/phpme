@@ -1,7 +1,9 @@
 <?php
-namespace MasExperto\ME;
+namespace MasExperto\ME\Bases;
 
+use MasExperto\ME\Finales\Dto;
 use MasExperto\ME\Interfaces\IControl;
+use MasExperto\ME\M;
 
 abstract class Control implements IControl
 {

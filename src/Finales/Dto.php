@@ -1,5 +1,5 @@
 <?php
-namespace MasExperto\ME;
+namespace MasExperto\ME\Finales;
 
 use MasExperto\ME\Interfaces\IDto;
 

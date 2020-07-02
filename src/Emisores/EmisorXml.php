@@ -1,7 +1,7 @@
 <?php
 namespace MasExperto\ME\Emisores;
 
-use MasExperto\ME\Emisor;
+use MasExperto\ME\Bases\Emisor;
 
 final class EmisorXml extends Emisor {
 

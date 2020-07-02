@@ -1,18 +1,15 @@
 <?php 
-namespace MasExperto\ME\Clases;
+namespace MasExperto\ME\Finales;
 
-use MasExperto\ME\Interfaces\IRuteador;
+use MasExperto\ME\Bases\Ruteador;
 use MasExperto\ME\M;
 use DateTime;
 use function dgettext;
 
-final class Ruteador implements IRuteador 
+final class RuteadorHttp extends Ruteador 
 {
-	public $campos = array();
-	public $parametros = array();
-	public $estados = array();
-
 	function __construct( $dir ) {
+        parent::__construct();
 		$this->campos = &$_POST;
 		M::$entorno['M_SERVICIO'] = basename( $dir );
 		M::$entorno['RUTA']['SERVICIO'] = str_replace( '\\', '/', $dir );
@@ -30,12 +27,6 @@ final class Ruteador implements IRuteador
 		$this->estados['415_UNSUPPORTED']	= array(415, dgettext('me', 'No-soportado') );
 		$this->estados['422_UNPROCESSABLE']	= array(422, dgettext('me', 'No-procesable') );
 		$this->estados['500_INTERNALERROR']	= array(500, dgettext('me', 'Error-interno') );
-	  }
-	function __destruct() {
-		$this->campos = null;
-		$this->parametros = null;
-		unset($this->campos);
-		unset($this->parametros);
 	}
 
 	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {

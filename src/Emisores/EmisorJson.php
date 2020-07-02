@@ -1,7 +1,7 @@
 <?php
 namespace MasExperto\ME\Emisores;
 
-use MasExperto\ME\Emisor;
+use MasExperto\ME\Bases\Emisor;
 use MasExperto\ME\M;
 
 final class EmisorJson extends Emisor {
