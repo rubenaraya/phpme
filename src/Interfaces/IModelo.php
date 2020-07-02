@@ -12,11 +12,10 @@ interface IModelo {
 	public function Cambiar( &$dto );
 	public function Imagen( &$dto );
 	public function Archivo( &$dto );
-	public function Descargar( &$dto );
 	public function Refrescar( &$dto );
 	public function Registrar( &$dto );
-	public function Ejecutar( &$dto );
 	public function Ver( &$dto );
 	public function Exportar( &$dto );
-	public function Validar( $nombre, $valor );
+    public function Cotejar( &$dto, $caso );
+    public function Validar( $nombre, $valor );
 }

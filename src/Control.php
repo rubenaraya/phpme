@@ -73,38 +73,13 @@ abstract class Control implements IControl
 			}
 		}
 		if ( !$comprobacion ) {
-			if ( M::E('M_SALIDA') == 'HTML' ) {
+			if ( M::E('M_SALIDA') == 'HTML' && strlen(M::E('URL/LOGIN'))>0 ) {
 				$this->CONTEXTO->Redirigir( M::E('URL/LOGIN') );
 			} else {
 				$this->CONTEXTO->enviarError( '401_UNAUTHORIZED' );
 			}
 		}
 		return;
-	}
-
-	public function prepararPeticion( $caso = '', &$modelo = null ) {
-		$estado = 1;
-		$mensaje = '';
-		if ( $modelo == null || $caso == '' ) {
-			$this->DTO->peticion = $this->DTO->parametros + $this->DTO->campos;
-		} else {
-			foreach ( $modelo->A as $nombre => $valor ) {
-				if ( substr_count( ','.$valor['validar'].',', ','.$caso.',' )>0 ) {
-					$validacion = $modelo->Validar( $nombre, $this->DTO->get($nombre) );
-					$mensaje .= $validacion['mensaje'];
-					$estado = ( $validacion['estado'] == 0 ? 0 : $estado );
-					if ( $estado ) {
-						$this->DTO->getset( $nombre );
-					} else {
-						break;
-					}
-				}
-			}
-		}
-		return array(
-			'estado'=> $estado,
-			'mensaje'=> $mensaje
-		);
 	}
 
 	public function guardarPerfil( $id, $datos, $etiqueta = '' ) {

@@ -40,6 +40,29 @@ abstract class Modelo implements IModelo
 		unset($this->R);
 	}
 
+    public function Cotejar( &$dto, $caso = '' ) {
+        $estado = 0;
+        $mensaje = '';
+        if ( strlen($caso)>0 ) {
+            $estado = 1;
+            foreach ( $this->A as $nombre => $valor ) {
+                if ( substr_count( ','.$valor['validar'].',', ','.$caso.',' )>0 ) {
+                    $validacion = $this->Validar( $nombre, $dto->get($nombre) );
+                    $mensaje .= $validacion['mensaje'];
+                    $estado = ( $validacion['estado'] == 0 ? 0 : $estado );
+                    if ( $estado ) {
+                        $dto->getset( $nombre );
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return array(
+            'estado'=> $estado,
+            'mensaje'=> $mensaje
+        );
+    }
 	public function Validar( $nombre, $valor ) {
 		$mensaje = '';
 		$estado = 0;
@@ -132,8 +155,6 @@ abstract class Modelo implements IModelo
 	public function Archivo( &$dto ) {}
 	public function Refrescar( &$dto ) {}
 	public function Registrar( &$dto ) {}
-	public function Ejecutar( &$dto ) {}
 	public function Ver( &$dto ) {}
 	public function Exportar( &$dto ) {}
-	public function Descargar( &$dto ) {}
 }
