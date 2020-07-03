@@ -62,7 +62,9 @@ final class RuteadorHttp extends Ruteador
 		if ( M::$entorno['M_SERVICIO'] == M::$entorno['M_APP'] ) {
 			M::$entorno['M_SERVICIO'] = 'app';
 		}
-		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', M::$entorno['RUTA']['ME']) . '/Locales';}
+		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) {
+			M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', M::$entorno['RUTA']['ME']) . '/Locales';
+		}
 		$dominio = M::$entorno['M_SERVICIO'];
 		bindtextdomain( 'me', M::$entorno['RUTA']['ME'] . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
