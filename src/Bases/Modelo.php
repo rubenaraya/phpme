@@ -22,9 +22,9 @@ abstract class Modelo implements IModelo
 	function __construct() {
 		$bd = M::E('CONECTOR/BD');
 		$alm = M::E('CONECTOR/ALMACEN');
-		$conector = ( strlen($bd)>0 ? $bd : '\MasExperto\ME\Clases\BaseDatosMysql');
+		$conector = ( strlen($bd)>0 ? $bd : '\MasExperto\ME\Finales\BaseDatosMysql');
 		$this->bd = new $conector;
-		$conector = ( strlen($alm)>0 ? $alm : '\MasExperto\ME\Clases\AlmacenLocal');
+		$conector = ( strlen($alm)>0 ? $alm : '\MasExperto\ME\Finales\AlmacenLocal');
 		$this->almacen = new $conector;
 		$this->almacen->Conectar( M::E('ALMACEN') );
 	}

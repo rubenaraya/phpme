@@ -965,7 +965,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$valores = explode(',', strval($escalay));
 		}
 		$gra = M::E('CONECTOR/GRAFICOS');
-		$conector = ( strlen($gra)>0 ? $gra : '\MasExperto\ME\Clases\GraficadorJp');
+		$conector = ( strlen($gra)>0 ? $gra : '\MasExperto\ME\Finales\GraficadorJp');
 		$graficador = new $conector;
 		$graficador->cambiarFuente('arial');
 		$matriz = explode(',', strval($margenes));
