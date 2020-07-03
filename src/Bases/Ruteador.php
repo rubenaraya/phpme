@@ -2,6 +2,7 @@
 namespace MasExperto\ME\Bases;
 
 use MasExperto\ME\Interfaces\IRuteador;
+use MasExperto\ME\M;
 
 abstract class Ruteador implements IRuteador
 {
@@ -9,7 +10,9 @@ abstract class Ruteador implements IRuteador
 	public $parametros = array();
 	public $estados = array();
 
-	function __construct() {}
+	function __construct() {
+        M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', dirname(__DIR__) );
+    }
 	function __destruct() {
 		$this->campos = null;
 		$this->parametros = null;

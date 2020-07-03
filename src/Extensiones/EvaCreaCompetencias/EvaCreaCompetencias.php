@@ -1,5 +1,5 @@
 <?php 
-namespace MasExperto\ME\Extensiones\EvaCreaCompetencias;
+namespace MasExperto\Extension;
 
 use MasExperto\ME\Finales\PresentadorXml;
 use MasExperto\ME\Bases\Instructor;

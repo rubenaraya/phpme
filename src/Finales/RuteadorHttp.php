@@ -14,7 +14,6 @@ final class RuteadorHttp extends Ruteador
 		M::$entorno['M_SERVICIO'] = basename( $dir );
 		M::$entorno['RUTA']['SERVICIO'] = str_replace( '\\', '/', $dir );
 		M::$entorno['RUTA']['APP'] = str_replace( '\\', '/', dirname( $dir ) );
-		M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', __DIR__ );
 		$this->estados['200_OK']			= array(200, '');
 		$this->estados['201_CREATED']		= array(201, '');
 		$this->estados['204_NOCONTENT']		= array(204, '');
@@ -63,9 +62,9 @@ final class RuteadorHttp extends Ruteador
 		if ( M::$entorno['M_SERVICIO'] == M::$entorno['M_APP'] ) {
 			M::$entorno['M_SERVICIO'] = 'app';
 		}
-		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', __DIR__) . '/Locales';}
+		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) { M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', M::$entorno['RUTA']['ME']) . '/Locales';}
 		$dominio = M::$entorno['M_SERVICIO'];
-		bindtextdomain( 'me', __DIR__ . '/Locales');
+		bindtextdomain( 'me', M::$entorno['RUTA']['ME'] . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
 		bindtextdomain( $dominio, M::$entorno['RUTA']['LOCALES'] );
 		bind_textdomain_codeset( $dominio, 'UTF-8' );
