@@ -137,7 +137,7 @@ final class RuteadorHttp extends Ruteador
 				}
 				echo $contenido;
 				break;
-			case 'HTM': 
+			case 'HTML': 
 				header( 'Content-Type: text/html; charset=utf-8' );
 				if ( M::E('M_ESTADO') < 400 ) {
 					if ( is_array($contenido) ) {
