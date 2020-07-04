@@ -368,7 +368,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$cfg['margen_sup'] = 20;
 			$cfg['margen_inf'] = 20;
 			$cfg['portada'] = true;
-			$cfg['estilos'] = M::E('RUTA/SERVICIO').'/pdf.css';
+			$cfg['estilos'] = M::E('RUTA/FRONTEND').'/pdf.css';
 			$guardar = $this->modelo->almacen->guardarArchivo( Almacen::PRIVADO, $contenido, $cfg );
 			$estado = $guardar['estado'];
 			if ( M::E('M_MODO')=='PRUEBA' ) {

@@ -44,9 +44,9 @@ abstract class Control implements IControl
 			else {
 				$comprobacion = false;
 				if ( !is_object( $this->esquema ) ) {
-					$doc = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA') . '/' . $esquema;
+					$doc = M::E('ALMACEN/PRIVADO') . '/' . $esquema;
 					if ( !file_exists( $doc ) || is_dir( $doc ) ) {
-						$doc = M::E('RUTA/SERVICIO') . '/' . $esquema;
+						$doc = M::E('RUTA/BACKEND') . '/' . $esquema;
 					}
 					if ( file_exists( $doc ) && !is_dir( $doc ) ) {
 						$this->esquema = simplexml_load_file( $doc );

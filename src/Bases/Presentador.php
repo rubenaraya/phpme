@@ -15,7 +15,7 @@ abstract class Presentador implements IPresentador
 
 	public function abrirPlantilla( $archivo, $ruta = '', $reemplazar = true ) {
 		$txt = '';
-		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/SERVICIO'); }
+		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/PUNTOFINAL'); }
 		$origen = $ruta . '/' . $archivo;
 		if ( file_exists( $origen ) && !is_dir( $origen ) ) {
 			$txt = file_get_contents( $origen );

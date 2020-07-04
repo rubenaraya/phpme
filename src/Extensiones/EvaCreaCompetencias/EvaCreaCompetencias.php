@@ -60,7 +60,7 @@ class EvaCreaCompetencias extends Instructor
 			$nombre = $base . '_' . strval($this->uid);
 			$opc['info'] = $info;
 			$opc['incluir'] = M::E('RUTA/ME') . '/Recursos/Instructor.xsl';
-			$estilos = M::E('RUTA/SERVICIO') .'/pdf.css';
+			$estilos = M::E('RUTA/FRONTEND') .'/pdf.css';
 			$presentador = new PresentadorXml();
 			$presentador->documento = $this->documento;
 			$presentador->crearVista();

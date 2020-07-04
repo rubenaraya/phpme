@@ -121,7 +121,6 @@ final class M
 		$texto = str_replace('{{rec_elemento}}', M::E('RECURSO/ELEMENTO'), $texto );
 		$texto = str_replace('{{ant_coleccion}}', M::E('ANTECESOR/COLECCION'), $texto );
 		$texto = str_replace('{{ant_elemento}}', M::E('ANTECESOR/ELEMENTO'), $texto );
-		$texto = str_replace('{{m_servicio}}', M::E('M_SERVICIO'), $texto );
 		$texto = str_replace('{{sol_comando}}', M::E('SOLICITUD/COMANDO'), $texto );
 		$texto = str_replace('{{sol_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
 		$texto = str_replace('{{m_idioma}}', M::E('M_IDIOMA'), $texto );
@@ -305,7 +304,7 @@ final class M
 
 	public static function Trazar( $texto, $archivo = '', $ubicacion = '' ) {
 		if ( strlen($archivo)==0 ) { $archivo = 'trazado'; }
-		if ( strlen($ubicacion)==0 ) { $ubicacion = dirname(__DIR__); }
+		if ( strlen($ubicacion)==0 ) { $ubicacion = M::$entorno['RUTA']['RAIZ']; }
 		$ruta = $ubicacion . '/' . $archivo . '.txt';
 		if ( $f = fopen( $ruta, 'a' ) ) {
 			if ( is_array($texto) ) { $texto = print_r( $texto, true ); }
@@ -324,13 +323,13 @@ final class M
 			if ( count($namespace)>1 ) {
 				switch ( $namespace[1] ) {
 					case 'Servicio':
-						$archivo = M::E('RUTA/SERVICIO') . '/' .  $nombre . '.php';
+						$archivo = M::E('RUTA/BACKEND') . '/' .  $nombre . '.php';
 						break;
 					case 'Adaptador':
-						$archivo = M::E('RUTA/SERVICIO') . '/adap/' . $nombre . '.php';
+						$archivo = M::E('RUTA/BACKEND') . '/adap/' . $nombre . '.php';
 						break;
                     case 'Componente':
-                        $archivo = M::E('RUTA/SERVICIO') . '/comp/' . $nombre . '/' . $nombre . '.php';
+                        $archivo = M::E('RUTA/BACKEND') . '/comp/' . $nombre . '/' . $nombre . '.php';
                         break;
                     case 'Extension':
                         $archivo = __DIR__ . '/Extensiones/' . $nombre . '/' . $nombre . '.php';

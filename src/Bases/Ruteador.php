@@ -10,7 +10,12 @@ abstract class Ruteador implements IRuteador
 	public $parametros = array();
 	public $estados = array();
 
-	function __construct() {
+	function __construct( $back = '', $front = '' ) {
+		if ( strlen($back)>0 ) {
+			if ( strlen($front)==0 ) { $front = $back; }
+			M::$entorno['RUTA']['BACKEND'] = str_replace( '\\', '/', $back );
+			M::$entorno['RUTA']['FRONTEND'] = str_replace( '\\', '/', $front );
+		}
         M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', dirname(__DIR__) );
     }
 	function __destruct() {

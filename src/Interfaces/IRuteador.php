@@ -2,7 +2,7 @@
 namespace MasExperto\ME\Interfaces;
 
 interface IRuteador {
-	public function procesarSolicitud( $idiomas );
+	public function procesarSolicitud( $idiomas, $dominio );
 	public function autorizarAcceso( $tipo, $canal );
 	public function verificarRequisitos( $metodos, $entradas );
 	public function cambiarEstado( $datos, $mensaje );

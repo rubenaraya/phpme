@@ -15,9 +15,9 @@ final class PresentadorXml extends Presentador
 		$this->documento = null;
 		if ( strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA');
+				$ruta = M::E('ALMACEN/PRIVADO');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
-					$ruta = M::E('RUTA/SERVICIO');
+					$ruta = M::E('RUTA/BACKEND');
 				}
 			}
 			$doc = $ruta . '/' . $documento;
@@ -63,9 +63,9 @@ final class PresentadorXml extends Presentador
 	public function anexarDocumento( $documento = '', $ruta = '' ) {
 		if ( is_object($this->documento) && strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('RUTA/APP') . '/' . M::E('M_INSTANCIA');
+				$ruta = M::E('ALMACEN/PRIVADO');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
-					$ruta = M::E('RUTA/SERVICIO');
+					$ruta = M::E('RUTA/BACKEND');
 				}
 			}
 			$doc = $ruta . '/' . $documento;
@@ -107,7 +107,6 @@ final class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'rec_elemento', M::E('RECURSO/ELEMENTO') );
 			$xslt->setParameter( '', 'ant_coleccion', M::E('ANTECESOR/COLECCION') );
 			$xslt->setParameter( '', 'ant_elemento', M::E('ANTECESOR/ELEMENTO') );
-			$xslt->setParameter( '', 'm_servicio', M::E('M_SERVICIO') );
 			$xslt->setParameter( '', 'm_servidor', M::E('M_SERVIDOR') );
 			$xslt->setParameter( '', 'sol_comando', M::E('SOLICITUD/COMANDO') );
 			$xslt->setParameter( '', 'sol_operacion', M::E('SOLICITUD/OPERACION') );

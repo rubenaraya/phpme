@@ -8,12 +8,9 @@ use function dgettext;
 
 final class RuteadorHttp extends Ruteador 
 {
-	function __construct( $dir ) {
-        parent::__construct();
+	function __construct( $front = '', $back = '' ) {
+        parent::__construct( $front, $back );
 		$this->campos = &$_POST;
-		M::$entorno['M_SERVICIO'] = basename( $dir );
-		M::$entorno['RUTA']['SERVICIO'] = str_replace( '\\', '/', $dir );
-		M::$entorno['RUTA']['APP'] = str_replace( '\\', '/', dirname( $dir ) );
 		$this->estados['200_OK']			= array(200, '');
 		$this->estados['201_CREATED']		= array(201, '');
 		$this->estados['204_NOCONTENT']		= array(204, '');
@@ -28,10 +25,11 @@ final class RuteadorHttp extends Ruteador
 		$this->estados['500_INTERNALERROR']	= array(500, dgettext('me', 'Error-interno') );
 	}
 
-	public function procesarSolicitud( $idiomas = array( 'es_CL', 'pt_BR', 'en_US' ) ) {
+	public function procesarSolicitud( $idiomas = array( 'es_CL' ), $dominio = 'servicio' ) {
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
         M::$entorno['URL']['PUNTOFINAL'] = M::$entorno['M_SERVIDOR'] . str_replace( '\\', '/', dirname( $_SERVER['SCRIPT_NAME']) );
         M::$entorno['RUTA']['PUNTOFINAL'] = str_replace( '\\', '/', getcwd() );
+        M::$entorno['RUTA']['RAIZ'] = str_replace( '\\', '/', $_SERVER["DOCUMENT_ROOT"] );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
@@ -58,17 +56,9 @@ final class RuteadorHttp extends Ruteador
 		} else {
 			setlocale( LC_ALL, $idioma );
 		}
-		if ( !isset(M::$entorno['M_APP']) ) { M::$entorno['M_APP'] = M::$entorno['M_SERVICIO']; }
-		if ( M::$entorno['M_SERVICIO'] == M::$entorno['M_APP'] ) {
-			M::$entorno['M_SERVICIO'] = 'app';
-		}
-		if ( !isset(M::$entorno['RUTA']['LOCALES']) ) {
-			M::$entorno['RUTA']['LOCALES'] = str_replace('\\', '/', M::$entorno['RUTA']['ME']) . '/Locales';
-		}
-		$dominio = M::$entorno['M_SERVICIO'];
 		bindtextdomain( 'me', M::$entorno['RUTA']['ME'] . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
-		bindtextdomain( $dominio, M::$entorno['RUTA']['LOCALES'] );
+		bindtextdomain( $dominio, M::$entorno['RUTA']['BACKEND'] . '/locales' );
 		bind_textdomain_codeset( $dominio, 'UTF-8' );
 		textdomain( $dominio );
 		M::$entorno['SOLICITUD']['METODO'] = $_SERVER['REQUEST_METHOD'];
