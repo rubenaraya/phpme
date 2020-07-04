@@ -339,7 +339,7 @@ final class GraficadorJp extends Graficador {
 	}
 
 	public static function mostrarEtiqueta( $y, $x ) {
-		$imagen = M::E('ALMACEN/TEMP') . '/im_' . M::E('M_USUARIO') . '_' . strval($x) . '_' . strval($y) . '.png';
+		$imagen = M::E('ALMACEN/PRIVADO') . '/temp/im_' . M::E('M_USUARIO') . '_' . strval($x) . '_' . strval($y) . '.png';
 		if ( file_exists( $imagen ) ) { return array( false, false, false, $imagen, 1 ); }
 		return false;
 	}
@@ -549,7 +549,7 @@ final class GraficadorJp extends Graficador {
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true );
 		}
-		$imagen = M::E('ALMACEN/TEMP') . '/im_' . M::E('M_USUARIO') . '_' . strval($x) . '_' . strval($y) . '.png';
+		$imagen = M::E('ALMACEN/PRIVADO') . '/temp/im_' . M::E('M_USUARIO') . '_' . strval($x) . '_' . strval($y) . '.png';
 		$this->temporales[] = $imagen;
 		imagepng( $img, $imagen );
 		imagedestroy( $img );
@@ -557,7 +557,7 @@ final class GraficadorJp extends Graficador {
 
 	private function _establecerImagen() {
 		if ( strlen($this->grafico['imagen'])==0 ) { $this->grafico['imagen'] = 'g_' . uniqid(); }
-		if ( strlen($this->grafico['ruta'])==0 ) { $this->grafico['ruta'] = M::E('ALMACEN/TEMP'); }
+		if ( strlen($this->grafico['ruta'])==0 ) { $this->grafico['ruta'] = M::E('ALMACEN/PRIVADO') . '/temp'; }
 		if ( substr($this->grafico['imagen'], -4) != '.jpg' ) { $this->grafico['imagen'] .= '.jpg'; }
 		$imagen = $this->grafico['ruta'] . '/' . $this->grafico['imagen'];
 		if ( file_exists( $imagen ) && !is_dir( $imagen ) ) { 

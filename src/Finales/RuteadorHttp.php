@@ -284,13 +284,9 @@ final class RuteadorHttp extends Ruteador
 			$this->parametros = null;
 			if ( $tipo == 'sesion' && M::$entorno['M_SALIDA'] == 'HTML' && isset($_COOKIE) ) {
 				$url = M::E('SOLICITUD/URL');
-				if ( $url == dirname( M::E('URL/LOGIN') ) . '/' ) { $url = ''; }
+				if ( $url == '/' . M::E('M_INSTANCIA') . '/' ) { $url = ''; }
 				$parametros = ( strlen($url)>0 ? '?M_URL=' . $url : '' );
-				if ( strlen(M::E('URL/LOGIN'))>0 ) {
-					$this->Redirigir( M::E('URL/LOGIN') . $parametros );
-				} else {
-					$this->enviarRespuesta();
-				}
+				$this->Redirigir( '/' . M::E('M_INSTANCIA') . '/login.html' . $parametros );
 			} else {
 				$this->enviarRespuesta();
 			}

@@ -750,10 +750,6 @@ final class AlmacenLocal extends Almacen {
 			case Almacen::PUBLICO: 
 				$ruta = $this->rutas['PUBLICO'];
 				break;
-			case Almacen::TEMP:
-			default:
-				$ruta = $this->rutas['TEMP'];
-				break;
 		}
 		return $ruta;
 	}

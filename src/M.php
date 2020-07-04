@@ -125,15 +125,9 @@ final class M
 		$texto = str_replace('{{sol_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
 		$texto = str_replace('{{m_idioma}}', M::E('M_IDIOMA'), $texto );
 		$texto = str_replace('{{m_usuario}}', M::E('M_USUARIO'), $texto );
-		$texto = str_replace('{{dir_almacen}}', M::E('DIR/ALMACEN'), $texto );
-		$texto = str_replace('{{dir_admin}}', M::E('DIR/ADMIN'), $texto );
+		$texto = str_replace('{{m_instancia}}', M::E('M_INSTANCIA'), $texto );
 		$texto = str_replace('{{app_titulo}}', M::E('APP_TITULO'), $texto );
 		$texto = str_replace('{{app_id}}', M::E('APP_ID'), $texto );
-		if ( strlen(M::E('USUARIO/imagen'))>0 ) {
-			$texto = str_replace('{{usu_imagen}}', M::E('DIR/ALMACEN') . M::E('USUARIO/imagen'), $texto );
-		} else {
-			$texto = str_replace('{{usu_imagen}}', '', $texto );
-		}
 		if ( isset(M::$entorno['USUARIO']) ) {
 			foreach ( M::$entorno['USUARIO'] as $clave => $valor ) {
 				$texto = str_replace('{{usu_' . $clave . '}}', $valor, $texto );

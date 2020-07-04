@@ -112,8 +112,7 @@ final class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'sol_operacion', M::E('SOLICITUD/OPERACION') );
 			$xslt->setParameter( '', 'm_idioma', M::E('M_IDIOMA') );
 			$xslt->setParameter( '', 'm_usuario', M::E('M_USUARIO') );
-			$xslt->setParameter( '', 'dir_almacen', M::E('DIR/ALMACEN') );
-			$xslt->setParameter( '', 'dir_admin', M::E('DIR/ADMIN') );
+			$xslt->setParameter( '', 'm_instancia', M::E('M_INSTANCIA') );
 			$xslt->setParameter( '', 'app_titulo', M::E('APP_TITULO') );
 			$xslt->setParameter( '', 'app_id', M::E('APP_ID') );
 			$xslt->setParameter( '', 'hoy_dma', $fecha->format('d-m-Y') );
@@ -133,16 +132,9 @@ final class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'info', $info );
 			$xslt->setParameter( '', 'mensaje', $mensaje );
 			$xslt->setParameter( '', 'uid', M::E('UID') );
-			if ( strlen(M::E('USUARIO/imagen'))>0 ) {
-				$xslt->setParameter( '', 'usu_imagen', M::E('DIR/ALMACEN') . M::E('USUARIO/imagen') );
-			} else {
-				$xslt->setParameter( '', 'usu_imagen', '' );
-			}
 			if ( isset(M::$entorno['USUARIO']) ) {
 				foreach ( M::$entorno['USUARIO'] as $clave => $valor ) {
-					if ( $clave != 'imagen' ) {
-						$xslt->setParameter( '', 'usu_' . $clave, $valor );
-					}
+					$xslt->setParameter( '', 'usu_' . $clave, $valor );
 				}
 			}
 			if ( is_object($this->documento) ) {

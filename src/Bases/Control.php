@@ -75,8 +75,8 @@ abstract class Control implements IControl
 			}
 		}
 		if ( !$comprobacion ) {
-			if ( M::E('M_SALIDA') == 'HTML' && strlen(M::E('URL/LOGIN'))>0 ) {
-				$this->CONTEXTO->Redirigir( M::E('URL/LOGIN') );
+			if ( M::E('M_SALIDA') == 'HTML' ) {
+				$this->CONTEXTO->Redirigir( '/'. M::E('M_INSTANCIA') . '/login.html' );
 			} else {
 				$this->CONTEXTO->enviarError( '401_UNAUTHORIZED' );
 			}

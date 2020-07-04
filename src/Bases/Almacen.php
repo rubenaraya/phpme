@@ -5,7 +5,6 @@ use MasExperto\ME\Interfaces\IAlmacen;
 
 abstract class Almacen implements IAlmacen
 {
-	const TEMP		= 101;
 	const PRIVADO	= 102;
 	const PUBLICO	= 103;
 	const F_JSON	= 201;
