@@ -25,11 +25,13 @@ final class RuteadorHttp extends Ruteador
 		$this->estados['500_INTERNALERROR']	= array(500, dgettext('me', 'Error-interno') );
 	}
 
-	public function procesarSolicitud( $idiomas = array( 'es_CL' ), $dominio = 'servicio' ) {
+	public function procesarSolicitud() {
+		$idiomas = ( isset(M::$entorno['M_IDIOMAS']) && is_array(M::$entorno['M_IDIOMAS']) ? M::$entorno['M_IDIOMAS'] : array( 'es_CL' ) );
+		$traduccion = ( isset(M::$entorno['M_TRADUCCION']) ? M::$entorno['M_TRADUCCION'] : 'servicio' );
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-        M::$entorno['URL']['PUNTOFINAL'] = M::$entorno['M_SERVIDOR'] . str_replace( '\\', '/', dirname( $_SERVER['SCRIPT_NAME']) );
         M::$entorno['RUTA']['PUNTOFINAL'] = str_replace( '\\', '/', getcwd() );
         M::$entorno['RUTA']['RAIZ'] = str_replace( '\\', '/', $_SERVER["DOCUMENT_ROOT"] );
+		M::$entorno['M_PUNTOFINAL'] = M::$entorno['M_SERVIDOR'] . str_replace( M::$entorno['RUTA']['RAIZ'], '', M::$entorno['RUTA']['PUNTOFINAL'] );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
@@ -58,9 +60,9 @@ final class RuteadorHttp extends Ruteador
 		}
 		bindtextdomain( 'me', M::$entorno['RUTA']['ME'] . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
-		bindtextdomain( $dominio, M::$entorno['RUTA']['BACKEND'] . '/locales' );
-		bind_textdomain_codeset( $dominio, 'UTF-8' );
-		textdomain( $dominio );
+		bindtextdomain( $traduccion, M::$entorno['RUTA']['BACKEND'] . '/locales' );
+		bind_textdomain_codeset( $traduccion, 'UTF-8' );
+		textdomain( $traduccion );
 		M::$entorno['SOLICITUD']['METODO'] = $_SERVER['REQUEST_METHOD'];
 		M::$entorno['SOLICITUD']['ACCION'] = M::$entorno['SOLICITUD']['METODO'];
 		$atributos = $this->_analizarUrl( M::$entorno['SOLICITUD']['COMANDO'], M::$entorno['SOLICITUD']['ACCION'] );
@@ -238,8 +240,7 @@ final class RuteadorHttp extends Ruteador
 		exit();
 	}
 
-	public function autorizarAcceso( $tipo = 'sesion', $canal = '*' ) {
-		$autorizado = '';
+	public function revisarCredencial( $canal = '*' ) {
 		$token = '';
 		if ( $canal == '*' ) {
 			if ( isset($_REQUEST['Authorization']) ) { $canal = 'HEADER'; }
@@ -257,29 +258,57 @@ final class RuteadorHttp extends Ruteador
 				$token = $this->_V($this->parametros, 'M');
 				break;
 		}
-		if ( $token != '' ) {
+		return $token;
+	}
+
+	public function comprobarToken( $token, $tipo = 'sesion' ) {
+		$estado = 0;
+		$resultado = 'no-valido';
+		if ( $token == '' ) {
+			$resultado = 'vacio';
+		} else {
 			$partes = explode( '.', $token );
 			if ( count($partes)==3 ) {
 				$valor = json_decode( base64_decode($partes[1]), true );
-				$token2 = ( isset($valor['uid']) && isset($valor['expira']) ? M::generarToken( $tipo, $valor['uid'], $valor['expira'] ) : '' );
-				if ( $token == $token2 ) { 
-					if ( $valor['uid'] != '0' ) {
-						$autorizado = $valor['uid'];
-					}
-					M::$entorno['M_USUARIO'] = $autorizado;
-					M::$entorno['M'] = $token;
-				}
-				if ($autorizado == '') {
-					$this->cambiarEstado( $this->estados['400_BADREQUEST'], dgettext('me', 'Acceso-denegado-llave-no-valida') );
-				} else if ( date('YmdHi') > $valor['expira'] ) {
-					$autorizado = '';
-					$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-llave-expirada') );
+				if ( isset($valor['uid']) && isset($valor['expira']) ) {
+					 if ( date('YmdHi') > $valor['expira'] ) {
+						$resultado = 'expirado';
+					 } else {
+						$token2 = M::generarToken( $tipo, $valor['uid'], $valor['expira'] );
+						if ( $token == $token2 && $valor['uid'] != '0' ) {
+							$resultado = $valor['uid'];
+							$estado = 1;
+						}
+					 }
 				}
 			}
-		} else {
-			$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-no-tiene-llave') );
 		}
-		if ( strlen($autorizado) == 0 ) {
+		return array(
+			'estado' => $estado,
+			'resultado' => $resultado
+		);
+	}
+
+	public function autorizarAcceso( $tipo = 'sesion', $canal = '*' ) {
+		$autorizado = '';
+		$token = $this->revisarCredencial( $canal );
+		$comprobacion = $this->comprobarToken( $token, $tipo );
+		if ( $comprobacion['estado'] == 1 ) {
+			M::$entorno['M_USUARIO'] = $comprobacion['resultado'];
+			M::$entorno['M'] = $token;
+		} else {
+			switch ( $comprobacion['resultado'] ) {
+				case 'vacio': 
+					$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-no-tiene-llave') );
+					break;
+				case 'expirado': 
+					$this->cambiarEstado( $this->estados['401_UNAUTHORIZED'], dgettext('me', 'Acceso-denegado-llave-expirada') );
+					break;
+				case 'no-valido': 
+				default:
+					$this->cambiarEstado( $this->estados['400_BADREQUEST'], dgettext('me', 'Acceso-denegado-llave-no-valida') );
+					break;
+			}
 			$this->campos = null;
 			$this->parametros = null;
 			if ( $tipo == 'sesion' && M::$entorno['M_SALIDA'] == 'HTML' && isset($_COOKIE) ) {

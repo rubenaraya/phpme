@@ -103,23 +103,10 @@ final class PresentadorXml extends Presentador
 			$fecha = new DateTime();
 			$xslt = new XSLTProcessor;
 			$xslt->importStyleSheet( $doc );
-			$xslt->setParameter( '', 'rec_coleccion', M::E('RECURSO/COLECCION') );
-			$xslt->setParameter( '', 'rec_elemento', M::E('RECURSO/ELEMENTO') );
-			$xslt->setParameter( '', 'ant_coleccion', M::E('ANTECESOR/COLECCION') );
-			$xslt->setParameter( '', 'ant_elemento', M::E('ANTECESOR/ELEMENTO') );
-			$xslt->setParameter( '', 'm_servidor', M::E('M_SERVIDOR') );
-			$xslt->setParameter( '', 'sol_comando', M::E('SOLICITUD/COMANDO') );
-			$xslt->setParameter( '', 'sol_operacion', M::E('SOLICITUD/OPERACION') );
-			$xslt->setParameter( '', 'm_idioma', M::E('M_IDIOMA') );
-			$xslt->setParameter( '', 'm_usuario', M::E('M_USUARIO') );
-			$xslt->setParameter( '', 'm_instancia', M::E('M_INSTANCIA') );
-			$xslt->setParameter( '', 'app_titulo', M::E('APP_TITULO') );
-			$xslt->setParameter( '', 'app_id', M::E('APP_ID') );
 			$xslt->setParameter( '', 'hoy_dma', $fecha->format('d-m-Y') );
 			$xslt->setParameter( '', 'hoy_amd', $fecha->format('Y/m/d') );
 			$xslt->setParameter( '', 'hoy_mda', $fecha->format('m-d-Y') );
 			$xslt->setParameter( '', 'hoy_md', $fecha->format('m-d') );
-			$xslt->setParameter( '', 'hoy_hora', $fecha->format('H:i') );
 			$xslt->setParameter( '', 'hoy_mes', $fecha->format('m') );
 			$xslt->setParameter( '', 'hoy_dia', $fecha->format('d') );
 			$xslt->setParameter( '', 'hoy_ano', $fecha->format('Y') );
@@ -131,7 +118,7 @@ final class PresentadorXml extends Presentador
 			$xslt->setParameter( '', 'fondo', $fondo );
 			$xslt->setParameter( '', 'info', $info );
 			$xslt->setParameter( '', 'mensaje', $mensaje );
-			$xslt->setParameter( '', 'uid', M::E('UID') );
+			$xslt->setParameter( '', 'm_uid', M::E('UID') );
 			if ( isset(M::$entorno['USUARIO']) ) {
 				foreach ( M::$entorno['USUARIO'] as $clave => $valor ) {
 					$xslt->setParameter( '', 'usu_' . $clave, $valor );

@@ -13,9 +13,13 @@ abstract class Ruteador implements IRuteador
 	function __construct( $back = '', $front = '' ) {
 		if ( strlen($back)>0 ) {
 			if ( strlen($front)==0 ) { $front = $back; }
-			M::$entorno['RUTA']['BACKEND'] = str_replace( '\\', '/', $back );
-			M::$entorno['RUTA']['FRONTEND'] = str_replace( '\\', '/', $front );
+			M::$entorno['RUTA']['BACKEND'] = $back;
+			M::$entorno['RUTA']['FRONTEND'] = $front;
 		}
+		M::$entorno['RUTA']['BACKEND'] = str_replace( '\\', '/', realpath( M::$entorno['RUTA']['BACKEND'] ) );
+		M::$entorno['RUTA']['FRONTEND'] = str_replace( '\\', '/', realpath( M::$entorno['RUTA']['FRONTEND'] ) );
+		M::$entorno['ALMACEN']['PUBLICO'] = str_replace( '\\', '/', realpath( M::$entorno['ALMACEN']['PUBLICO'] ) );
+		M::$entorno['ALMACEN']['PRIVADO'] = str_replace( '\\', '/', realpath( M::$entorno['ALMACEN']['PRIVADO'] ) );
         M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', dirname(__DIR__) );
     }
 	function __destruct() {

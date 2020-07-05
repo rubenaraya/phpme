@@ -170,6 +170,7 @@ final class AlmacenLocal extends Almacen {
 					$resultado['contenidos'][] = array(
 						'nombre' => $nombre_final, 
 						'absoluta' => "$ruta$carpeta/$nombre_final", 
+						'completa' => str_replace( M::E('RUTA/RAIZ'), '', "$ruta$carpeta/$nombre_final" ), 
 						'relativa' => "$carpeta/$nombre_final", 
 						'ancho' => $ancho_final, 
 						'alto' => $alto_final 

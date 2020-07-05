@@ -117,14 +117,11 @@ final class M
 		$texto = str_replace('{{hoy_dia}}', $fecha->format('d'), $texto );
 		$texto = str_replace('{{hoy_ano}}', $fecha->format('Y'), $texto );
 		$texto = str_replace('{{hoy_per}}', $fecha->format('Ym'), $texto );
-		$texto = str_replace('{{rec_coleccion}}', M::E('RECURSO/COLECCION'), $texto );
-		$texto = str_replace('{{rec_elemento}}', M::E('RECURSO/ELEMENTO'), $texto );
-		$texto = str_replace('{{ant_coleccion}}', M::E('ANTECESOR/COLECCION'), $texto );
-		$texto = str_replace('{{ant_elemento}}', M::E('ANTECESOR/ELEMENTO'), $texto );
-		$texto = str_replace('{{sol_comando}}', M::E('SOLICITUD/COMANDO'), $texto );
-		$texto = str_replace('{{sol_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
+		$texto = str_replace('{{m_operacion}}', M::E('SOLICITUD/OPERACION'), $texto );
 		$texto = str_replace('{{m_idioma}}', M::E('M_IDIOMA'), $texto );
 		$texto = str_replace('{{m_usuario}}', M::E('M_USUARIO'), $texto );
+		$texto = str_replace('{{m_servidor}}', M::E('M_SERVIDOR'), $texto );
+		$texto = str_replace('{{m_puntofinal}}', M::E('M_PUNTOFINAL'), $texto );
 		$texto = str_replace('{{m_instancia}}', M::E('M_INSTANCIA'), $texto );
 		$texto = str_replace('{{app_titulo}}', M::E('APP_TITULO'), $texto );
 		$texto = str_replace('{{app_id}}', M::E('APP_ID'), $texto );

@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" encoding="utf-8" indent="yes" />
-		<xsl:param name="sol_operacion"/>
-		<xsl:param name="m_servidor"/>
-		<xsl:param name="m_instancia"/>
-		<xsl:param name="ant_elemento"/>
-		<xsl:param name="rec_elemento"/>
-		<xsl:param name="rec_coleccion"/>
-		<xsl:param name="usu_alias"/>
-		<xsl:param name="usu_imagen"/>
-		<xsl:param name="hoy_dma"/>
-		<xsl:param name="hoy_hora"/>
-		<xsl:param name="hoy_mes"/>
-		<xsl:param name="hoy_dia"/>
-		<xsl:param name="hoy_ano"/>
-		<xsl:param name="uid"/>
-		<xsl:param name="mensaje"/>
-		<xsl:param name="seccion"/>
-		<xsl:param name="clase"/>
-		<xsl:param name="info"/>
-		<xsl:param name="vista"/>
-		<xsl:param name="pagina"/>
+		<xsl:param name="vista" />
 
 	<xsl:template name="funciones_instructor">
 		<script type="text/javascript">
@@ -397,10 +378,10 @@
 								<td>
 									<xsl:choose>
 										<xsl:when test="$vista='pdf'">
-											<img src="{$m_servidor}/app/publico/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+											<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 										</xsl:when>
 										<xsl:otherwise>
-											<img src="publico/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+											<img src="/web/img/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 										</xsl:otherwise>
 									</xsl:choose>
 								</td>
@@ -438,10 +419,10 @@
 							<td>
 								<xsl:choose>
 									<xsl:when test="$vista='pdf'">
-										<img src="{$m_servidor}/app/publico/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+										<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 									</xsl:when>
 									<xsl:otherwise>
-										<img src="publico/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+										<img src="/web/img/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</td>
@@ -481,10 +462,10 @@
 										<td>
 											<xsl:choose>
 												<xsl:when test="$vista='pdf'">
-													<img src="{$m_servidor}/app/publico/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+													<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 												</xsl:when>
 												<xsl:otherwise>
-													<img src="publico/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+													<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 												</xsl:otherwise>
 											</xsl:choose>
 										</td>
@@ -527,10 +508,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{$m_servidor}/app/publico/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="publico/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -553,10 +534,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{$m_servidor}/app/publico/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="publico/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -579,10 +560,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{$m_servidor}/app/publico/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="publico/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
