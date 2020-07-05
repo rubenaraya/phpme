@@ -10,6 +10,7 @@ interface IAlmacen {
 	public function abrirArchivo( $ubicacion );
 	public function guardarArchivo( $destino, $contenido, $opciones );
 	public function borrarArchivos( $lista );
+	public function crearCarpeta( $ruta );
 	public function copiarCarpetas( $origen, $destino );
 	public function borrarCarpetas( $origen, $quitar );
 	public function explorarCarpeta( $origen, $carpeta, $opciones );

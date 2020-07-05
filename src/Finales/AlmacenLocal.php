@@ -481,6 +481,18 @@ final class AlmacenLocal extends Almacen {
 		return $resultado;
 	}
 
+	public function crearCarpeta( $ruta ) {
+		$resultado = false;
+		if ( is_dir($ruta)==false && is_dir(dirname($ruta)) ) {
+			@mkdir($ruta);
+			if ( is_dir($ruta) ) {
+				chmod( $ruta, 0775 );
+				$resultado = true;
+			}
+		}
+		return $resultado;
+	}
+
 	public function borrarCarpetas( $origen, $quitar = false ) {
 		$resultado = false;
 		if ( substr($origen, -1) == '/' ) {
