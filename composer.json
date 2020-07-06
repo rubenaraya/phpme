@@ -2,12 +2,13 @@
     "name": "masexperto/phpme",
     "type": "library",
     "description": "Kit de desarrollo para aplicaciones y servicios REST / WEB en PHP",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
       "mpdf/mpdf": "8.0",
       "phpmailer/phpmailer": "6.0",
       "codeplex/phpexcel": "^1.7",
-      "jpgraph/jpgraph": "^4.2",
+      "jpgraph/jpgraph": "^4.0",
+      "guzzlehttp/guzzle": "7.0.1",
       "ext-json": "*",
       "ext-gettext": "*",
       "ext-simplexml": "*",
@@ -17,7 +18,7 @@
       "ext-gd": "*",
       "ext-zip": "*",
       "ext-libxml": "*",
-      "ext-mysqli": "*"
+      "ext-mysqli": "*",
     },
     "autoload": {
         "psr-4": {
