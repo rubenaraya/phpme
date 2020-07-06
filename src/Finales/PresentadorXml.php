@@ -11,11 +11,43 @@ use XSLTProcessor;
 final class PresentadorXml extends Presentador
 {
 
-	public function crearVista( $documento = '', $ruta = '' ) {
+    public function abrirPlantilla( $archivo, $ruta = '', $reemplazar = true ) {
+        $txt = '';
+        if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/PUNTOFINAL'); }
+        $origen = $ruta . '/' . $archivo;
+        if ( file_exists( $origen ) && !is_dir( $origen ) ) {
+            $txt = file_get_contents( $origen );
+            if ($reemplazar) {
+                foreach ( M::$entorno as $nombre => $valor ) {
+                    if ( !is_array($valor) ) {
+                        $txt = str_replace( '{{'. $nombre .'}}', htmlspecialchars( $valor, ENT_COMPAT, 'UTF-8'), $txt );
+                    } else {
+                        foreach ( $valor as $nombre2 => $valor2 ) {
+                            if ( !is_array($valor2) ) {
+                                $txt = str_replace( '{{'. $nombre . '/' . $nombre2 .'}}', htmlspecialchars( $valor2, ENT_COMPAT, 'UTF-8'), $txt );
+                            }
+                        }
+                    }
+                }
+                $exp = '~\(\((.*?)\)\)~';
+                preg_match_all( $exp, $txt, $coincidencias );
+                if ( isset($coincidencias[1]) ) {
+                    foreach ( $coincidencias[1] as $indice => $valor ) {
+                        $reemp = _($valor);
+                        $txt = str_replace( '(('. $valor . '))', $reemp, $txt );
+                    }
+                }
+                $txt = M::reemplazarEtiquetas( $txt );
+            }
+        }
+        return $txt;
+    }
+
+    public function crearVista( $documento = '', $ruta = '' ) {
 		$this->documento = null;
 		if ( strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('ALMACEN/PRIVADO');
+				$ruta = M::E('ALMACEN/PRIVADO') . '/doc';
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/BACKEND');
 				}
@@ -63,7 +95,7 @@ final class PresentadorXml extends Presentador
 	public function anexarDocumento( $documento = '', $ruta = '' ) {
 		if ( is_object($this->documento) && strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('ALMACEN/PRIVADO');
+				$ruta = M::E('ALMACEN/PRIVADO') . '/doc';
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/BACKEND');
 				}
@@ -89,7 +121,7 @@ final class PresentadorXml extends Presentador
 		$clase = ( isset($opciones['clase']) ? $opciones['clase'] : '' );
 		$mensaje = ( isset($opciones['mensaje']) ? $opciones['mensaje'] : '' );
 		$incluir = ( isset($opciones['incluir']) ? $opciones['incluir'] : '' );
-		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/PUNTOFINAL'); }
+		if ( strlen($ruta)==0 ) { $ruta = M::E('RUTA/FRONTEND'); }
 		$archivo = $ruta . '/' . $plantilla;
 		if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
 			$doc = new DOMDocument( '1.0', 'utf-8' );
@@ -156,7 +188,7 @@ final class PresentadorXml extends Presentador
 		return $txt;
 	}
 
-	public function anexarResultados($dto ) {
+	public function anexarResultados( $dto ) {
 		if ( is_object($this->documento) ) {
 			if ( is_object($dto) ) {
 				foreach ( $dto->resultados as $etiqueta => $matriz ) {

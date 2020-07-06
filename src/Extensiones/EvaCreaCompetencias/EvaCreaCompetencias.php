@@ -64,7 +64,7 @@ class EvaCreaCompetencias extends Instructor
 			$presentador = new PresentadorXml();
 			$presentador->documento = $this->documento;
 			$presentador->crearVista();
-			$presentador->anexarResultados( $this->dto );
+			$presentador->anexarResultados( $this->modelo->dto );
 			$presentador->anexarMetadatos( $this->modelo->D );
 			$presentador->anexarMetadatos( $this->modelo->A, 'a' );
 			$contenido = $presentador->Transformar( $this->vista, $this->ruta['xsl'], $opc );

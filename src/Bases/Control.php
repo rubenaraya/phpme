@@ -36,7 +36,7 @@ abstract class Control implements IControl
 		$comprobacion = true;
 		$autorizados = '';
 		if ( strlen($roles)==0 ) { $comprobacion = false; }
-		if ( strlen($esquema)==0 ) { $esquema = 'Permisos.xml'; }
+		if ( strlen($esquema)==0 ) { $esquema = 'permisos.xml'; }
 		if ( strlen($operacion)==0 ) { $operacion = $this->operacion; }
 		if ( $comprobacion ) {
 			$credenciales = explode( ',', trim($roles, ',') );
@@ -44,7 +44,7 @@ abstract class Control implements IControl
 			else {
 				$comprobacion = false;
 				if ( !is_object( $this->esquema ) ) {
-					$doc = M::E('ALMACEN/PRIVADO') . '/' . $esquema;
+					$doc = M::E('ALMACEN/PRIVADO') . '/doc/' . $esquema;
 					if ( !file_exists( $doc ) || is_dir( $doc ) ) {
 						$doc = M::E('RUTA/BACKEND') . '/' . $esquema;
 					}

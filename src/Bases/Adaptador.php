@@ -6,7 +6,6 @@ use MasExperto\ME\Interfaces\IAdaptador;
 abstract class Adaptador implements IAdaptador
 {
 	protected $modelo = null;
-	protected $dto = null;
 	protected $uid;
 	public $objeto;
 	public $clase;
@@ -22,11 +21,10 @@ abstract class Adaptador implements IAdaptador
 
 	function __construct() {}
 	function __destruct() {
-		unset($this->modelo, $this->dto, $this->sql, $this->T, $this->I, $this->D, $this->A, $this->R);
+		unset($this->modelo, $this->sql, $this->T, $this->I, $this->D, $this->A, $this->R);
 	}
-	public function reemplazarMetadatos( $uid, &$dto, &$modelo ) {
+	public function reemplazarMetadatos( $uid, &$modelo ) {
 		$this->uid = $uid;
-		$this->dto = &$dto;
 		$this->modelo = &$modelo;
 		$this->modelo->R = $this->R;
 		if ( count($this->T)>0 ) { $this->modelo->T = $this->T; }
@@ -36,9 +34,8 @@ abstract class Adaptador implements IAdaptador
 		if ( count($this->sql)>0 ) { $this->modelo->sql = array_replace($this->modelo->sql, $this->sql); }
 		$this->cambiarValores();
 	}
-	public function combinarMetadatos( $uid, &$dto, &$modelo ) {
+	public function combinarMetadatos( $uid, &$modelo ) {
 		$this->uid = $uid;
-		$this->dto = &$dto;
 		$this->modelo = &$modelo;
 		$this->modelo->R = $this->R;
 		$this->modelo->T = array_replace($this->modelo->T, $this->T);
@@ -53,11 +50,11 @@ abstract class Adaptador implements IAdaptador
 		$mensaje = '';
 		foreach ( $this->modelo->A as $nombre => $valor ) {
 			if ( substr_count( ','.$valor['validar'].',', ','.$info.',' )>0 ) {
-				$validacion = $this->modelo->Validar( $nombre, $this->dto->get($nombre) );
+				$validacion = $this->modelo->Validar( $nombre, $this->modelo->dto->get($nombre) );
 				$mensaje .= $validacion['mensaje'];
 				$estado = ( $validacion['estado'] == 0 ? -1 : $estado );
 				if ( $estado ) {
-					$this->dto->getset( $nombre );
+					$this->modelo->dto->getset( $nombre );
 				}
 			}
 		}
