@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "926598f4f0d1bb0528a0ad975bba8f31",
+    "content-hash": "a7cc8cc5667c1b28da0b62ff17c9c1c1",
     "packages": [
         {
             "name": "codeplex/phpexcel",
