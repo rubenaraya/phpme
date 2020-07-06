@@ -18,7 +18,7 @@
       "ext-gd": "*",
       "ext-zip": "*",
       "ext-libxml": "*",
-      "ext-mysqli": "*",
+      "ext-mysqli": "*"
     },
     "autoload": {
         "psr-4": {
