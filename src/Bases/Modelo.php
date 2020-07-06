@@ -9,6 +9,7 @@ abstract class Modelo implements IModelo
 	protected $temp = array();
 	protected $entidad = '';
 	protected $tabla = '';
+    public $dto = null;
 	public $bd = null;
 	public $almacen = null;
 	public $T = array();
@@ -19,7 +20,7 @@ abstract class Modelo implements IModelo
 	public $R = array();
 	public $sql = array();
 
-	function __construct() {
+	function __construct( &$dto ) {
 		$bd = M::E('CONECTOR/BD');
 		$alm = M::E('CONECTOR/ALMACEN');
 		$conector = ( strlen($bd)>0 ? $bd : '\MasExperto\ME\Finales\BaseDatosMysql');
@@ -27,9 +28,11 @@ abstract class Modelo implements IModelo
 		$conector = ( strlen($alm)>0 ? $alm : '\MasExperto\ME\Finales\AlmacenLocal');
 		$this->almacen = new $conector;
 		$this->almacen->Conectar( M::E('ALMACEN') );
+        $this->dto = &$dto;
 	}
 	function __destruct() {
 		unset($this->bd);
+        unset($this->dto);
 		unset($this->almacen);
 		unset($this->temp);
 		unset($this->sql);
@@ -41,18 +44,18 @@ abstract class Modelo implements IModelo
 		unset($this->R);
 	}
 
-    public function Cotejar( &$dto, $caso = '' ) {
+    public function Cotejar( $caso = '' ) {
         $estado = 0;
         $mensaje = '';
         if ( strlen($caso)>0 ) {
             $estado = 1;
             foreach ( $this->A as $nombre => $valor ) {
                 if ( substr_count( ','.$valor['validar'].',', ','.$caso.',' )>0 ) {
-                    $validacion = $this->Validar( $nombre, $dto->get($nombre) );
+                    $validacion = $this->Validar( $nombre, $this->dto->get($nombre) );
                     $mensaje .= $validacion['mensaje'];
                     $estado = ( $validacion['estado'] == 0 ? 0 : $estado );
                     if ( $estado ) {
-                        $dto->getset( $nombre );
+                        $this->dto->getset( $nombre );
                     } else {
                         break;
                     }
@@ -145,17 +148,16 @@ abstract class Modelo implements IModelo
 		if ( strlen($nombre)>0 ) { $nombre = $nombre . '.'; }
 		return 'M.' . $nombre . 'A = ' . json_encode($this->A) . '; M.' . $nombre . 'I = ' . json_encode($this->I);
 	}
-	public function Consultar( &$dto ) {}
-	public function Nuevo( &$dto ) {}
-	public function Agregar( &$dto ) {}
-	public function Abrir( &$dto ) {}
-	public function Editar( &$dto ) {}
-	public function Borrar( &$dto ) {}
-	public function Cambiar( &$dto ) {}
-	public function Imagen( &$dto ) {}
-	public function Archivo( &$dto ) {}
-	public function Refrescar( &$dto ) {}
-	public function Registrar( &$dto ) {}
-	public function Ver( &$dto ) {}
-	public function Exportar( &$dto ) {}
+	public function Consultar() {}
+	public function Nuevo() {}
+	public function Agregar() {}
+	public function Abrir() {}
+	public function Editar() {}
+	public function Borrar() {}
+	public function Cambiar() {}
+	public function Imagen() {}
+	public function Archivo() {}
+	public function Refrescar() {}
+	public function Registrar() {}
+	public function Ver() {}
 }

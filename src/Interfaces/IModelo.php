@@ -3,19 +3,18 @@ namespace MasExperto\ME\Interfaces;
 
 interface IModelo {
 	public function Atributos( $nombre );
-	public function Consultar( &$dto );
-	public function Nuevo( &$dto );
-	public function Agregar( &$dto );
-	public function Abrir( &$dto );
-	public function Editar( &$dto );
-	public function Borrar( &$dto );
-	public function Cambiar( &$dto );
-	public function Imagen( &$dto );
-	public function Archivo( &$dto );
-	public function Refrescar( &$dto );
-	public function Registrar( &$dto );
-	public function Ver( &$dto );
-	public function Exportar( &$dto );
-    public function Cotejar( &$dto, $caso );
+	public function Consultar();
+	public function Nuevo();
+	public function Agregar();
+	public function Abrir();
+	public function Editar();
+	public function Borrar();
+	public function Cambiar();
+	public function Imagen();
+	public function Archivo();
+	public function Refrescar();
+	public function Registrar();
+	public function Ver();
+    public function Cotejar( $caso );
     public function Validar( $nombre, $valor );
 }

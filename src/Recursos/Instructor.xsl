@@ -310,7 +310,7 @@
 					</xsl:variable>
 					<tr>
 						<td><xsl:value-of select="$etiqueta" /></td>
-						<td class="total"><xsl:value-of select="format-number( $fila/total, '#.##0')" /></td>
+						<td class="total"><xsl:value-of select="format-number( number($fila/total), '#.##0')" /></td>
 						<td class="valor"><xsl:value-of select="format-number( $fila/porcentaje div 100, '#.##0%')" /></td>
 						<xsl:for-each select="$columnas/segmento[contains( concat(',',$visibles,','), concat(',',@valor,',') )]">
 							<xsl:variable name="id" select="@id" />
@@ -374,14 +374,14 @@
 							<tr>
 								<td><xsl:value-of select="$texto" /></td>
 								<td class="text-center"><xsl:value-of select="$cuenta" /></td>
-								<td class="text-center"><xsl:value-of select="format-number($porcen, '#.##0,0')" />%</td>
+								<td class="text-center"><xsl:value-of select="format-number(number($porcen), '#.##0,0')" />%</td>
 								<td>
 									<xsl:choose>
 										<xsl:when test="$vista='pdf'">
 											<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 										</xsl:when>
 										<xsl:otherwise>
-											<img src="/web/img/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+											<img src="/web/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 										</xsl:otherwise>
 									</xsl:choose>
 								</td>
@@ -415,14 +415,14 @@
 						<tr>
 							<td><xsl:value-of select="$texto" /></td>
 							<td class="text-center"><xsl:value-of select="$cuenta" /></td>
-							<td class="text-center"><xsl:value-of select="format-number($porcen, '#.##0,0')" />%</td>
+							<td class="text-center"><xsl:value-of select="format-number(number($porcen), '#.##0,0')" />%</td>
 							<td>
 								<xsl:choose>
 									<xsl:when test="$vista='pdf'">
 										<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 									</xsl:when>
 									<xsl:otherwise>
-										<img src="/web/img/v.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+										<img src="/web/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</td>
@@ -504,14 +504,14 @@
 												<tr>
 													<td><xsl:value-of select="$texto" /></td>
 													<td class="text-center"><xsl:value-of select="$cuenta" /></td>
-													<td class="text-center"><xsl:value-of select="format-number($porcen, '#.##0,0')" />%</td>
+													<td class="text-center"><xsl:value-of select="format-number(number($porcen), '#.##0,0')" />%</td>
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
 																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -530,14 +530,14 @@
 												<tr>
 													<td><xsl:value-of select="$texto" /></td>
 													<td class="text-center"><xsl:value-of select="$cuenta" /></td>
-													<td class="text-center"><xsl:value-of select="format-number($porcen, '#.##0,0')" />%</td>
+													<td class="text-center"><xsl:value-of select="format-number(number($porcen), '#.##0,0')" />%</td>
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
 																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -556,14 +556,14 @@
 												<tr>
 													<td><xsl:value-of select="$texto" /></td>
 													<td class="text-center"><xsl:value-of select="$cuenta" /></td>
-													<td class="text-center"><xsl:value-of select="format-number($porcen, '#.##0,0')" />%</td>
+													<td class="text-center"><xsl:value-of select="format-number(number($porcen), '#.##0,0')" />%</td>
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
 																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
