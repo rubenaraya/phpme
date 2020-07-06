@@ -156,7 +156,7 @@ final class PresentadorXml extends Presentador
 		return $txt;
 	}
 
-	public function anexarDatos( $dto ) {
+	public function anexarResultados($dto ) {
 		if ( is_object($this->documento) ) {
 			if ( is_object($dto) ) {
 				foreach ( $dto->resultados as $etiqueta => $matriz ) {
@@ -172,11 +172,11 @@ final class PresentadorXml extends Presentador
 		}
 	}
 
-	public function anexarMatriz( $datos, $etiqueta = 'd' ) {
+	public function anexarMetadatos( $matriz, $etiqueta = 'd' ) {
 		if ( is_object($this->documento) ) {
-			if ( is_array($datos) ) {
+			if ( is_array($matriz) ) {
 				$resultado = simplexml_load_string( '<' . $etiqueta . ' />' );
-				$this->_exportarValorXml( $datos, $resultado ); 
+				$this->_exportarValorXml( $matriz, $resultado );
 				$origen = dom_import_simplexml( $resultado );
 				$destino = dom_import_simplexml( $this->documento );
 				$destino->appendChild( $destino->ownerDocument->importNode( $origen, true ) );

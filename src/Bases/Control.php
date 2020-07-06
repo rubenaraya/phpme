@@ -7,7 +7,7 @@ use MasExperto\ME\M;
 
 abstract class Control implements IControl
 {
-	protected $CONTEXTO = null;
+	protected $ruteador = null;
 	protected $DTO = null;
 	protected $operacion = '';
 	protected $esquema = null;
@@ -15,19 +15,19 @@ abstract class Control implements IControl
 	function __construct() {}
 	function __destruct() {
 		$this->DTO = null;
-		$this->CONTEXTO = null;
+		$this->ruteador = null;
 		unset($this->DTO);
-		unset($this->CONTEXTO);
+		unset($this->ruteador);
 		unset($this->esquema);
 	}
 
 	public function ejecutarOperacion() {}
 
-	public function inyectarContexto( &$ruteador ) {
-		$this->CONTEXTO = &$ruteador;
+	public function Iniciar( &$ruteador ) {
+		$this->ruteador = &$ruteador;
 		$this->DTO = new Dto();
-		$this->DTO->campos = &$this->CONTEXTO->campos;
-		$this->DTO->parametros = &$this->CONTEXTO->parametros;
+		$this->DTO->campos = &$this->ruteador->campos;
+		$this->DTO->parametros = &$this->ruteador->parametros;
 		$this->operacion = M::E('SOLICITUD/OPERACION');
 		return;
 	}
@@ -76,9 +76,9 @@ abstract class Control implements IControl
 		}
 		if ( !$comprobacion ) {
 			if ( M::E('M_SALIDA') == 'HTML' ) {
-				$this->CONTEXTO->Redirigir( '/'. M::E('M_INSTANCIA') . '/login.html' );
+				$this->ruteador->Redirigir( M::E('M_PUNTOFINAL') . '/login.html' );
 			} else {
-				$this->CONTEXTO->enviarError( '401_UNAUTHORIZED' );
+				$this->ruteador->enviarError( '401_UNAUTHORIZED' );
 			}
 		}
 		return;

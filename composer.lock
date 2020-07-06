@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9134581fdf668cf5d9c027ef39b0adbc",
+    "content-hash": "c4d17c029e535c8612aa993603fcf432",
     "packages": [
         {
             "name": "codeplex/phpexcel",
@@ -59,16 +59,16 @@
         },
         {
             "name": "jpgraph/jpgraph",
-            "version": "4.0.2",
+            "version": "4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ztec/JpGraph.git",
-                "reference": "e82db7da6a546d3926c24c9a346226da7aa49094"
+                "reference": "674f761543d9af114897d32cfd88ea4fe806bfb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ztec/JpGraph/zipball/e82db7da6a546d3926c24c9a346226da7aa49094",
-                "reference": "e82db7da6a546d3926c24c9a346226da7aa49094",
+                "url": "https://api.github.com/repos/ztec/JpGraph/zipball/674f761543d9af114897d32cfd88ea4fe806bfb7",
+                "reference": "674f761543d9af114897d32cfd88ea4fe806bfb7",
                 "shasum": ""
             },
             "type": "library",
@@ -96,7 +96,7 @@
                 "pie"
             ],
             "abandoned": true,
-            "time": "2017-02-23T09:44:15+00:00"
+            "time": "2017-03-29T23:34:57+00:00"
         },
         {
             "name": "mpdf/mpdf",
@@ -435,7 +435,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,

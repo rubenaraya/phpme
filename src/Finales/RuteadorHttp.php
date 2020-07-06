@@ -218,7 +218,7 @@ final class RuteadorHttp extends Ruteador
 		);
 	}
 
-	public function controlarCache( $minutos = 0 ) {
+	public function guardarCache($minutos = 0 ) {
 		if ( M::E('M_ESTADO') < 400 ) {
 			if ( $minutos > 0 ) {
 				header( 'Cache-Control: public, max-age='. $minutos * 60 .'' );
@@ -313,9 +313,9 @@ final class RuteadorHttp extends Ruteador
 			$this->parametros = null;
 			if ( $tipo == 'sesion' && M::$entorno['M_SALIDA'] == 'HTML' && isset($_COOKIE) ) {
 				$url = M::E('SOLICITUD/URL');
-				if ( $url == '/' . M::E('M_INSTANCIA') . '/' ) { $url = ''; }
+				if ( $url == M::E('M_PUNTOFINAL') . '/' ) { $url = ''; }
 				$parametros = ( strlen($url)>0 ? '?M_URL=' . $url : '' );
-				$this->Redirigir( '/' . M::E('M_INSTANCIA') . '/login.html' . $parametros );
+				$this->Redirigir( M::E('M_PUNTOFINAL') . '/login.html' . $parametros );
 			} else {
 				$this->enviarRespuesta();
 			}

@@ -32,9 +32,9 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$opc['incluir'] = M::E('RUTA/ME') . '/Recursos/Instructor.xsl';
 		$presentador = new PresentadorXml();
 		$presentador->crearVista( $this->esquema, $this->ruta['xml'] );
-		$presentador->anexarDatos( $this->dto );
-		$presentador->anexarMatriz( $this->modelo->D );
-		$presentador->anexarMatriz( $this->modelo->A, 'a' );
+		$presentador->anexarResultados( $this->dto );
+		$presentador->anexarMetadatos( $this->modelo->D );
+		$presentador->anexarMetadatos( $this->modelo->A, 'a' );
 		$contenido = $presentador->Transformar( $this->vista, $this->ruta['xsl'], $opc );
 		if ( strlen($contenido)>0 ) {
 			$estado = 1;
@@ -323,7 +323,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		if ( $estado == 1 ) {
 			$presentador = new PresentadorXml();
 			$presentador->crearVista( $this->clase.'.xml', $this->ruta );
-			$presentador->anexarDatos( $this->dto );
+			$presentador->anexarResultados( $this->dto );
 			$this->documento = $presentador->documento;
 			$colores = $this->documento->xpath( "//cuestionario/colores" );
 			if ( count($colores)>0 ) {

@@ -2,7 +2,7 @@
 namespace MasExperto\ME\Interfaces;
 
 interface IControl {
-	public function inyectarContexto( &$ruteador );
+	public function Iniciar( &$ruteador );
 	public function ejecutarOperacion();
 	public function cargarPerfil( $id );
 	public function guardarPerfil( $id, $datos, $etiqueta );
