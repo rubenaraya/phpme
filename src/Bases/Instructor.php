@@ -371,11 +371,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$cfg['estilos'] = M::E('RUTA/FRONTEND').'/pdf.css';
 			$guardar = $this->modelo->almacen->guardarArchivo( Almacen::PRIVADO, $contenido, $cfg );
 			$estado = $guardar['estado'];
-			if ( M::E('M_MODO')=='PRUEBA' ) {
-				$this->documento->asXML( M::E('RUTA/RAIZ') . '/' . M::E('M_INSTANCIA') . '/publico/temp/prueba-'.$this->uid . '.xml' );
-			} else {
-				$this->modelo->almacen->borrarArchivos( $this->temp );
-			}
+            $this->modelo->almacen->borrarArchivos( $this->temp );
 		}
 		if ( $estado == 1 ) {
 			$mensaje = $this->T['informe-impreso'];
@@ -412,7 +408,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 					$cfg['seleccion'] = explode(',', $seleccion);
 				}
 			}
-			$cfg['ruta'] = M::E('RUTA/RAIZ') . '/' . M::E('M_INSTANCIA') . '/publico/temp';
+			$cfg['ruta'] = M::E('ALMACEN/PUBLICO') . '/temp';
 			$cfg['imagen'] = strval($this->uid).'-'.$gid.'.jpg';
 			$cfg['ancho'] = (string) $grafico['ancho'];
 			$cfg['alto'] = (string) $grafico['alto'];

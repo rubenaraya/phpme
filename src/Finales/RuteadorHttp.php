@@ -31,7 +31,7 @@ final class RuteadorHttp extends Ruteador
 		M::$entorno['M_SERVIDOR'] = ( $this->_V($_SERVER, 'HTTPS')=='on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
         M::$entorno['RUTA']['PUNTOFINAL'] = str_replace( '\\', '/', getcwd() );
         M::$entorno['RUTA']['RAIZ'] = str_replace( '\\', '/', $_SERVER["DOCUMENT_ROOT"] );
-		M::$entorno['M_PUNTOFINAL'] = M::$entorno['M_SERVIDOR'] . str_replace( M::$entorno['RUTA']['RAIZ'], '', M::$entorno['RUTA']['PUNTOFINAL'] );
+		M::$entorno['M_PUNTOFINAL'] = str_replace( M::$entorno['RUTA']['RAIZ'], '', M::$entorno['RUTA']['PUNTOFINAL'] );
 		M::$entorno['SOLICITUD']['URL'] = ( $this->_V($_SERVER, 'REDIRECT_URL')!='' ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 		M::$entorno['SOLICITUD']['COMANDO'] = $this->_V($_REQUEST, 'PATH_INFO');
 		$url = parse_url( $_SERVER['REQUEST_URI'] );
