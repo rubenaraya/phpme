@@ -23,7 +23,8 @@ abstract class Adaptador implements IAdaptador
 		$this->ruta['xml'] = '';
 		$this->ruta['xsl'] = '';
 		$this->esquema = '';
-		$this->vista = '';
+        $this->vista = '';
+        $this->objeto = '';
 	}
 	function __destruct() {
 		unset($this->modelo, $this->sql, $this->T, $this->I, $this->D, $this->A, $this->R);

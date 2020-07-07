@@ -1,6 +1,7 @@
 <?php
 namespace MasExperto\ME\Bases;
 
+use MasExperto\ME\Finales\Dto;
 use MasExperto\ME\Interfaces\IModelo;
 use MasExperto\ME\M;
 
@@ -111,7 +112,7 @@ abstract class Modelo implements IModelo
 				$total = 0;
 				if ( is_array($valor) ) {
 					$total = count( $valor );
-				} else if ( strlen($valor)>0 ) {
+				} else if ( strlen(strval($valor))>0 ) {
 					$total = 1;
 				}
 				if ( $max > 0 && $total >= $min && $total <= $max ) { $estado = 1; }
@@ -179,7 +180,6 @@ abstract class Modelo implements IModelo
 	}
 	public function Borrar() {
 		$estado = 0;
-		$mensaje = '';
 		$this->dto->set( 'id', M::E('RECURSO/ELEMENTO') );
 		if ( isset($this->sql['borrar']) ) {
 			$this->bd->Conectar( M::E('BD/1'), $this->dto );
@@ -203,7 +203,6 @@ abstract class Modelo implements IModelo
 	}
 	public function Registrar() {
 		$estado = 0;
-		$mensaje = '';
 		$this->dto->set( 'id', M::E('RECURSO/ELEMENTO') );
 		$valor = $this->dto->getset( 'valor' );
 		if ( isset($this->sql['registrar']) && strlen($valor)>0 ) {
@@ -224,7 +223,6 @@ abstract class Modelo implements IModelo
 	}
 	public function Agregar() {
 		$estado = 0;
-		$mensaje = '';
 		$uid = '';
 		if ( isset($this->sql['agregar']) ) {
 			$this->bd->Conectar( M::E('BD/1'), $this->dto );
@@ -246,7 +244,6 @@ abstract class Modelo implements IModelo
 	}
 	public function Editar() {
 		$estado = 0;
-		$mensaje = '';
 		$this->dto->set( 'id', M::E('RECURSO/ELEMENTO') );
 		if ( isset($this->sql['editar']) ) {
 			$this->bd->Conectar( M::E('BD/1'), $this->dto );
@@ -290,9 +287,9 @@ abstract class Modelo implements IModelo
 	public function Abrir() {
 		$estado = 0;
 		$mensaje = '';
-		$this->bd->Conectar( M::E('BD/1'), $this->dto );
 		$this->dto->set( 'id', M::E('RECURSO/ELEMENTO') );
 		if ( isset($this->sql['abrir']) ) {
+			$this->bd->Conectar( M::E('BD/1'), $this->dto );
 			$sql = $this->bd->reemplazarValores( $this->sql['abrir'] );
 			$respuesta = $this->bd->consultarElemento( $sql, 'caso', false );
 			$estado = ( $respuesta['estado']==1 && $respuesta['total']==1 ? 1 : 0 );
@@ -309,10 +306,6 @@ abstract class Modelo implements IModelo
 					if ( is_dir($adaptador->ruta['xml']) ) {
 						$this->dto->set('esquema', $adaptador->esquema, 'valor');
 						$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
-					}
-					if ( is_dir($adaptador->ruta['xsl']) ) {
-						$this->dto->set('vista', $adaptador->vista, 'valor');
-						$this->dto->set('rutaxsl', $adaptador->ruta['xsl'], 'valor');
 					}
 				}
 			}
@@ -334,7 +327,7 @@ abstract class Modelo implements IModelo
 	public function Consultar() {
 		$estado = 0;
 		$mensaje = '';
-		$this->dto->traspasarPeticion(1);
+		$this->dto->traspasarPeticion(Dto::T_PARAMETROS);
 		$this->dto->set( 'leyenda', $this->T['leyenda-lista'], 'valor' );
 		$this->dto->set( 'leyenda2', $this->T['leyenda-vacia'], 'valor' );
 		if ( isset($this->sql['consultar']) ) {
@@ -384,30 +377,24 @@ abstract class Modelo implements IModelo
 					$this->dto->set('esquema', $adaptador->esquema, 'valor');
 					$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
 				}
-				if ( is_dir($adaptador->ruta['xsl']) ) {
-					$this->dto->set('vista', $adaptador->vista, 'valor');
-					$this->dto->set('rutaxsl', $adaptador->ruta['xsl'], 'valor');
-				}
 			}
 			if ( isset($this->dto->resultados['caso']['extension']) ) {
 				$extension = $this->dto->resultados['caso']['extension'];
 				$componente1 = '\MasExperto\Extension\\' . $extension;
 				$componente2 = '\MasExperto\Componente\\' . $extension;
+                $adaptador = null;
 				if ( class_exists( $componente1, true ) ) {
 					$adaptador = new $componente1;
-					$adaptador->combinarMetadatos( $uid, $this );
-					$resultado = $adaptador->consultarInformacion( $info );
-					$this->dto->resultados['caso']['contenido'] = $resultado['contenido'];
-					$nombre = $resultado['nombre'];
-					$estilos = $resultado['estilos'];
 				} else if ( class_exists( $componente2, true ) ) {
 					$adaptador = new $componente2;
-					$adaptador->combinarMetadatos( $uid, $this );
-					$resultado = $adaptador->consultarInformacion( $info );
-					$this->dto->resultados['caso']['contenido'] = $resultado['contenido'];
-					$nombre = $resultado['nombre'];
-					$estilos = $resultado['estilos'];
 				}
+				if ( $adaptador !== null ) {
+                    $adaptador->combinarMetadatos( $uid, $this );
+                    $resultado = $adaptador->consultarInformacion( $info );
+                    $this->dto->resultados['caso']['contenido'] = $resultado['contenido'];
+                    $nombre = $resultado['nombre'];
+                    $estilos = $resultado['estilos'];
+                }
 			}
 		}
 		if ( $estado == 0 ) {

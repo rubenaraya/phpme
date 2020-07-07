@@ -5,6 +5,10 @@ use MasExperto\ME\Interfaces\IDto;
 
 final class Dto implements IDto
 {
+    const T_CAMPOS = 0;
+    const T_PARAMETROS = 1;
+    const T_TODOS = 2;
+
 	public $parametros = array();
 	public $campos = array();
 	public $peticion = array();
@@ -88,13 +92,13 @@ final class Dto implements IDto
 		}
 	}
 
-	public function traspasarPeticion( $opcion = 0 ) {
-		if ( $opcion == 1 ) {
+	public function traspasarPeticion( $opcion = Dto::T_CAMPOS ) {
+		if ( $opcion == Dto::T_PARAMETROS ) {
 			$this->peticion = $this->parametros;
-		} else if ( $opcion == 2 ) {
-			$this->peticion = $this->parametros + $this->campos;
-		} else {
+        } else if ( $opcion == Dto::T_CAMPOS ) {
 			$this->peticion = $this->campos;
+        } else if ( $opcion == Dto::T_TODOS ) {
+            $this->peticion = $this->parametros + $this->campos;
 		}
 		return;
 	}

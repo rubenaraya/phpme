@@ -111,8 +111,8 @@ abstract class Control implements IControl
 					return true;
 				}
 			}
-			return false;
 		}
+		return false;
 	}
 
 	public function cargarPerfil( $id = '' ) {

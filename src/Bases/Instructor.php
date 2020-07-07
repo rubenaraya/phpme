@@ -2,6 +2,7 @@
 namespace MasExperto\ME\Bases;
 
 use MasExperto\ME\Interfaces\IInstructor;
+use MasExperto\ME\Finales\Dto;
 use MasExperto\ME\Finales\PresentadorXml;
 use MasExperto\ME\M;
 
@@ -53,7 +54,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		/* Consumido por: ModeloActividades->Guardar */
 		$mensaje = '';
 		$filtro = '';
-		$this->modelo->dto->traspasarPeticion(0);
+		$this->modelo->dto->traspasarPeticion(Dto::T_CAMPOS);
 		$this->documento = simplexml_load_file( $this->ruta['xml'] . '/' . $this->esquema );
 		if ( strlen($seccion)>0 ) { $filtro = "[@id=' " . $seccion . "']"; }
 		$items = $this->documento->xpath( "//instructor//seccion" . $filtro . "/grupo/item" );
