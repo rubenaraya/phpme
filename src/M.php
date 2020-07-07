@@ -124,6 +124,8 @@ final class M
 		$texto = str_replace('{{m_puntofinal}}', M::E('M_PUNTOFINAL'), $texto );
 		$texto = str_replace('{{m_frontend}}', M::E('M_FRONTEND'), $texto );
 		$texto = str_replace('{{m_instancia}}', M::E('M_INSTANCIA'), $texto );
+        $texto = str_replace('{{idantecesor}}', M::E('ANTECESOR/ELEMENTO'), $texto );
+        $texto = str_replace('{{idrecurso}}', M::E('RECURSO/ELEMENTO'), $texto );
 		$texto = str_replace('{{app_titulo}}', M::E('APP_TITULO'), $texto );
 		$texto = str_replace('{{app_id}}', M::E('APP_ID'), $texto );
 		if ( isset(M::$entorno['USUARIO']) ) {
@@ -221,7 +223,7 @@ final class M
 		return $texto;
 	}
 
-	public static function numeroPalabras( $n, $m = '' ) {
+	public static function numeroEnPalabras( $n, $m = '' ) {
 		$p = '';
 		$v = '';
 		$y = strval($n);
