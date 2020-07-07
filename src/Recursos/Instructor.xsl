@@ -378,10 +378,10 @@
 								<td>
 									<xsl:choose>
 										<xsl:when test="$vista='pdf'">
-											<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+											<img src="{//entorno/M_SERVIDOR}/webme/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 										</xsl:when>
 										<xsl:otherwise>
-											<img src="/web/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
+											<img src="/webme/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 										</xsl:otherwise>
 									</xsl:choose>
 								</td>
@@ -419,10 +419,10 @@
 							<td>
 								<xsl:choose>
 									<xsl:when test="$vista='pdf'">
-										<img src="{//entorno/M_SERVIDOR}/web/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+										<img src="{//entorno/M_SERVIDOR}/webme/img/v.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 									</xsl:when>
 									<xsl:otherwise>
-										<img src="/web/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
+										<img src="/webme/img/v.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</td>
@@ -462,10 +462,10 @@
 										<td>
 											<xsl:choose>
 												<xsl:when test="$vista='pdf'">
-													<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+													<img src="{//entorno/M_SERVIDOR}/webme/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 												</xsl:when>
 												<xsl:otherwise>
-													<img src="/web/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
+													<img src="/webme/img/n.png" class="img-grafico" style="width:{format-number($porcen, '###0')}%;" />
 												</xsl:otherwise>
 											</xsl:choose>
 										</td>
@@ -508,10 +508,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/webme/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
+																<img src="/webme/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -534,10 +534,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/webme/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
+																<img src="/webme/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>
@@ -560,10 +560,10 @@
 													<td>
 														<xsl:choose>
 															<xsl:when test="$vista='pdf'">
-																<img src="{//entorno/M_SERVIDOR}/web/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
+																<img src="{//entorno/M_SERVIDOR}/webme/img/n.png" class="img-grafico" style="width:{format-number($porcen * 2.7, '###0')}px;" />
 															</xsl:when>
 															<xsl:otherwise>
-																<img src="/web/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
+																<img src="/webme/img/n.png" class="img-grafico" style="width:{format-number(number($porcen), '###0')}%;" />
 															</xsl:otherwise>
 														</xsl:choose>
 													</td>

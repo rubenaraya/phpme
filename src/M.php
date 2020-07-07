@@ -122,6 +122,7 @@ final class M
 		$texto = str_replace('{{m_usuario}}', M::E('M_USUARIO'), $texto );
 		$texto = str_replace('{{m_servidor}}', M::E('M_SERVIDOR'), $texto );
 		$texto = str_replace('{{m_puntofinal}}', M::E('M_PUNTOFINAL'), $texto );
+		$texto = str_replace('{{m_frontend}}', M::E('M_FRONTEND'), $texto );
 		$texto = str_replace('{{m_instancia}}', M::E('M_INSTANCIA'), $texto );
 		$texto = str_replace('{{app_titulo}}', M::E('APP_TITULO'), $texto );
 		$texto = str_replace('{{app_id}}', M::E('APP_ID'), $texto );
