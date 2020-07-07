@@ -193,6 +193,10 @@ abstract class Modelo implements IModelo
 				$sql = $this->bd->reemplazarValores( $this->sql['items_borrar'] );
 				$this->bd->borrarElementos( $sql, 'items_borrar' );
 			}
+			if ( isset($this->sql['casos_borrar']) ) {
+				$sql = $this->bd->reemplazarValores( $this->sql['casos_borrar'] );
+				$this->bd->borrarElementos( $sql, 'casos_borrar' );
+			}
 		} else {
 			$mensaje = $this->T['caso-no-borrado'];
 		}
@@ -232,6 +236,19 @@ abstract class Modelo implements IModelo
 			$estado = ( $resultado['total']==1 && $resultado['estado']==1 && is_numeric( $uid ) ? 1 : 0 );
 		}
 		if ( $estado == 1 ) {
+			$datos = array( 'id'=>$uid );
+			$sql = $this->bd->reemplazarValores( $this->sql['abrir'], $datos );
+			$this->bd->consultarElemento( $sql, 'caso', false );
+			$clase = $this->dto->resultados['caso']['clase'];
+			$componente = '\MasExperto\Adaptador\\' . $clase;
+			if ( class_exists( $componente, true ) ) {
+				$adaptador = new $componente;
+				$adaptador->combinarMetadatos( $uid, $this );
+				if ( is_dir($adaptador->ruta['xml']) ) {
+					$this->dto->set('esquema', $adaptador->esquema, 'valor');
+					$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
+				}
+			}
 			$mensaje = $this->T['caso-guardado'];
 		} else {
 			$mensaje = $this->T['caso-no-guardado'];
@@ -343,10 +360,15 @@ abstract class Modelo implements IModelo
 		if ( $estado == 0 ) {
 			$mensaje = $this->T['error-lista'];
 		} else {
+			$this->dto->set('M_MAX', 100, 'parametro');
+			$this->dto->set('M_NAV', 1, 'parametro');
 			if ( isset($this->sql['lista_casos']) ) {
-				$this->dto->set('M_MAX', 100, 'parametro');
-				$this->dto->set('M_NAV', 1, 'parametro');
-				$this->bd->consultarColeccion( $this->sql['lista_casos'], 'lista_casos', false );
+				$sql = $this->bd->reemplazarValores( $this->sql['lista_casos'] );
+				$this->bd->consultarColeccion( $sql, 'lista_casos', false );
+			}
+			if ( isset($this->sql['lista_clases']) ) {
+				$sql = $this->bd->reemplazarValores( $this->sql['lista_clases'] );
+				$this->bd->consultarColeccion( $sql, 'lista_clases', false );
 			}
 		}
 		return array(
