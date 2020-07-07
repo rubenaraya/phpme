@@ -32,7 +32,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$opc['incluir'] = M::E('RUTA/ME') . '/Recursos/Instructor.xsl';
 		$presentador = new PresentadorXml();
 		$presentador->crearVista( $this->esquema, $this->ruta['xml'] );
-		$presentador->anexarResultados( $this->dto );
+		$presentador->anexarResultados( $this->modelo->dto );
 		$presentador->anexarMetadatos( $this->modelo->D );
 		$presentador->anexarMetadatos( $this->modelo->A, 'a' );
 		$contenido = $presentador->Transformar( $this->vista, $this->ruta['xsl'], $opc );
@@ -53,7 +53,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		/* Consumido por: ModeloActividades->Guardar */
 		$mensaje = '';
 		$filtro = '';
-		$this->dto->traspasarPeticion(0);
+		$this->modelo->dto->traspasarPeticion(0);
 		$this->documento = simplexml_load_file( $this->ruta['xml'] . '/' . $this->esquema );
 		if ( strlen($seccion)>0 ) { $filtro = "[@id=' " . $seccion . "']"; }
 		$items = $this->documento->xpath( "//instructor//seccion" . $filtro . "/grupo/item" );
@@ -134,12 +134,12 @@ abstract class Instructor extends Adaptador implements IInstructor
 		}
 		$sql = $sql . " FROM respuestas WHERE idencuesta='{{id}}' AND estado=3";
 		$sql = str_replace( '{{id}}', $this->uid, $sql );
-		$this->dto->set('M_MAX', 5000, 'parametro');
-		$this->dto->set('M_NAV', 1, 'parametro');
+		$this->modelo->dto->set('M_MAX', 5000, 'parametro');
+		$this->modelo->dto->set('M_NAV', 1, 'parametro');
 		$resultado = $this->modelo->bd->consultarColeccion( $sql, 'convertidos', false );
 		$estado = $resultado['estado'];
 		if ( $estado == 1 ) {
-			$contenido = $this->dto->extraerResultado( 'convertidos' );
+			$contenido = $this->modelo->dto->extraerResultado( 'convertidos' );
 		} else {
 			$mensaje = $this->T['error-lista'];
 		}
@@ -303,8 +303,8 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$usar_recalculos = ( isset($cfg['recalculos']) ? $cfg['recalculos'] : true );
 		$usar_respuestas = ( isset($cfg['respuestas']) ? $cfg['respuestas'] : false );
 		$usar_participantes = ( isset($cfg['participantes']) ? $cfg['participantes'] : false );
-		$this->dto->set('M_MAX', 1000, 'parametro');
-		$this->dto->set('M_NAV', 1, 'parametro');
+		$this->modelo->dto->set('M_MAX', 1000, 'parametro');
+		$this->modelo->dto->set('M_NAV', 1, 'parametro');
 		if ( $usar_recuentos && isset($this->sql['recuentos_consultar']) ) {
 			$sql = str_replace( '{{id}}', $this->uid, $this->sql['recuentos_consultar'] );
 			$resultado = $this->modelo->bd->consultarColeccion( $sql, 'recuentos', false );
@@ -323,7 +323,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		if ( $estado == 1 ) {
 			$presentador = new PresentadorXml();
 			$presentador->crearVista( $this->clase.'.xml', $this->ruta );
-			$presentador->anexarResultados( $this->dto );
+			$presentador->anexarResultados( $this->modelo->dto );
 			$this->documento = $presentador->documento;
 			$colores = $this->documento->xpath( "//cuestionario/colores" );
 			if ( count($colores)>0 ) {
@@ -333,8 +333,8 @@ abstract class Instructor extends Adaptador implements IInstructor
 			if ( $usar_participantes && isset($this->sql['participantes_listar']) ) {
 				$sql = str_replace( '{{id}}', $this->uid, $this->sql['participantes_listar'] );
 				$resultado = $this->modelo->bd->consultarColeccion( $sql, 'participantes', false );
-				if ( isset($this->dto->resultados['participantes']) && count($this->dto->resultados['participantes'])>0 ) {
-					foreach ( $this->dto->resultados['participantes'] as $caso ) {
+				if ( isset($this->dto->resultados['participantes']) && count($this->modelo->dto->resultados['participantes'])>0 ) {
+					foreach ( $this->modelo->dto->resultados['participantes'] as $caso ) {
 						$cod = $caso['id'];
 						$etiqueta = $caso['etiqueta'];
 						$xml = simplexml_load_string( '<participante cod="'. $cod . '" etiqueta="' . $etiqueta .'" corta="' . $etiqueta .'" color="" />' );

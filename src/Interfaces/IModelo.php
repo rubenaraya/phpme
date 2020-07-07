@@ -10,9 +10,6 @@ interface IModelo {
 	public function Editar();
 	public function Borrar();
 	public function Cambiar();
-	public function Imagen();
-	public function Archivo();
-	public function Refrescar();
 	public function Registrar();
 	public function Ver();
     public function Cotejar( $caso );

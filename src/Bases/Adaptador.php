@@ -9,8 +9,8 @@ abstract class Adaptador implements IAdaptador
 	protected $uid;
 	public $objeto;
 	public $clase;
-	public $vista = '';
-	public $esquema = '';
+	public $vista;
+	public $esquema;
 	public $ruta = array();
 	public $sql = array();
 	public $T = array();
@@ -19,7 +19,12 @@ abstract class Adaptador implements IAdaptador
 	public $A = array();
 	public $R = array();
 
-	function __construct() {}
+	function __construct() {
+		$this->ruta['xml'] = '';
+		$this->ruta['xsl'] = '';
+		$this->esquema = '';
+		$this->vista = '';
+	}
 	function __destruct() {
 		unset($this->modelo, $this->sql, $this->T, $this->I, $this->D, $this->A, $this->R);
 	}
