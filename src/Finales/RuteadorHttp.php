@@ -59,7 +59,7 @@ final class RuteadorHttp extends Ruteador
 		} else {
 			setlocale( LC_ALL, $idioma );
 		}
-		bindtextdomain( 'me', M::$entorno['RUTA']['ME'] . '/Locales');
+		bindtextdomain( 'me', dirname(__DIR__) . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
 		bindtextdomain( $traduccion, M::$entorno['RUTA']['BACKEND'] . '/locales' );
 		bind_textdomain_codeset( $traduccion, 'UTF-8' );

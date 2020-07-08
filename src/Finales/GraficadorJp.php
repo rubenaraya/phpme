@@ -237,7 +237,7 @@ final class GraficadorJp extends Graficador {
 				}
 			}
 			$dibujo = new ScatterPlot( $y, $x );
-			$dibujo->mark->SetType( MARK_IMG, M::E('RUTA/ME') . '/Recursos/nada.gif' );
+			$dibujo->mark->SetType( MARK_IMG, M::E('RUTA/PHPME') . '/Recursos/nada.gif' );
 			$dibujo->mark->SetCallbackYX( '\MasExperto\ME\GraficadorJp::mostrarEtiqueta' );
 			$grafico->Add( $dibujo );
 			$grafico->Stroke( $imagen );
@@ -513,7 +513,7 @@ final class GraficadorJp extends Graficador {
 
 	private function _crearEtiqueta( $x, $y, $texto, $fondo = 'silver', $letra = 'black', $angulo = 0 ) {
 		$tamano	= ( isset($this->series['puntos']['tamaño']) ? $this->series['puntos']['tamaño'] : 10 );
-		$fuente = M::E('RUTA/ME') . '/Recursos/' . strtolower( $this->series['puntos']['fuente'] ) . '.ttf';
+		$fuente = M::E('RUTA/PHPME') . '/Recursos/' . strtolower( $this->series['puntos']['fuente'] ) . '.ttf';
 		if ( strlen($letra)==0 ) { $letra = $this->series['puntos']['color']; }
 		$saltos = substr_count( $texto, chr(10) );
 		if ( $saltos >0 ) {

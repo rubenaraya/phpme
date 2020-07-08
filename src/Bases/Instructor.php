@@ -30,7 +30,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 		$estado = 0;
 		$mensaje = '';
 		$opc['info'] = 'realizar';
-		$opc['incluir'] = M::E('RUTA/ME') . '/Recursos/Instructor.xsl';
+		$opc['incluir'] = M::E('RUTA/WEBME') . '/Instructor.xsl';
 		$presentador = new PresentadorXml();
 		$presentador->crearVista( $this->esquema, $this->ruta['xml'] );
 		$presentador->anexarResultados( $this->modelo->dto );
@@ -369,7 +369,7 @@ abstract class Instructor extends Adaptador implements IInstructor
 			$cfg['margen_sup'] = 20;
 			$cfg['margen_inf'] = 20;
 			$cfg['portada'] = true;
-			$cfg['estilos'] = M::E('RUTA/FRONTEND').'/pdf.css';
+			$cfg['estilos'] = M::E('RUTA/WEBME').'/pdf.css';
 			$guardar = $this->modelo->almacen->guardarArchivo( Almacen::PRIVADO, $contenido, $cfg );
 			$estado = $guardar['estado'];
             $this->modelo->almacen->borrarArchivos( $this->temp );

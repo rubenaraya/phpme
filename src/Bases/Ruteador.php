@@ -20,7 +20,8 @@ abstract class Ruteador implements IRuteador
 		M::$entorno['RUTA']['FRONTEND'] = str_replace( '\\', '/', realpath( M::$entorno['RUTA']['FRONTEND'] ) );
 		M::$entorno['ALMACEN']['PUBLICO'] = str_replace( '\\', '/', realpath( M::$entorno['ALMACEN']['PUBLICO'] ) );
 		M::$entorno['ALMACEN']['PRIVADO'] = str_replace( '\\', '/', realpath( M::$entorno['ALMACEN']['PRIVADO'] ) );
-        M::$entorno['RUTA']['ME'] = str_replace( '\\', '/', dirname(__DIR__) );
+		M::$entorno['RUTA']['WEBME'] = str_replace( '\\', '/', realpath( M::$entorno['RUTA']['WEBME'] ) );
+        M::$entorno['RUTA']['PHPME'] = str_replace( '\\', '/', dirname(__DIR__) );
     }
 	function __destruct() {
 		$this->campos = null;
