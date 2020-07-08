@@ -126,8 +126,14 @@ final class PresentadorXml extends Presentador
 		if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
 			$doc = new DOMDocument( '1.0', 'utf-8' );
 			$doc->load( $archivo );
+            $base = str_replace( '\\', '/', M::E('RUTA/WEBME')) . '/base.xsl';
+            if ( file_exists( $base ) ) {
+                $nodo = $doc->createElementNS( 'http://www.w3.org/1999/XSL/Transform', 'include' );
+                $nodo->setAttribute( 'href', $base );
+                $doc->documentElement->appendChild( $nodo );
+            }
 			$incluir = str_replace( '\\', '/', $incluir );
-			if ( file_exists( $incluir ) && !is_dir( $incluir ) ) {
+			if ( strlen( $incluir )>0 && file_exists( $incluir ) && !is_dir( $incluir ) ) {
 				$nodo = $doc->createElementNS( 'http://www.w3.org/1999/XSL/Transform', 'include' );
 				$nodo->setAttribute( 'href', $incluir );
 				$doc->documentElement->appendChild( $nodo );
