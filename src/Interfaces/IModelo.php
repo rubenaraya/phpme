@@ -12,6 +12,8 @@ interface IModelo {
 	public function Cambiar();
 	public function Registrar();
 	public function Ver();
+    public function Ejecutar();
+    public function Adjuntar( $opciones );
     public function Cotejar( $caso );
     public function Validar( $nombre, $valor );
 }

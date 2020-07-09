@@ -434,4 +434,75 @@ abstract class Modelo implements IModelo
 			'mensaje'=> $mensaje
 		);
 	}
+	public function Ejecutar() {
+        $estado = 0;
+        $lista = implode( ',', $this->dto->get( 'caso' ) );
+        $funcion = $this->dto->get( 'funcion' );
+        $valor = $this->dto->get( $funcion );
+        if ( isset($this->sql[$funcion]) && strlen($lista)>0 ) {
+            $this->bd->Conectar( M::E('BD/1'), $this->dto );
+            $sql = $this->sql[$funcion];
+            $sql = str_replace( '{{lista}}', $lista, $sql );
+            $sql = str_replace( '{{valor}}', $valor, $sql );
+            $sql = $this->bd->reemplazarValores( $sql );
+            $respuesta = $this->bd->editarElementos( $sql, $funcion );
+            $estado = $respuesta['estado'];
+        }
+        if ( $estado == 1 ) {
+            $mensaje = $this->T['casos-actualizados'];
+        } else {
+            $mensaje = $this->T['casos-no-actualizados'];
+        }
+        return array(
+            'estado'=> $estado,
+            'mensaje'=> $mensaje
+        );
+    }
+    public function Adjuntar( $opciones = array() ) {
+        $mensaje = '';
+        $archivo = '';
+        $tipo = '';
+        $peso = '';
+        $original = '';
+        $nombre = '';
+        if ( !isset($opciones['tipos']) ) { $opciones['tipos'] = array( 'jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx' ); }
+        if ( !isset($opciones['peso']) ) { $opciones['peso'] = '10 MB'; }
+        if ( !isset($opciones['nombre']) ) { $opciones['nombre'] = '{{uniqid}}'; }
+        if ( !isset($opciones['carpeta']) ) { $opciones['carpeta'] = strval(date('Y')); }
+        if ( !isset($opciones['almacenar']) ) { $opciones['almacenar'] = false; }
+        $carga = $this->almacen->cargarArchivos( Almacen::PRIVADO, $opciones );
+        $estado = $carga['estado'];
+        if ( $estado ) {
+            $archivo = $carga['contenidos'][0]['relativa'];
+            $tipo = $carga['contenidos'][0]['tipo'];
+            $peso = $carga['contenidos'][0]['peso'];
+            $original = $carga['contenidos'][0]['original'];
+            $nombre = pathinfo( $original, PATHINFO_FILENAME );
+            if ( $opciones['almacenar'] == true && isset($this->sql['archivo_almacenar']) ) {
+                $sql = str_replace( '{{archivo}}', $archivo, $this->sql['archivo_almacenar'] );
+                $sql = str_replace( '{{id}}', M::E('RECURSO/ELEMENTO'), $sql );
+                $this->bd->Conectar( M::E('BD/1'), $this->dto );
+                $resultado = $this->bd->editarElementos( $sql, 'archivo' );
+                $estado = $resultado['estado'];
+            }
+        } else {
+            $mensaje = implode( '. ', $carga['errores'] );
+        }
+        if ( $estado ) {
+            $mensaje = $this->T['archivo-cargado'];
+        } else {
+            if ( strlen($mensaje)==0 ) {
+                $mensaje = $this->T['archivo-no-cargado'];
+            }
+        }
+        return array(
+            'estado'=> $estado,
+            'archivo'=> $archivo,
+            'tipo'=> $tipo,
+            'peso'=> $peso,
+            'original'=> $original,
+            'nombre'=> $nombre,
+            'mensaje'=> $mensaje
+        );
+    }
 }
