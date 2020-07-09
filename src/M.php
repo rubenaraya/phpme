@@ -320,10 +320,10 @@ final class M
 						$archivo = M::E('RUTA/BACKEND') . '/' .  $nombre . '.php';
 						break;
 					case 'Adaptador':
-						$archivo = M::E('RUTA/BACKEND') . '/adap/' . $nombre . '.php';
+						$archivo = M::E('RUTA/BACKEND') . '/adaptadores/' . $nombre . '.php';
 						break;
                     case 'Componente':
-                        $archivo = M::E('RUTA/BACKEND') . '/comp/' . $nombre . '/' . $nombre . '.php';
+                        $archivo = M::E('RUTA/BACKEND') . '/componentes/' . $nombre . '/' . $nombre . '.php';
                         break;
                     case 'Extension':
                         $archivo = __DIR__ . '/Extensiones/' . $nombre . '/' . $nombre . '.php';
