@@ -147,7 +147,12 @@ abstract class Modelo implements IModelo
 		$componente = '\MasExperto\Adaptador\\' . $clase;
 		if ( class_exists( $componente, true ) ) {
 			$adaptador = new $componente;
-			$adaptador->combinarMetadatos( '', $this );
+			if ( $nombre == '' && strlen($adaptador->objeto)>0 ) {
+				$adaptador->reemplazarMetadatos( '', $this );
+				$nombre = $adaptador->objeto;
+			} else {
+				$adaptador->combinarMetadatos( '', $this );
+			}
 		}
 		if ( strlen($nombre)>0 ) { $nombre = $nombre . '.'; }
 		return 'M.' . $nombre . 'A = ' . json_encode($this->A) . '; M.' . $nombre . 'I = ' . json_encode($this->I);
