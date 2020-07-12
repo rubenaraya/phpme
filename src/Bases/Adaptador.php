@@ -29,26 +29,23 @@ abstract class Adaptador implements IAdaptador
 	function __destruct() {
 		unset($this->modelo, $this->sql, $this->T, $this->I, $this->D, $this->A, $this->R);
 	}
-	public function reemplazarMetadatos( $uid, &$modelo ) {
+	public function combinarMetadatos( $uid, &$modelo, $reemplazar = false ) {
 		$this->uid = $uid;
 		$this->modelo = &$modelo;
 		$this->modelo->R = $this->R;
-		if ( count($this->T)>0 ) { $this->modelo->T = $this->T; }
-		if ( count($this->I)>0 ) { $this->modelo->I = $this->I; }
-		if ( count($this->D)>0 ) { $this->modelo->D = $this->D; }
-		if ( count($this->A)>0 ) { $this->modelo->A = $this->A; }
-		if ( count($this->sql)>0 ) { $this->modelo->sql = array_replace($this->modelo->sql, $this->sql); }
-		$this->cambiarValores();
-	}
-	public function combinarMetadatos( $uid, &$modelo ) {
-		$this->uid = $uid;
-		$this->modelo = &$modelo;
-		$this->modelo->R = $this->R;
-		$this->modelo->T = array_replace($this->modelo->T, $this->T);
-		$this->modelo->I = array_replace($this->modelo->I, $this->I);
-		$this->modelo->D = array_replace($this->modelo->D, $this->D);
-		$this->modelo->A = array_replace($this->modelo->A, $this->A);
-		$this->modelo->sql = array_replace($this->modelo->sql, $this->sql);
+		if ( $reemplazar ) {
+            if ( count($this->T)>0 ) { $this->modelo->T = $this->T; }
+            if ( count($this->I)>0 ) { $this->modelo->I = $this->I; }
+            if ( count($this->D)>0 ) { $this->modelo->D = $this->D; }
+            if ( count($this->A)>0 ) { $this->modelo->A = $this->A; }
+            if ( count($this->sql)>0 ) { $this->modelo->sql = array_replace($this->modelo->sql, $this->sql); }
+        } else {
+            $this->modelo->T = array_replace($this->modelo->T, $this->T);
+            $this->modelo->I = array_replace($this->modelo->I, $this->I);
+            $this->modelo->D = array_replace($this->modelo->D, $this->D);
+            $this->modelo->A = array_replace($this->modelo->A, $this->A);
+            $this->modelo->sql = array_replace($this->modelo->sql, $this->sql);
+        }
 		$this->cambiarValores();
 	}
 	public function cotejarPeticion($info = '' ) {
