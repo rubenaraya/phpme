@@ -317,7 +317,7 @@ final class M
 			if ( count($namespace)>1 ) {
 				switch ( $namespace[1] ) {
 					case 'Servicio':
-						$archivo = M::E('RUTA/BACKEND') . '/' .  $nombre . '.php';
+						$archivo = M::E('RUTA/BACKEND') . '/servicios/' .  $nombre . '.php';
 						break;
 					case 'Adaptador':
 						$archivo = M::E('RUTA/BACKEND') . '/adaptadores/' . $nombre . '.php';

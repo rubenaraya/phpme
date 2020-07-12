@@ -148,10 +148,10 @@ abstract class Modelo implements IModelo
 		if ( class_exists( $componente, true ) ) {
 			$adaptador = new $componente;
 			if ( $nombre == '' && strlen($adaptador->objeto)>0 ) {
-				$adaptador->reemplazarMetadatos( '', $this );
+				$adaptador->combinarMetadatos( '', $this, true );
 				$nombre = $adaptador->objeto;
 			} else {
-				$adaptador->combinarMetadatos( '', $this );
+				$adaptador->combinarMetadatos( '', $this, false );
 			}
 		}
 		if ( strlen($nombre)>0 ) { $nombre = $nombre . '.'; }

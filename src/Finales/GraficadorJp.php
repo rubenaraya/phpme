@@ -237,7 +237,7 @@ final class GraficadorJp extends Graficador {
 				}
 			}
 			$dibujo = new ScatterPlot( $y, $x );
-			$dibujo->mark->SetType( MARK_IMG, M::E('RUTA/PHPME') . '/Recursos/nada.gif' );
+			$dibujo->mark->SetType( MARK_IMG, M::E('RUTA/WEBME') . '/img/nada.gif' );
 			$dibujo->mark->SetCallbackYX( '\MasExperto\ME\GraficadorJp::mostrarEtiqueta' );
 			$grafico->Add( $dibujo );
 			$grafico->Stroke( $imagen );
