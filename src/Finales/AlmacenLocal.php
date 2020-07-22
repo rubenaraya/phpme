@@ -3,17 +3,8 @@ namespace MasExperto\ME\Finales;
 
 use MasExperto\ME\Bases\Almacen;
 use MasExperto\ME\M;
-use DateTime;
 use DOMDocument;
 use Mpdf\Mpdf;
-use PHPExcel;
-use PHPExcel_Cell;
-use PHPExcel_Cell_DataType;
-use PHPExcel_Reader_Excel5;
-use PHPExcel_Shared_Date;
-use PHPExcel_Style_Border;
-use PHPExcel_Writer_Excel2007;
-use PHPExcel_Writer_Excel5;
 use ZipArchive;
 
 final class AlmacenLocal extends Almacen {
@@ -390,19 +381,6 @@ final class AlmacenLocal extends Almacen {
 					break;
 				}
 				break;
-			case Almacen::F_XLS:
-			case Almacen::F_XLSX:
-				$ubicacion = "$ruta$carpeta/$nombre_final." . ( $formato == Almacen::F_XLS ? 'xls' : 'xlsx' );
-				$xls = $this->_crearLibroExcel( $contenido, $ubicacion, $formato, $opciones );
-				if ( $xls ) {
-					$resultado['ubicacion'] = $ubicacion;
-					$resultado['estado'] = true;
-				} else {
-					$msg = sprintf(dgettext('me', "No-se-guardo-'%s'"), $ubicacion);
-					$resultado['error'] = $msg;
-					trigger_error( 'AlmacenLocal.guardarArchivo: ' . $msg, E_USER_ERROR );
-				}
-				break;
 			case Almacen::F_PDF:
 				$ubicacion = "$ruta$carpeta/$nombre_final.pdf";
 				$pdf = $this->_crearDocumentoPdf( $contenido, $ubicacion, $opciones );
@@ -610,7 +588,7 @@ final class AlmacenLocal extends Almacen {
 					$pag_contenido = ( isset($contenido[0]['contenido']) ? $contenido[0]['contenido'] : '' );
 				}
 				$pag_contenido = str_replace('<pagebreak/>', '<pagebreak />', $pag_contenido);
-				$pdf->WriteHTML( '<html><bookmark content="'. $pag_titulo .'" />' . $pag_contenido . '</html>', 2 );
+				$pdf->WriteHTML( '<html lang="' . M::E('M_IDIOMA'). '"><bookmark content="'. $pag_titulo .'" />' . $pag_contenido . '</html>', 2 );
 				if ( $paginas >0 ) {
 					if ( strlen( $encabezado )>0 ) { $pdf->SetHTMLHeader( $encabezado ); }
 					$pdf->AddPage( '', '', 2 );
@@ -633,124 +611,12 @@ final class AlmacenLocal extends Almacen {
 						}
 						$pdf->TOC_Entry( $pag_titulo, ($pag_nivel - 1) );
 						$pdf->Bookmark( $pag_titulo, ($pag_nivel - 1) );
-						$pdf->WriteHTML( '<html>' . $pag_contenido . '</html>', 2 );
+						$pdf->WriteHTML( '<html lang="' . M::E('M_IDIOMA'). '">' . $pag_contenido . '</html>', 2 );
 					}
 				}
 			}
 			$pdf->Output( $ubicacion, 'F' );
 			unset($pdf);
-		}
-		return $estado;
-	}
-
-	private function _crearLibroExcel( $contenido, $ubicacion, $formato, $opciones = array() ) {
-		$estado = false;
-		$fuente = ( isset($opciones['fuente']) ? $opciones['fuente'] : 'Arial' );
-		$tamano = ( isset($opciones['tamaño']) ? $opciones['tamaño'] : 10 );
-		$estilo = ( isset($opciones['estilo']) ? $opciones['estilo'] : true );
-		$cambiar = ( isset($opciones['cambiar']) ? $opciones['cambiar'] : false );
-		$titulo = ( isset($opciones['titulo']) ? $opciones['titulo'] : '' );
-		$autor = ( isset($opciones['autor']) ? $opciones['autor'] : '' );
-		$modelo = ( isset($opciones['modelo']) ? $opciones['modelo'] : '' );
-		$hojas = count($contenido);
-		if ( is_array($contenido) && $hojas > 0 ) {
-			if ( file_exists( $modelo ) && !is_dir( $modelo ) ) {
-				$lector = new PHPExcel_Reader_Excel5();
-				$libro = $lector->load( $modelo );
-			} else {
-				$libro = new PHPExcel(); 
-				$libro->removeSheetByIndex(0);
-				$libro->getDefaultStyle()->getFont()->setName( $fuente );
-				$libro->getDefaultStyle()->getFont()->setSize( $tamano );
-			}
-			$libro->getProperties()->setTitle( $titulo );
-			$libro->getProperties()->setCreator( $autor );
-			foreach( $contenido as $pos => $hoja ) {
-				if ( is_string($pos) && is_array($hoja) ) {
-					$nombre_hoja = $this->validarNombre( $pos );
-					M::adquirirDatosMatriz( $contenido, $pos );
-					if ( is_array($hoja) && count($hoja)>0 ) {
-						$existe = -1;
-						$col = 0; 
-						$fila = 2;
-						foreach ( $libro->getSheetNames() as $key => $value ) {
-							if ( $value == $nombre_hoja ) { $existe = $key; }
-						}
-						if ( $existe == -1 ) {
-							$planilla=$libro->createSheet(); 
-							$planilla->setTitle( $nombre_hoja );
-							$existe = $libro->getSheetCount() - 1;
-						} 
-						$libro->setActiveSheetIndex($existe);
-						foreach( $hoja[0] as $key => $value ) {
-							$libro->getActiveSheet()->setCellValueByColumnAndRow($col, 1, $key);
-							$col++;
-						}
-						foreach( $hoja as $key => $value ) {
-							if ( is_array($value) ) {
-								$col = 0;
-								foreach( $value as $key2 => $value2 ) {
-									if ( $cambiar ) {
-										if ( (substr_count($value2,'-')==2 || substr_count($value2,'/')==2) && strlen($value2) < 20 ) {
-											try { $fecha = new DateTime($value2); }
-											catch ( \Exception $e ) { $fecha = false ; }
-											if ( $fecha != false ) {
-												$va = floor( PHPExcel_Shared_Date::PHPToExcel( $fecha ) );
-												$libro->getActiveSheet()->getCell( PHPExcel_Cell::stringFromColumnIndex($col) . $fila )->setValueExplicit( $va, PHPExcel_Cell_DataType::TYPE_NUMERIC );
-												$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $va );
-												$libro->getActiveSheet()->getStyle( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( 'dd-mm-yyyy' );
-											} else {
-												$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $value2 );
-											}
-										} elseif ( is_numeric($value2) ) {
-											$va = floatval($value2);
-											$libro->getActiveSheet()->getCell( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->setValueExplicit( $va, PHPExcel_Cell_DataType::TYPE_NUMERIC );
-											if ( substr_count($value2,'.')==0 ) {
-												$libro->getActiveSheet()->getStyle( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( '#,##0' );
-											}
-										} else {
-											$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $value2 );
-										}
-									} else {
-										$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $value2 );
-									}
-									$col++;
-								}
-							}
-							$fila++;
-						}
-						if ( strlen($modelo)>0 ) {
-							$desde = intval($fila);
-							$cuantas = intval( $libro->getActiveSheet()->getHighestRow() ) - $desde + 1;
-							$libro->getActiveSheet()->removeRow( $desde, $cuantas );
-						} else if ( $estilo ) {
-							$libro->getActiveSheet()->setShowGridlines( false );
-							$estilos = array(
-								'borders' => array( 'allborders' => 
-									array( 'style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array( 'argb' => 'FF000000' ),),
-								), 'font' => array( 'size' => $tamano )
-							);
-							$libro->getActiveSheet()->getStyle( 'A1:' . $libro->getActiveSheet()->getHighestColumn() . ($fila - 1) )->applyFromArray( $estilos );
-							$libro->getActiveSheet()->getStyle('A1:A1')->applyFromArray( $estilos );
-						}
-					}
-				}
-			}
-			$libro->setActiveSheetIndex(0);
-			try {
-				if ( $formato == Almacen::F_XLS ) {
-					$guardar = new PHPExcel_Writer_Excel5( $libro );
-				} else {
-					$guardar = new PHPExcel_Writer_Excel2007( $libro );
-				}
-				$guardar->setIncludeCharts( false );
-				$guardar->setPreCalculateFormulas( false );
-				$guardar->save( $ubicacion );
-				$estado = true;
-			} catch ( \Exception $e ) {
-				$estado = false;
-			}
-			unset($guardar); unset($libro); unset($planilla); unset($lector);
 		}
 		return $estado;
 	}
@@ -809,7 +675,7 @@ final class AlmacenLocal extends Almacen {
 			}
 		}
 		if ( !is_array($contenido) ) {
-			if ( strlen($contenido)>50 ) {
+			if ( strlen(strval($contenido))>50 ) {
 				$elemento->appendChild( $xml->createCDATASection( $contenido ) );
 			} else {
 				$elemento->appendChild( $xml->createTextNode( $contenido ) );

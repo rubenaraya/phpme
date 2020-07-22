@@ -4,12 +4,12 @@ namespace MasExperto\ME\Emisores;
 use MasExperto\ME\Bases\Emisor;
 use MasExperto\ME\M;
 use DateTime;
-use PHPExcel;
-use PHPExcel_Cell;
-use PHPExcel_Cell_DataType;
-use PHPExcel_Shared_Date;
-use PHPExcel_Style_Border;
-use PHPExcel_Writer_Excel5;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 final class EmisorXls extends Emisor {
 
@@ -42,7 +42,7 @@ final class EmisorXls extends Emisor {
 	}
 
 	private function _exportarExcel($contenido) {
-		$libro = new PHPExcel();
+        $libro = new Spreadsheet();
 		$libro->removeSheetByIndex(0);
 		$libro->getDefaultStyle()->getFont()->setName( 'Arial' );
 		$libro->getDefaultStyle()->getFont()->setSize(10);
@@ -71,22 +71,22 @@ final class EmisorXls extends Emisor {
 								$fecha = false ;
 							}
 							if ( $fecha != false ) {
-								$va = floor( PHPExcel_Shared_Date::PHPToExcel( $fecha ) );
-								$libro->getActiveSheet()->getCell( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->setValueExplicit( $va, PHPExcel_Cell_DataType::TYPE_NUMERIC );
+								$va = floor( Date::PHPToExcel( $fecha ) );
+								$libro->getActiveSheet()->getCell( Coordinate::stringFromColumnIndex($col).$fila )->setValueExplicit( $va, DataType::TYPE_NUMERIC );
 								$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $va );
-								$libro->getActiveSheet()->getStyle( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( 'dd-mm-yyyy' );
+								$libro->getActiveSheet()->getStyle( Coordinate::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( 'dd-mm-yyyy' );
 							} else {
 								$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $value2 );
 							}
 						} elseif ( substr($value2, 0, 1)=="'" ) {
 							$va = trim( $value2, chr(39) );
-							$libro->getActiveSheet()->getCell( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->setValueExplicit($va, PHPExcel_Cell_DataType::TYPE_STRING );
-							$libro->getActiveSheet()->getStyle( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( '@' );
+							$libro->getActiveSheet()->getCell( Coordinate::stringFromColumnIndex($col).$fila )->setValueExplicit($va, DataType::TYPE_STRING );
+							$libro->getActiveSheet()->getStyle( Coordinate::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( '@' );
 						} elseif ( is_numeric($value2) ) {
 							$va = floatval($value2);
-							$libro->getActiveSheet()->getCell( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->setValueExplicit( $va, PHPExcel_Cell_DataType::TYPE_NUMERIC );
+							$libro->getActiveSheet()->getCell( Coordinate::stringFromColumnIndex($col).$fila )->setValueExplicit( $va, DataType::TYPE_NUMERIC );
 							if ( substr_count($value2,'.')==0 ) {
-								$libro->getActiveSheet()->getStyle( PHPExcel_Cell::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( '#,##0' );
+								$libro->getActiveSheet()->getStyle( Coordinate::stringFromColumnIndex($col).$fila )->getNumberFormat()->setFormatCode( '#,##0' );
 							}
 						} else {
 							$libro->getActiveSheet()->setCellValueByColumnAndRow( $col, $fila, $value2 );
@@ -99,7 +99,7 @@ final class EmisorXls extends Emisor {
 			$libro->getActiveSheet()->setShowGridlines( false );
 			$estilos = array(
 				'borders' => array( 'allborders' => 
-					array( 'style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array( 'argb' => 'FF000000' ),),
+					array( 'style' => Border::BORDER_THIN, 'color' => array( 'argb' => 'FF000000' ),),
 				), 'font' => array( 'size' => 10 )
 			);
 			$libro->getActiveSheet()->getStyle( 
@@ -108,7 +108,7 @@ final class EmisorXls extends Emisor {
 			$libro->getActiveSheet()->getStyle('A1:A1')->applyFromArray( $estilos );
 			$libro->setActiveSheetIndex(0);
 		}
-		$guardar = new PHPExcel_Writer_Excel5( $libro );
+        $guardar = new Xlsx($libro);
 		$guardar->setPreCalculateFormulas( false );
 		$guardar->save( 'php://output' );
 		unset($guardar); unset($libro); unset($hoja);

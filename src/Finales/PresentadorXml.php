@@ -208,6 +208,7 @@ final class PresentadorXml extends Presentador
 			}
 			return $this->documento->asXML();
 		}
+		return '';
 	}
 
 	public function anexarMetadatos( $matriz, $etiqueta = 'd' ) {
@@ -222,6 +223,7 @@ final class PresentadorXml extends Presentador
 			}
 			return $this->documento->asXML();
 		}
+		return '';
 	}
 
 	public function filtrarVisibles( $roles, $entidad = '' ) {

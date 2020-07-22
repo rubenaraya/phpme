@@ -12,8 +12,6 @@ abstract class Almacen implements IAlmacen
 	const F_HTML	= 203;
 	const F_XML		= 204;
 	const F_PDF		= 205;
-	const F_XLS		= 206;
-	const F_XLSX	= 207;
 
 	public $rutas = array();
 
