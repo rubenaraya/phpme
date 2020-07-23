@@ -384,7 +384,6 @@ abstract class Modelo implements IModelo
 	public function Ver() {
 		$estado = 0;
 		$mensaje = '';
-		$nombre = '';
 		$estilos = '';
 		$uid = M::E('RECURSO/ELEMENTO');
 		$this->dto->set( 'id', $uid );
@@ -397,9 +396,13 @@ abstract class Modelo implements IModelo
 		}
 		if ( $estado == 1 ) {
 			$clase = $this->dto->get('clase', 'parametro');
+			if ( strlen($clase)==0 && isset($this->dto->resultados['caso']['clase']) ) {
+				$clase = $this->dto->resultados['caso']['clase'];
+			}
 			$componente = '\MasExperto\Adaptador\\' . $clase;
 			if ( class_exists( $componente, true ) ) {
 				$adaptador = new $componente;
+                $adaptador->combinarMetadatos( $uid, $this );
 				if ( is_dir($adaptador->ruta['xml']) ) {
 					$this->dto->set('esquema', $adaptador->esquema, 'valor');
 					$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
@@ -419,7 +422,6 @@ abstract class Modelo implements IModelo
                     $adaptador->combinarMetadatos( $uid, $this );
                     $resultado = $adaptador->consultarInformacion( $info );
                     $this->dto->resultados['caso']['contenido'] = $resultado['contenido'];
-                    $nombre = $resultado['nombre'];
                     $estilos = $resultado['estilos'];
                 }
 			}
@@ -429,7 +431,6 @@ abstract class Modelo implements IModelo
 		}
 		return array(
 			'estado'=> $estado,
-			'nombre'=> $nombre,
 			'estilos'=> $estilos,
 			'mensaje'=> $mensaje
 		);
