@@ -397,17 +397,26 @@ abstract class Modelo implements IModelo
 		}
 		if ( $estado == 1 ) {
 			$clase = $this->dto->get('clase', 'parametro');
-			if ( strlen($clase)==0 && isset($this->dto->resultados['caso']['clase']) ) {
-				$clase = $this->dto->resultados['caso']['clase'];
-			}
-			$componente = '\MasExperto\Adaptador\\' . $clase;
-			if ( class_exists( $componente, true ) ) {
-				$adaptador = new $componente;
+            $componente = '\MasExperto\Adaptador\\' . $clase;
+            if ( class_exists( $componente, true ) ) {
+                $adaptador = new $componente;
                 $adaptador->combinarMetadatos( $uid, $this );
-				if ( is_dir($adaptador->ruta['xml']) ) {
-					$this->dto->set('esquema', $adaptador->esquema, 'valor');
-					$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
-				}
+                if ( is_dir($adaptador->ruta['xml']) ) {
+                    $this->dto->set('esquema', $adaptador->esquema, 'valor');
+                    $this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
+                }
+            }
+			if ( isset($this->dto->resultados['caso']['clase']) ) {
+				$clase = $this->dto->resultados['caso']['clase'];
+                $componente = '\MasExperto\Adaptador\\' . $clase;
+                if ( class_exists( $componente, true ) ) {
+                    $adaptador = new $componente;
+                    $adaptador->combinarMetadatos( $uid, $this );
+                    if ( is_dir($adaptador->ruta['xsl']) ) {
+                        $this->dto->set('vista', $adaptador->vista, 'valor');
+                        $this->dto->set('rutaxsl', $adaptador->ruta['xsl'], 'valor');
+                    }
+                }
 			}
 			if ( isset($this->dto->resultados['caso']['extension']) ) {
 				$extension = $this->dto->resultados['caso']['extension'];
