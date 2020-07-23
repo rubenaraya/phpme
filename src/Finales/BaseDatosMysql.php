@@ -11,6 +11,10 @@ final class BaseDatosMysql extends BaseDatos {
 	public function Conectar( $credenciales, &$dto ) {
 		$this->DTO = &$dto;
 		$this->credenciales = $credenciales;
+        $host = '127.0.0.1';
+		if ( isset($this->credenciales['DBHOST']) ) {
+		    $host = $this->credenciales['DBHOST'];
+		}
 		if ( $this->conexion ) {
 			if ( $this->credenciales['DBNAME'] != $credenciales['DBNAME'] ) {
 				$this->Cerrar();
@@ -18,7 +22,7 @@ final class BaseDatosMysql extends BaseDatos {
 		}
 		if ( !$this->conexion ) {
 			$this->conexion = mysqli_connect( 
-				$this->credenciales['DBHOST'], 
+				$host,
 				$this->credenciales['USER'], 
 				$this->credenciales['PASSW'], 
 				$this->credenciales['DBNAME']

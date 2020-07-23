@@ -70,15 +70,17 @@ final class Dto implements IDto
 		return $valor;
 	}
 
-	public function getset( $nombre ) {
+	public function getset( $nombre, $predeterminado = '' ) {
 		$valor = '';
 		if ( isset( $this->campos[$nombre] ) ) { 
 			$valor = $this->campos[$nombre];
-			$this->peticion[$nombre] = $valor;
 		} else if ( isset( $this->parametros[$nombre] ) ) {
 			$valor = $this->parametros[$nombre];
-			$this->peticion[$nombre] = $valor;
 		}
+		if ( strlen($valor)==0 ) {
+		    $valor = $predeterminado;
+        }
+        $this->peticion[$nombre] = $valor;
 		return $valor;
 	}
 

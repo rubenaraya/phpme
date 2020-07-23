@@ -296,6 +296,28 @@ final class M
 		return $r;
 	}
 
+    public static function limpiarNombre( $nombre, $patron = '' ) {
+        if ( strlen($nombre)==0 ) { return ''; }
+        if ( strlen($patron)>0 ) {
+            $patron = str_replace('{{uniqid}}', uniqid(), $patron );
+            $patron = M::reemplazarEtiquetas( $patron );
+            $nombre = str_replace( '/', '-', trim($patron) );
+        } else {
+            $nombre = trim( pathinfo( $nombre, PATHINFO_FILENAME ) );
+            while ( substr_count($nombre, '  ')>0 ) { $nombre = str_replace('  ', ' ', $nombre); }
+            $nombre = M::quitarAcentosTexto( $nombre );
+            $busca = array(' ','ç','Ç','Ñ','ñ',"'");
+            $reemp = array('-','c','C','N','n','');
+            $nombre = str_replace( $busca, $reemp, $nombre );
+            $excluir = '\/:*?"<>|°ºª~!#$%&=¿¡+[]{};,';
+            for ( $i = 0; $i < strlen($excluir); $i++ ) {
+                $nombre = str_replace( substr($excluir, $i, 1), '', $nombre);
+            }
+        }
+        $nombre = substr($nombre, 0, 100);
+        return $nombre;
+    }
+
 	public static function Trazar( $texto, $archivo = '', $ubicacion = '' ) {
 		if ( strlen($archivo)==0 ) { $archivo = 'trazado'; }
 		if ( strlen($ubicacion)==0 ) { $ubicacion = M::$entorno['RUTA']['RAIZ']; }

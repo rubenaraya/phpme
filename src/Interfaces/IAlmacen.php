@@ -14,5 +14,4 @@ interface IAlmacen {
 	public function copiarCarpetas( $origen, $destino );
 	public function borrarCarpetas( $origen, $quitar );
 	public function explorarCarpeta( $origen, $carpeta, $opciones );
-	public function validarNombre( $nombre, $patron );
 }

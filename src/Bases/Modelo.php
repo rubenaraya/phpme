@@ -385,6 +385,7 @@ abstract class Modelo implements IModelo
 		$estado = 0;
 		$mensaje = '';
 		$estilos = '';
+		$nombre = '';
 		$uid = M::E('RECURSO/ELEMENTO');
 		$this->dto->set( 'id', $uid );
 		$info = $this->dto->getset( 'info' );
@@ -425,6 +426,9 @@ abstract class Modelo implements IModelo
                     $estilos = $resultado['estilos'];
                 }
 			}
+			if ( isset($this->dto->resultados['caso']['nombre']) ) {
+                $nombre = M::limpiarNombre( $this->dto->resultados['caso']['nombre']);
+            }
 		}
 		if ( $estado == 0 ) {
 			$mensaje = $this->T['caso-no-existe'];
@@ -432,6 +436,7 @@ abstract class Modelo implements IModelo
 		return array(
 			'estado'=> $estado,
 			'estilos'=> $estilos,
+			'nombre'=> $nombre,
 			'mensaje'=> $mensaje
 		);
 	}

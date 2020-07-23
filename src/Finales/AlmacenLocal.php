@@ -55,7 +55,7 @@ final class AlmacenLocal extends Almacen {
 						@mkdir( "$ruta$carpeta" );
 						chmod( "$ruta$carpeta", 0755 );
 					}
-					$nombre_final = $this->validarNombre( $nombre_original, $nombre );
+					$nombre_final = M::limpiarNombre( $nombre_original, $nombre );
 					if ( !$reemplazar ) {
 						$i = 1; 
 						$aux = $nombre_final;
@@ -332,7 +332,7 @@ final class AlmacenLocal extends Almacen {
 		$carpeta = ( isset($opciones['carpeta']) ? '/' . $opciones['carpeta'] : '' );
 		$formato = ( isset($opciones['formato']) ? $opciones['formato'] : '' );
 		$nombre = ( isset($opciones['nombre']) ? $opciones['nombre'] : '' );
-		$nombre_final = $this->validarNombre( $nombre, $nombre );
+		$nombre_final = M::limpiarNombre( $nombre, $nombre );
 		if ( strlen( $carpeta ) >0 && !is_dir( "$ruta$carpeta" ) ) {
 			@mkdir( "$ruta$carpeta" );
 			chmod( "$ruta$carpeta", 0755 );
@@ -512,28 +512,6 @@ final class AlmacenLocal extends Almacen {
 			$resultado['errores'][] = sprintf(dgettext('me', "La-carpeta-'%s'-no-existe"), $carpeta);
 		}
 		return $resultado;
-	}
-
-	public function validarNombre( $nombre, $patron = '' ) {
-		if ( strlen($nombre)==0 ) { return ''; }
-		if ( strlen($patron)>0 ) {
-			$patron = str_replace('{{uniqid}}', uniqid(), $patron );
-			$patron = M::reemplazarEtiquetas( $patron );
-			$nombre = str_replace( '/', '-', trim($patron) );
-		} else {
-			$nombre = trim( pathinfo( $nombre, PATHINFO_FILENAME ) );
-			while ( substr_count($nombre, '  ')>0 ) { $nombre = str_replace('  ', ' ', $nombre); }
-			$nombre = M::quitarAcentosTexto( $nombre );
-			$busca = array(' ','ç','Ç','Ñ','ñ',"'");
-			$reemp = array('-','c','C','N','n','');
-			$nombre = str_replace( $busca, $reemp, $nombre );
-			$excluir = '\/:*?"<>|°ºª~!#$%&=¿¡+[]{};,';
-			for ( $i = 0; $i < strlen($excluir); $i++ ) {
-				$nombre = str_replace( substr($excluir, $i, 1), '', $nombre);
-			}
-		}
-		$nombre = substr($nombre, 0, 100);
-		return $nombre;
 	}
 
 	private function _crearDocumentoPdf( $contenido, $ubicacion, $opciones = array() ) {
