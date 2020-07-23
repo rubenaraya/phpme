@@ -11,11 +11,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-final class EmisorXls extends Emisor {
+final class EmisorXlsx extends Emisor {
 
 	public function Imprimir( $contenido, $opciones = array() ) {
-		$opciones['nombre'] = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.xls' );
-		header( 'Content-Type: application/vnd.ms-excel; charset=utf-8' );
+		$opciones['nombre'] = ( isset($opciones['nombre']) ? $opciones['nombre'] : date('Ymd_His') . '.xlsx' );
+		header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8' );
 		header( 'Content-Disposition: attachment;filename="' . $opciones['nombre'] . '";' );
 		if ( is_array($contenido) ) {
 			$aux = M::adquirirDatosMatriz( $contenido, '0' );
