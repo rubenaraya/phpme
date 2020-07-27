@@ -77,9 +77,11 @@ final class Dto implements IDto
 		} else if ( isset( $this->parametros[$nombre] ) ) {
 			$valor = $this->parametros[$nombre];
 		}
-		if ( strlen(strval($valor))==0 ) {
-		    $valor = $predeterminado;
-        }
+		if ( !is_array($valor) ) {
+			if ( strlen(strval($valor))==0 ) {
+				$valor = $predeterminado;
+			}
+		}
         $this->peticion[$nombre] = $valor;
 		return $valor;
 	}
