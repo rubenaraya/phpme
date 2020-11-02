@@ -7,6 +7,7 @@ use MasExperto\ME\M;
 
 abstract class Control implements IControl
 {
+	public $traduccion = '';
 	protected $ruteador = null;
 	protected $DTO = null;
 	protected $operacion = '';
@@ -29,6 +30,11 @@ abstract class Control implements IControl
 		$this->DTO->campos = &$this->ruteador->campos;
 		$this->DTO->parametros = &$this->ruteador->parametros;
 		$this->operacion = M::E('SOLICITUD/OPERACION');
+		if ($this->traduccion != '') {
+			bindtextdomain( $this->traduccion, M::E('RUTA/BACKEND') . '/locales' );
+			bind_textdomain_codeset( $this->traduccion, 'UTF-8' );
+			textdomain( $this->traduccion );
+		}
 		return;
 	}
 
