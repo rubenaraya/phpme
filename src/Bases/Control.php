@@ -31,7 +31,7 @@ abstract class Control implements IControl
 		$this->DTO->parametros = &$this->ruteador->parametros;
 		$this->operacion = M::E('SOLICITUD/OPERACION');
 		if ($this->traduccion != '') {
-			bindtextdomain( $this->traduccion, M::E('RUTA/BACKEND') . '/locales' );
+			bindtextdomain( $this->traduccion, M::E('RUTA/LOCALES') );
 			bind_textdomain_codeset( $this->traduccion, 'UTF-8' );
 			textdomain( $this->traduccion );
 		}
@@ -50,7 +50,7 @@ abstract class Control implements IControl
 			else {
 				$comprobacion = false;
 				if ( !is_object( $this->esquema ) ) {
-					$doc = M::E('ALMACEN/PRIVADO') . '/doc/' . $esquema;
+					$doc = M::E('RUTA/ESQUEMAS') . '/' . $esquema;
 					if ( !file_exists( $doc ) || is_dir( $doc ) ) {
 						$doc = M::E('RUTA/BACKEND') . '/' . $esquema;
 					}

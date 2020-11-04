@@ -61,7 +61,7 @@ final class RuteadorHttp extends Ruteador
 		}
 		bindtextdomain( 'me', dirname(__DIR__) . '/Locales');
 		bind_textdomain_codeset( 'me', 'UTF-8' );
-		bindtextdomain( $traduccion, M::$entorno['RUTA']['BACKEND'] . '/locales' );
+		bindtextdomain( $traduccion, M::$entorno['RUTA']['LOCALES'] );
 		bind_textdomain_codeset( $traduccion, 'UTF-8' );
 		textdomain( $traduccion );
 		M::$entorno['SOLICITUD']['METODO'] = $_SERVER['REQUEST_METHOD'];

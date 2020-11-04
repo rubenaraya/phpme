@@ -47,7 +47,7 @@ final class PresentadorXml extends Presentador
 		$this->documento = null;
 		if ( strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('ALMACEN/PRIVADO') . '/doc';
+				$ruta = M::E('RUTA/ESQUEMAS');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/BACKEND');
 				}
@@ -95,7 +95,7 @@ final class PresentadorXml extends Presentador
 	public function anexarDocumento( $documento = '', $ruta = '' ) {
 		if ( is_object($this->documento) && strlen($documento)>0 ) {
 			if ( strlen($ruta)==0 ) {
-				$ruta = M::E('ALMACEN/PRIVADO') . '/doc';
+				$ruta = M::E('RUTA/ESQUEMAS');
 				if ( !file_exists( $ruta . '/' . $documento ) || is_dir( $ruta . '/' . $documento ) ) {
 					$ruta = M::E('RUTA/BACKEND');
 				}
