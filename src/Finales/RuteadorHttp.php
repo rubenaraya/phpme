@@ -316,7 +316,7 @@ final class RuteadorHttp extends Ruteador
 				$url = M::E('SOLICITUD/URL');
 				if ( $url == M::E('M_PUNTOFINAL') . '/' ) { $url = ''; }
 				$parametros = ( strlen($url)>0 ? '?M_URL=' . $url : '' );
-				$this->Redirigir( M::E('M_PUNTOFINAL') . '/login.html' . $parametros );
+				$this->Redirigir( M::E('M_PUNTOFINAL') . '/app.php' . $parametros );
 			} else {
 				$this->enviarRespuesta();
 			}
