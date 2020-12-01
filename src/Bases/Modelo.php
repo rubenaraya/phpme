@@ -234,6 +234,7 @@ abstract class Modelo implements IModelo
 		$estado = 0;
 		$uid = '';
 		if ( isset($this->sql['agregar']) ) {
+			$this->dto->set( 'clave', hash( 'ripemd256', M::E('LLAVE/CLAVE') . $this->dto->get('clave') ) );
 			$this->bd->Conectar( M::E('BD/1'), $this->dto );
 			$sql = $this->bd->reemplazarValores( $this->sql['agregar'] );
 			$resultado = $this->bd->agregarElemento($sql, $this->entidad );
