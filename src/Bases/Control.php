@@ -81,11 +81,11 @@ abstract class Control implements IControl
 			}
 		}
 		if ( !$comprobacion ) {
-			if ( M::E('M_SALIDA') == 'HTML' ) {
-				$this->ruteador->Redirigir( M::E('M_PUNTOFINAL') . '/app.php' );
-			} else {
-				$this->ruteador->enviarError( '401_UNAUTHORIZED' );
-			}
+            if ( M::E('M_SALIDA') == 'HTML' ) {
+                $this->ruteador->Redirigir( M::E('M_PUNTOFINAL') . '/login' );
+            } else {
+                $this->ruteador->enviarError( '401_UNAUTHORIZED' );
+            }
 		}
 		return;
 	}

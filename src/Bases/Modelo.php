@@ -162,20 +162,31 @@ abstract class Modelo implements IModelo
 		$mensaje = '';
 		$clase = $this->dto->get('clase', 'parametro');
 		$base = $this->dto->get( 'base', 'parametro' );
+		$this->bd->Conectar( M::E('BD/1'), $this->dto );
+		if ( strlen( $clase )>0 ) {
 		$componente = '\MasExperto\Adaptador\\' . $clase;
 		if ( class_exists( $componente, true ) ) {
 			$adaptador = new $componente;
 			$adaptador->combinarMetadatos( '', $this );
 		}
-		$this->bd->Conectar( M::E('BD/1'), $this->dto );
-		if ( isset($this->sql['lista_casos']) ) {
-			$this->dto->set('M_MAX', 100, 'parametro');
-			$this->dto->set('M_NAV', 1, 'parametro');
-			$this->bd->consultarColeccion( $this->sql['lista_casos'], 'lista_casos', false );
 		}
 		if ( isset($this->sql['caso_agregar']) && strlen($base) > 0 ) {
-			$sql = str_replace( '{{base}}', $base, $this->sql['caso_agregar'] );
+			$datos = array( 'base'=>$base );
+			$sql = $this->bd->reemplazarValores( $this->sql['caso_agregar'], $datos );
 			$this->bd->consultarElemento( $sql, 'caso', false );
+			if ( isset($this->dto->resultados['caso']['clase']) ) {
+				$clase = $this->dto->resultados['caso']['clase'];
+				$componente = '\MasExperto\Adaptador\\' . $clase;
+				if ( class_exists( $componente, true ) ) {
+					$adaptador = new $componente;
+					$adaptador->combinarMetadatos( '', $this );
+				}
+			}
+		}
+		if ( isset($this->sql['lista_casos']) ) {
+			$this->dto->set('M_MAX', 500, 'parametro');
+			$this->dto->set('M_NAV', 1, 'parametro');
+			$this->bd->consultarColeccion( $this->sql['lista_casos'], 'lista_casos', false );
 		}
 		unset( $adaptador );
 		return array(

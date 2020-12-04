@@ -24,6 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3cb5be22-c93e-471d-aaf6-9170cf2ed0b6" name="Default Changelist" comment="Actualizacion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases/Control.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases/Control.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +70,8 @@
       <workItem from="1604558052943" duration="44000" />
       <workItem from="1604558420667" duration="9000" />
       <workItem from="1604588122031" duration="129000" />
+      <workItem from="1606823178426" duration="71000" />
+      <workItem from="1607045656437" duration="185000" />
     </task>
     <task id="LOCAL-00001" summary="Actualizacion">
       <created>1604348798241</created>
@@ -91,7 +94,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604558075547</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Actualizacion">
+      <created>1606823233795</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1606823233795</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,14 +124,22 @@
     <option name="LAST_COMMIT_MESSAGE" value="Actualizacion" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="168" y="116" width="1200" height="588" key="DiffContextDialog" timestamp="1606823249490">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="168" y="116" width="1200" height="588" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1606823249490" />
     <state x="277" y="57" key="SettingsEditor" timestamp="1604442265702">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1604442265702" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1604558079735">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1606823238641">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1604558079735" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1606823238641" />
+    <state x="168" y="116" width="1200" height="588" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1607045771431">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="168" y="116" width="1200" height="588" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1607045771431" />
     <state x="478" y="145" width="580" height="534" key="find.popup" timestamp="1604588247174">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
