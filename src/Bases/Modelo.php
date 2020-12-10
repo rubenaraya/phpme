@@ -247,11 +247,11 @@ abstract class Modelo implements IModelo
 			$estado = $respuesta['estado'];
 			if ( $estado == 1 ) {
 				if ( isset($this->sql['items_borrar']) ) {
-					$sql = $this->bd->reemplazarValores( $this->sql['items_borrar'], $datos );
+					$sql = $this->bd->reemplazarValores( $this->sql['items_borrar'] );
 					$this->bd->borrarElementos( $sql, 'items_borrar' );
 				}
 				if ( isset($this->sql['sucesos_borrar']) ) {
-					$sql = $this->bd->reemplazarValores( $this->sql['sucesos_borrar'], $datos );
+					$sql = $this->bd->reemplazarValores( $this->sql['sucesos_borrar'] );
 					$this->bd->borrarElementos( $sql, 'sucesos_borrar' );
 				}
 			}
