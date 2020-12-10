@@ -9,10 +9,12 @@ interface IModelo {
 	public function Abrir();
 	public function Editar();
 	public function Borrar();
+	public function Eliminar();
 	public function Cambiar();
 	public function Registrar();
 	public function Ver();
     public function Ejecutar();
+    public function Descargar();
     public function Adjuntar( $opciones );
     public function Cotejar( $caso );
     public function Validar( $nombre, $valor );

@@ -8,8 +8,8 @@ use MasExperto\ME\M;
 abstract class Modelo implements IModelo
 {
 	protected $temp = array();
-	protected $entidad = '';
-	protected $tabla = '';
+	public $entidad = '';
+	public $tabla = '';
     public $dto = null;
 	public $bd = null;
 	public $almacen = null;
@@ -221,6 +221,51 @@ abstract class Modelo implements IModelo
 			'mensaje'=> $mensaje
 		);
 	}
+	public function Eliminar() {
+		$estado = 0;
+		$uid = M::E('RECURSO/ELEMENTO');
+        $this->dto->set( 'id', $uid );
+		$this->bd->Conectar( M::E('BD/1'), $this->dto );
+		$sql = $this->bd->reemplazarValores( $this->sql['abrir'] );
+		$respuesta = $this->bd->consultarElemento( $sql, 'caso', false );
+		$estado = ( $respuesta['estado']==1 && $respuesta['total']==1 ? 1 : 0 );
+		if ( $estado == 1 ) {
+			$clase = $this->dto->resultados['caso']['clase'];
+			$componente = '\MasExperto\Adaptador\\' . $clase;
+			if ( class_exists( $componente, true ) ) {
+				$adaptador = new $componente;
+				$adaptador->combinarMetadatos( $uid, $this );
+			}
+			if ( isset($this->dto->resultados['caso']['archivo']) ) {
+				$archivo = M::E('ALMACEN/PRIVADO') . '/' . $this->dto->resultados['caso']['archivo'];
+				if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
+					unlink( $archivo );
+				}
+			}
+			$sql = $this->bd->reemplazarValores( $this->sql['eliminar'] );
+			$respuesta = $this->bd->borrarElementos( $sql, $this->entidad );
+			$estado = $respuesta['estado'];
+			if ( $estado == 1 ) {
+				if ( isset($this->sql['items_borrar']) ) {
+					$sql = $this->bd->reemplazarValores( $this->sql['items_borrar'], $datos );
+					$this->bd->borrarElementos( $sql, 'items_borrar' );
+				}
+				if ( isset($this->sql['sucesos_borrar']) ) {
+					$sql = $this->bd->reemplazarValores( $this->sql['sucesos_borrar'], $datos );
+					$this->bd->borrarElementos( $sql, 'sucesos_borrar' );
+				}
+			}
+		}
+		if ( $estado == 1 ) {
+			$mensaje = $this->T['caso-borrado'];
+		} else {
+			$mensaje = $this->T['caso-no-borrado'];
+		}
+		return array(
+			'estado'=> $estado,
+			'mensaje'=> $mensaje
+		);
+	}
 	public function Registrar() {
 		$estado = 0;
 		$this->dto->set( 'id', M::E('RECURSO/ELEMENTO') );
@@ -256,6 +301,7 @@ abstract class Modelo implements IModelo
 			$datos = array( 'id'=>$uid );
 			$sql = $this->bd->reemplazarValores( $this->sql['abrir'], $datos );
 			$this->bd->consultarElemento( $sql, 'caso', false );
+			if ( isset($this->dto->resultados['caso']['clase']) ) {
 			$clase = $this->dto->resultados['caso']['clase'];
 			$componente = '\MasExperto\Adaptador\\' . $clase;
 			if ( class_exists( $componente, true ) ) {
@@ -265,6 +311,7 @@ abstract class Modelo implements IModelo
 					$this->dto->set('esquema', $adaptador->esquema, 'valor');
 					$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
 				}
+			}
 			}
 			$mensaje = $this->T['caso-guardado'];
 		} else {
@@ -377,6 +424,16 @@ abstract class Modelo implements IModelo
 		if ( $estado == 0 ) {
 			$mensaje = $this->T['error-lista'];
 		} else {
+			$clase = $this->dto->get('clase', 'parametro');
+			$componente = '\MasExperto\Adaptador\\' . $clase;
+			if ( class_exists( $componente, true ) ) {
+				$adaptador = new $componente;
+				$adaptador->combinarMetadatos( '', $this );
+				$this->dto->set('vista', $adaptador->vista, 'valor');
+				$this->dto->set('esquema', $adaptador->esquema, 'valor');
+				$this->dto->set('rutaxml', $adaptador->ruta['xml'], 'valor');
+				$this->dto->set('rutaxsl', $adaptador->ruta['xsl'], 'valor');
+			}
 			$this->dto->set('M_MAX', 100, 'parametro');
 			$this->dto->set('M_NAV', 1, 'parametro');
 			if ( isset($this->sql['lista_casos']) ) {
@@ -485,6 +542,36 @@ abstract class Modelo implements IModelo
             'mensaje'=> $mensaje
         );
     }
+	public function Descargar() {
+		$mensaje = '';
+		$nombre = '';
+		$archivo = '';
+		$uid = M::E('RECURSO/ELEMENTO');
+		$this->dto->set( 'id', $uid );
+		$this->bd->Conectar( M::E('BD/1'), $this->dto );
+		$sql = $this->bd->reemplazarValores( $this->sql['descargar'] );
+		$respuesta = $this->bd->consultarElemento( $sql, 'caso', false );
+		$estado = ( $respuesta['estado']==1 && $respuesta['total']==1 ? 1 : 0 );
+		if ( $estado == 1 ) {
+			$archivo = M::E('ALMACEN/PRIVADO') . '/' . $this->dto->resultados['caso']['archivo'];
+			if ( file_exists( $archivo ) && !is_dir( $archivo ) ) {
+				$tipo = strtolower( pathinfo( $archivo, PATHINFO_EXTENSION ) );
+				$nombre = M::limpiarNombre( $this->dto->resultados['caso']['nombre'] ) . '.' . $tipo;
+			} else {
+				$estado = 0;
+				$archivo = '';
+				$mensaje = $this->T['caso-no-existe']; 			
+			}
+		} else {
+			$mensaje = $this->T['caso-no-existe']; 			
+		}
+		return array(
+			'estado'=> $estado,
+			'archivo'=> $archivo,
+			'nombre'=> $nombre,
+			'mensaje'=> $mensaje
+		);
+	}
     public function Adjuntar( $opciones = array() ) {
         $mensaje = '';
         $archivo = '';
